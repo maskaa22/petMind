@@ -3,24 +3,34 @@
 
 .page {
   min-height: 100vh;
-  background: $gray-900;
-  color: $white;
+  background: $cream;
   @include flex-center;
   position: relative;
   overflow: hidden;
+}
 
-  &::before {
-    content: '';
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba($purple-600, 0.35) 0%, transparent 70%);
-    border-radius: $radius-full;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
+.cornerOrange {
+  position: absolute;
+  top: -60px;
+  left: -80px;
+  width: 300px;
+  height: 280px;
+  background: $orange;
+  border-radius: 0 0 80% 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.cornerTeal {
+  position: absolute;
+  bottom: -60px;
+  right: -80px;
+  width: 280px;
+  height: 260px;
+  background: $teal;
+  border-radius: 80% 0 0 0;
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .inner {
@@ -48,31 +58,30 @@
 .orbit1, .orbit2, .orbit3 {
   position: absolute;
   border-radius: $radius-full;
-  border: 1px solid transparent;
   @include flex-center;
 }
 
 .orbit1 {
   inset: 0;
-  border-color: rgba($purple-400, 0.3);
+  border: 2px dashed rgba($orange, 0.4);
   animation: spin 6s linear infinite;
 
   .dot {
     position: absolute;
-    top: -4px;
+    top: -5px;
     left: 50%;
     transform: translateX(-50%);
-    width: 8px;
-    height: 8px;
-    background: $purple-400;
+    width: 10px;
+    height: 10px;
+    background: $orange;
     border-radius: $radius-full;
-    box-shadow: 0 0 8px $purple-400;
+    box-shadow: 0 0 8px rgba($orange, 0.5);
   }
 }
 
 .orbit2 {
-  inset: 16px;
-  border-color: rgba($orange-400, 0.25);
+  inset: 18px;
+  border: 2px dashed rgba($teal, 0.3);
   animation: spin 4s linear infinite reverse;
 
   .dot {
@@ -82,44 +91,44 @@
     transform: translateX(-50%);
     width: 10px;
     height: 10px;
-    background: $orange-400;
+    background: $teal;
     border-radius: $radius-full;
-    box-shadow: 0 0 10px $orange-400;
+    box-shadow: 0 0 8px rgba($teal, 0.4);
   }
 }
 
 .orbit3 {
-  inset: 32px;
-  border-color: rgba($purple-300, 0.2);
+  inset: 36px;
+  border: 2px dashed rgba($green, 0.4);
   animation: spin 8s linear infinite;
 
   .dot {
     position: absolute;
-    top: -3px;
+    top: -4px;
     left: 50%;
     transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background: $purple-300;
+    width: 8px;
+    height: 8px;
+    background: $green;
     border-radius: $radius-full;
-    box-shadow: 0 0 6px $purple-300;
+    box-shadow: 0 0 6px rgba($green, 0.4);
   }
 }
 
 .core {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, $purple-700, $purple-500);
+  background: $orange;
   border-radius: $radius-2xl;
   @include flex-center;
   color: $white;
-  box-shadow: 0 0 32px rgba($purple-500, 0.5);
-  animation: glow 3s ease-in-out infinite;
+  box-shadow: 4px 4px 0 $orange-dark;
+  animation: corePulse 2.5s ease-in-out infinite;
 }
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 32px rgba($purple-500, 0.5); }
-  50% { box-shadow: 0 0 48px rgba($purple-400, 0.7); }
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
 // ── Text ─────────────────────────────────────────────
@@ -131,14 +140,15 @@
 }
 
 .title {
+  font-family: $font-display;
   font-size: $font-size-2xl;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  color: $teal;
 }
 
 .message {
   font-size: $font-size-base;
-  color: rgba($white, 0.6);
+  color: $gray-500;
   min-height: 24px;
   animation: fadeSlide 0.4s ease;
 }
@@ -155,24 +165,25 @@
 
 .barTrack {
   width: 100%;
-  height: 4px;
-  background: rgba($white, 0.1);
+  height: 10px;
+  background: $orange-pale;
   border-radius: $radius-full;
   overflow: hidden;
+  border: 2px solid $orange-light;
 }
 
 .barFill {
   height: 100%;
-  background: linear-gradient(90deg, $purple-500, $orange-400);
+  background: $orange;
   border-radius: $radius-full;
   transition: width 100ms linear;
 }
 
 .pct {
-  font-size: $font-size-xs;
-  color: rgba($white, 0.4);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: 700;
+  color: $orange;
 }
 
 // ── Chips ─────────────────────────────────────────────
@@ -188,24 +199,24 @@
   display: inline-flex;
   align-items: center;
   gap: $space-2;
-  background: rgba($white, 0.06);
-  border: 1px solid rgba($white, 0.1);
-  color: rgba($white, 0.45);
+  background: $white;
+  border: 2px dashed $gray-200;
+  color: $gray-400;
   font-size: $font-size-xs;
-  font-weight: 500;
+  font-weight: 600;
   padding: $space-2 $space-3;
   border-radius: $radius-full;
   transition: all $transition-base;
 }
 
 .chipDone {
-  background: rgba($purple-500, 0.2);
-  border-color: rgba($purple-400, 0.35);
-  color: $purple-300;
+  background: $orange-pale;
+  border-color: $orange-light;
+  color: $orange-dark;
 }
 
 .chipCheck {
-  color: $purple-400;
+  color: $orange;
   flex-shrink: 0;
 }
 

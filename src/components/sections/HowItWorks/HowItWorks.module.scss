@@ -3,49 +3,42 @@
 
 .section {
   padding: $space-20 $space-4;
-  background: $white;
+  position: relative;
 }
 
 .inner {
   @include container;
   display: flex;
   flex-direction: column;
-  gap: $space-16;
+  gap: $space-12;
+  align-items: center;
 }
 
 .header {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: $space-4;
+  text-align: center;
 }
 
-.tag {
-  display: inline-block;
-  background: $purple-50;
-  color: $primary;
-  font-size: $font-size-xs;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  border: 1px solid $purple-200;
+.ribbon {
+  @include ribbon($green);
+  font-size: $font-size-base;
 }
 
 .title {
+  font-family: $font-display;
   font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
-  font-weight: 900;
-  color: $gray-900;
-  letter-spacing: -0.02em;
-  max-width: 560px;
+  font-weight: 800;
+  color: $teal;
+  max-width: 540px;
 }
 
 .sub {
   font-size: $font-size-lg;
   color: $gray-500;
-  max-width: 520px;
+  max-width: 500px;
   line-height: 1.7;
 }
 
@@ -53,52 +46,76 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: $space-8;
+  width: 100%;
   position: relative;
 
   @include mobile-only {
     grid-template-columns: 1fr;
-    gap: $space-10;
+    gap: $space-6;
   }
 }
 
 .step {
+  @include dashed-card($orange-light);
+  padding: $space-8 $space-6;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: $space-4;
   position: relative;
+  transition: transform $transition-fast;
+  box-shadow: 4px 4px 0 $orange-pale;
+
+  &:nth-child(2) {
+    border-color: $teal-light;
+    box-shadow: 4px 4px 0 $teal-pale;
+  }
+
+  &:nth-child(3) {
+    border-color: $green;
+    box-shadow: 4px 4px 0 $green-pale;
+  }
+
+  &:hover {
+    transform: translate(-2px, -2px);
+  }
 }
 
 .stepNum {
-  font-size: 4rem;
+  font-family: $font-display;
+  font-size: 3.5rem;
   font-weight: 900;
-  color: $purple-100;
+  color: $orange;
   line-height: 1;
-  letter-spacing: -0.04em;
-  font-variant-numeric: tabular-nums;
+  opacity: 0.25;
+
+  .step:nth-child(2) & { color: $teal; }
+  .step:nth-child(3) & { color: $green-dark; }
 }
 
 .iconWrap {
   width: 52px;
   height: 52px;
-  background: linear-gradient(135deg, $purple-600, $purple-500);
-  color: $white;
-  border-radius: $radius-xl;
+  background: $orange-pale;
+  border-radius: $radius-2xl;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba($purple-600, 0.3);
+  color: $orange;
+
+  .step:nth-child(2) & { background: $teal-pale; color: $teal; }
+  .step:nth-child(3) & { background: $green-pale; color: $green-dark; }
 }
 
 .stepTitle {
+  font-family: $font-display;
   font-size: $font-size-xl;
-  font-weight: 800;
-  color: $gray-900;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: $teal;
 }
 
 .stepDesc {
-  font-size: $font-size-base;
+  font-size: $font-size-sm;
   color: $gray-500;
   line-height: 1.7;
 }
@@ -109,10 +126,10 @@
   @include tablet-up {
     display: block;
     position: absolute;
-    top: 26px;
-    right: calc(-#{$space-4} - 1px);
+    top: 32px;
+    right: calc(-#{$space-4} - 2px);
     width: $space-8;
     height: 2px;
-    background: $purple-100;
+    border-top: 2px dashed $gray-300;
   }
 }

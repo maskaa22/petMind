@@ -5,12 +5,13 @@
   align-items: center;
   justify-content: center;
   gap: $space-2;
+  font-family: $font-display;
   font-weight: 700;
   border-radius: $radius-full;
   transition: all $transition-fast;
   white-space: nowrap;
   border: 2px solid transparent;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
 
   &:disabled {
     opacity: 0.4;
@@ -19,54 +20,56 @@
 }
 
 .primary {
-  background: $primary;
+  background: $orange;
   color: $white;
-  border-color: $primary;
-  box-shadow: 0 4px 14px rgba($purple-600, 0.35);
+  border-color: $orange;
+  box-shadow: 4px 4px 0 $orange-dark;
 
   &:hover:not(:disabled) {
-    background: $primary-dark;
-    border-color: $primary-dark;
-    box-shadow: 0 6px 18px rgba($purple-600, 0.45);
-    transform: translateY(-1px);
+    background: $orange-dark;
+    border-color: $orange-dark;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 $orange-dark;
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0);
+    transform: translate(0, 0);
+    box-shadow: 2px 2px 0 $orange-dark;
   }
 }
 
 .secondary {
   background: $white;
-  color: $primary;
-  border-color: $primary;
+  color: $orange;
+  border: 2px dashed $orange;
 
   &:hover:not(:disabled) {
-    background: $primary-light;
+    background: $orange-pale;
+    transform: translate(-2px, -2px);
   }
 }
 
 .ghost {
   background: transparent;
-  color: $gray-600;
+  color: $teal;
   border-color: transparent;
 
   &:hover:not(:disabled) {
-    color: $primary;
-    background: $primary-light;
+    color: $orange;
+    background: $orange-pale;
   }
 }
 
 .accent {
-  background: $accent;
+  background: $teal;
   color: $white;
-  border-color: $accent;
-  box-shadow: 0 4px 14px rgba($orange-500, 0.35);
+  border-color: $teal;
+  box-shadow: 4px 4px 0 $teal-mid;
 
   &:hover:not(:disabled) {
-    background: $orange-600;
-    border-color: $orange-600;
-    transform: translateY(-1px);
+    background: $teal-mid;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 $teal-mid;
   }
 }
 

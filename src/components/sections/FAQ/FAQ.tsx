@@ -14,7 +14,10 @@ export function FAQ() {
   return (
     <section id="faq" className={styles.section}>
       <div className={styles.inner}>
-        <h2 className={styles.title}>Frequently asked questions</h2>
+        <div className={styles.header}>
+          <div className={styles.ribbon}>🐾 FAQ</div>
+          <h2 className={styles.title}>Frequently asked questions</h2>
+        </div>
         <div className={styles.list}>
           {FAQS.map(({ q, a }, i) => (
             <div key={q} className={[styles.item, open === i ? styles.opened : ''].join(' ')}>

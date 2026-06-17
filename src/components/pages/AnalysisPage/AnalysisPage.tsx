@@ -36,6 +36,8 @@ export function AnalysisPage() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.cornerOrange} />
+      <div className={styles.cornerTeal} />
       <div className={styles.inner}>
         <div className={styles.orbitWrap}>
           <div className={styles.orbit1}>

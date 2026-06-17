@@ -3,7 +3,9 @@
 
 .section {
   padding: $space-20 $space-4;
-  background: $gray-50;
+  background: $teal-pale;
+  position: relative;
+  overflow: hidden;
 }
 
 .inner {
@@ -12,6 +14,8 @@
   flex-direction: column;
   align-items: center;
   gap: $space-16;
+  position: relative;
+  z-index: 1;
 }
 
 .metrics {
@@ -27,14 +31,18 @@
 
 .metric {
   background: $white;
-  border: 1.5px solid $gray-100;
-  border-radius: $radius-2xl;
+  border: 2px dashed $teal-light;
+  border-radius: $radius-3xl;
   padding: $space-6 $space-4;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: $space-2;
+  box-shadow: 3px 3px 0 rgba($teal, 0.1);
+  transition: transform $transition-fast;
+
+  &:hover { transform: translate(-2px, -2px); }
 }
 
 .metricIcon {
@@ -43,10 +51,10 @@
 }
 
 .metricValue {
+  font-family: $font-display;
   font-size: $font-size-2xl;
   font-weight: 900;
-  color: $gray-900;
-  letter-spacing: -0.02em;
+  color: $teal;
 }
 
 .metricLabel {
@@ -65,24 +73,16 @@
   gap: $space-4;
 }
 
-.tag {
-  display: inline-block;
-  background: $white;
-  color: $primary;
-  font-size: $font-size-xs;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  border: 1px solid $purple-200;
+.ribbon {
+  @include ribbon($orange);
+  font-size: $font-size-base;
 }
 
 .title {
+  font-family: $font-display;
   font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
-  font-weight: 900;
-  color: $gray-900;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: $teal;
   max-width: 520px;
 }
 
@@ -110,18 +110,26 @@
 
 .card {
   background: $white;
-  border: 1.5px solid $gray-100;
-  border-radius: $radius-2xl;
+  border: 2px dashed $orange-light;
+  border-radius: $radius-3xl;
   padding: $space-6;
   display: flex;
   flex-direction: column;
   gap: $space-4;
-  transition: transform $transition-base, box-shadow $transition-base;
+  box-shadow: 3px 3px 0 $orange-pale;
+  transition: transform $transition-fast;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  &:nth-child(2) {
+    border-color: $teal-light;
+    box-shadow: 3px 3px 0 $teal-pale;
   }
+
+  &:nth-child(3) {
+    border-color: $green;
+    box-shadow: 3px 3px 0 $green-pale;
+  }
+
+  &:hover { transform: translate(-2px, -2px); }
 }
 
 .stars {
@@ -130,8 +138,8 @@
 }
 
 .starIcon {
-  fill: $orange-400;
-  stroke: $orange-400;
+  fill: $orange;
+  stroke: $orange;
 }
 
 .quote {
@@ -139,13 +147,14 @@
   color: $gray-700;
   line-height: 1.75;
   flex: 1;
+  font-style: italic;
 }
 
 .author {
   display: flex;
   align-items: center;
   gap: $space-3;
-  border-top: 1px solid $gray-100;
+  border-top: 1px dashed $gray-200;
   padding-top: $space-4;
 }
 
@@ -154,6 +163,7 @@
   height: 40px;
   border-radius: $radius-full;
   color: $white;
+  font-family: $font-display;
   font-size: $font-size-xs;
   font-weight: 800;
   display: flex;
@@ -163,8 +173,9 @@
 }
 
 .authorName {
+  font-family: $font-display;
   font-weight: 700;
-  color: $gray-900;
+  color: $teal;
   font-size: $font-size-sm;
   display: block;
 }

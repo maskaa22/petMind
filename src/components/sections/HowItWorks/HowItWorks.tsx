@@ -27,7 +27,7 @@ export function HowItWorks() {
     <section className={styles.section}>
       <div className={styles.inner}>
         <div className={styles.header}>
-          <div className={styles.tag}>How it works</div>
+          <div className={styles.ribbon}>🐾 How it works</div>
           <h2 className={styles.title}>Three steps to understand your pet</h2>
           <p className={styles.sub}>No guessing. No vague advice. Just precise behavioral insights based on your pet's unique answers.</p>
         </div>

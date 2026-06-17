@@ -3,7 +3,9 @@
 
 .section {
   padding: $space-20 $space-4;
-  background: $white;
+  background: $orange-pale;
+  position: relative;
+  overflow: hidden;
 }
 
 .inner {
@@ -12,6 +14,8 @@
   flex-direction: column;
   align-items: center;
   gap: $space-12;
+  position: relative;
+  z-index: 1;
 }
 
 .header {
@@ -22,30 +26,22 @@
   gap: $space-4;
 }
 
-.tag {
-  display: inline-block;
-  background: $purple-50;
-  color: $primary;
-  font-size: $font-size-xs;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  border: 1px solid $purple-200;
+.ribbon {
+  @include ribbon($orange);
+  font-size: $font-size-base;
 }
 
 .title {
+  font-family: $font-display;
   font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
-  font-weight: 900;
-  color: $gray-900;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: $teal;
   max-width: 560px;
 }
 
 .sub {
   font-size: $font-size-lg;
-  color: $gray-500;
+  color: $gray-600;
   max-width: 480px;
   line-height: 1.7;
 }
@@ -67,38 +63,55 @@
 
 .card {
   background: $white;
-  border: 1.5px solid $gray-100;
-  border-radius: $radius-2xl;
+  border: 2px dashed $orange-light;
+  border-radius: $radius-3xl;
   padding: $space-6;
   display: flex;
   flex-direction: column;
   gap: $space-4;
-  transition: transform $transition-base, box-shadow $transition-base, border-color $transition-base;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+  box-shadow: 3px 3px 0 $orange-pale;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba($purple-600, 0.1);
-    border-color: $purple-200;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 $orange-light;
+  }
+
+  &:nth-child(3n+2) {
+    border-color: $teal-light;
+    box-shadow: 3px 3px 0 $teal-pale;
+
+    &:hover { box-shadow: 5px 5px 0 $teal-pale; }
+
+    .iconWrap { background: $teal-pale; color: $teal; }
+  }
+
+  &:nth-child(3n) {
+    border-color: $green;
+    box-shadow: 3px 3px 0 $green-pale;
+
+    &:hover { box-shadow: 5px 5px 0 $green-pale; }
+
+    .iconWrap { background: $green-pale; color: $green-dark; }
   }
 }
 
 .iconWrap {
   width: 52px;
   height: 52px;
-  background: $purple-50;
-  border-radius: $radius-xl;
+  background: $orange-pale;
+  border-radius: $radius-2xl;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $primary;
-  border: 1px solid $purple-100;
+  color: $orange;
 }
 
 .cardTitle {
-  font-size: $font-size-base;
-  font-weight: 800;
-  color: $gray-900;
-  letter-spacing: -0.01em;
+  font-family: $font-display;
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $teal;
 }
 
 .cardDesc {

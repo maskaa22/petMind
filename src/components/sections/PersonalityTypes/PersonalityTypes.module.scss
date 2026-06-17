@@ -3,7 +3,6 @@
 
 .section {
   padding: $space-20 $space-4;
-  background: $gray-50;
 }
 
 .inner {
@@ -22,24 +21,16 @@
   gap: $space-4;
 }
 
-.tag {
-  display: inline-block;
-  background: $white;
-  color: $primary;
-  font-size: $font-size-xs;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  border: 1px solid $purple-200;
+.ribbon {
+  @include ribbon($teal);
+  font-size: $font-size-base;
 }
 
 .title {
+  font-family: $font-display;
   font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
-  font-weight: 900;
-  color: $gray-900;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: $teal;
   max-width: 560px;
 }
 
@@ -53,7 +44,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: $space-5;
+  gap: $space-6;
   width: 100%;
 
   @include mobile-only {
@@ -62,18 +53,21 @@
 }
 
 .card {
-  border: 1.5px solid;
-  border-radius: $radius-2xl;
+  border: 2px dashed;
+  border-radius: $radius-3xl;
   padding: $space-6;
   display: flex;
   flex-direction: column;
   gap: $space-4;
+  background: $white;
   transition: transform $transition-fast, box-shadow $transition-fast;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  }
+  &:nth-child(1) { border-color: $orange-light; box-shadow: 4px 4px 0 $orange-pale; }
+  &:nth-child(2) { border-color: $teal-light; box-shadow: 4px 4px 0 $teal-pale; }
+  &:nth-child(3) { border-color: $green; box-shadow: 4px 4px 0 $green-pale; }
+  &:nth-child(4) { border-color: $orange-light; box-shadow: 4px 4px 0 $orange-pale; }
+
+  &:hover { transform: translate(-2px, -2px); }
 }
 
 .cardTop {
@@ -83,9 +77,9 @@
 }
 
 .emojiWrap {
-  width: 52px;
-  height: 52px;
-  border-radius: $radius-xl;
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-2xl;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,14 +87,14 @@
 }
 
 .emoji {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   line-height: 1;
 }
 
 .typeName {
+  font-family: $font-display;
   font-size: $font-size-xl;
   font-weight: 800;
-  letter-spacing: -0.01em;
 }
 
 .traits {

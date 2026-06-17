@@ -3,7 +3,7 @@
 
 .section {
   padding: $space-20 $space-4;
-  background: $purple-50;
+  background: $green-pale;
 }
 
 .inner {
@@ -14,9 +14,24 @@
   gap: $space-10;
 }
 
-.title {
-  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
   text-align: center;
+}
+
+.ribbon {
+  @include ribbon($green-dark);
+  font-size: $font-size-base;
+}
+
+.title {
+  font-family: $font-display;
+  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+  font-weight: 800;
+  color: $teal;
 }
 
 .list {
@@ -27,14 +42,15 @@
 
 .item {
   background: $white;
-  border: 1.5px solid $purple-100;
-  border-radius: $radius-2xl;
+  border: 2px dashed $green;
+  border-radius: $radius-3xl;
   overflow: hidden;
-  transition: border-color $transition-fast, box-shadow $transition-fast;
+  transition: border-color $transition-fast;
+  box-shadow: 3px 3px 0 $green-pale;
 
   &.opened {
-    border-color: $primary;
-    box-shadow: 0 4px 16px rgba($purple-600, 0.1);
+    border-color: $orange;
+    box-shadow: 3px 3px 0 $orange-pale;
   }
 }
 
@@ -43,20 +59,23 @@
   @include flex-between;
   width: 100%;
   padding: $space-5 $space-6;
+  font-family: $font-display;
   font-size: $font-size-base;
   font-weight: 600;
   text-align: left;
   gap: $space-4;
-  color: $gray-900;
+  color: $teal;
 
-  &:hover { background: $purple-50; }
+  &:hover { background: $green-pale; }
 }
 
 .chevron {
   font-size: $font-size-xl;
-  color: $primary;
+  color: $green-dark;
   flex-shrink: 0;
   font-weight: 700;
+
+  .opened & { color: $orange; }
 }
 
 .answer {

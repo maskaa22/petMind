@@ -10,25 +10,25 @@ const METRICS = [
 
 const TESTIMONIALS = [
   {
-    quote: "I finally understand why my cat ignores me at night. The personality report was scarily accurate — she's a textbook Dreamer.",
+    quote: "I finally understand why my cat ignores me at night. The personality report was scarily accurate!",
     author: 'Sarah M.',
     role: 'Cat owner, 3 years',
     initials: 'SM',
-    color: '#7c3aed',
+    color: '#e8622a',
   },
   {
-    quote: "My golden retriever's report nailed every single trait. Now I know exactly why he acts out when guests come over.",
+    quote: "My golden retriever's report nailed every single trait. Now I know why he acts out when guests come over.",
     author: 'James K.',
     role: 'Dog owner, 5 years',
     initials: 'JK',
-    color: '#f97316',
+    color: '#1a3a4a',
   },
   {
-    quote: "The AI Coach answered questions my vet couldn't. It even caught an anxiety pattern I had been dismissing for months.",
+    quote: "The AI Coach answered questions my vet couldn't. It even caught an anxiety pattern I had been dismissing.",
     author: 'Priya L.',
     role: 'Rabbit owner, 2 years',
     initials: 'PL',
-    color: '#16a34a',
+    color: '#5a9e3a',
   },
 ]
 
@@ -47,7 +47,7 @@ export function SocialProof() {
         </div>
 
         <div className={styles.header}>
-          <div className={styles.tag}>Testimonials</div>
+          <div className={styles.ribbon}>🐾 Testimonials</div>
           <h2 className={styles.title}>Trusted by pet owners worldwide</h2>
           <p className={styles.sub}>Real stories from real pet owners who finally understand their animals.</p>
         </div>

@@ -9,13 +9,12 @@
 // ── Sidebar (desktop) ─────────────────────────────────
 .sidebar {
   width: 240px;
-  background: $gray-900;
+  background: $teal;
   color: $white;
   display: flex;
   flex-direction: column;
   padding: $space-6;
   flex-shrink: 0;
-  border-right: 1px solid rgba($white, 0.06);
 
   @include mobile-only { display: none; }
 }
@@ -26,32 +25,33 @@
   gap: $space-3;
   margin-bottom: $space-8;
   padding-bottom: $space-6;
-  border-bottom: 1px solid rgba($white, 0.08);
+  border-bottom: 1px dashed rgba($white, 0.2);
 }
 
 .brandMark {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, $purple-500, $purple-700);
-  border-radius: $radius-lg;
+  width: 38px;
+  height: 38px;
+  background: $orange;
+  border-radius: $radius-xl;
   display: flex;
   align-items: center;
   justify-content: center;
   color: $white;
   flex-shrink: 0;
+  box-shadow: 3px 3px 0 $orange-dark;
 }
 
 .brandName {
-  font-size: $font-size-base;
+  font-family: $font-display;
+  font-size: $font-size-lg;
   font-weight: 800;
   color: $white;
-  letter-spacing: -0.02em;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: $space-1;
   flex: 1;
 }
 
@@ -59,27 +59,24 @@
   display: flex;
   align-items: center;
   gap: $space-3;
-  padding: $space-3 $space-3;
-  border-radius: $radius-lg;
-  color: rgba($white, 0.5);
+  padding: $space-3 $space-4;
+  border-radius: $radius-2xl;
+  color: rgba($white, 0.6);
+  font-family: $font-display;
   font-size: $font-size-sm;
-  font-weight: 500;
+  font-weight: 600;
   transition: all $transition-fast;
 
   &:hover {
-    color: rgba($white, 0.9);
-    background: rgba($white, 0.07);
+    color: $white;
+    background: rgba($white, 0.1);
   }
 }
 
 .active {
   color: $white !important;
-  background: rgba($white, 0.1) !important;
-  font-weight: 600;
-
-  .iconWrap {
-    color: $purple-400;
-  }
+  background: $orange !important;
+  box-shadow: 3px 3px 0 $orange-dark;
 }
 
 .iconWrap {
@@ -89,37 +86,34 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: rgba($white, 0.4);
-  transition: color $transition-fast;
 }
 
-.linkLabel {
-  flex: 1;
-}
+.linkLabel { flex: 1; }
 
 .sidebarFooter {
   margin-top: auto;
   padding-top: $space-6;
-  border-top: 1px solid rgba($white, 0.08);
+  border-top: 1px dashed rgba($white, 0.15);
 }
 
 .plan {
   display: flex;
   align-items: center;
   gap: $space-2;
-  background: rgba($purple-400, 0.15);
-  border: 1px solid rgba($purple-400, 0.2);
-  color: $purple-300;
+  background: rgba($orange, 0.2);
+  border: 1px dashed rgba($orange, 0.4);
+  color: $orange-light;
+  font-family: $font-display;
   font-size: $font-size-xs;
   font-weight: 600;
   padding: $space-2 $space-3;
-  border-radius: $radius-lg;
+  border-radius: $radius-xl;
 }
 
 // ── Main content ──────────────────────────────────────
 .main {
   flex: 1;
-  background: #f8f7fc;
+  background: $cream;
   overflow-y: auto;
   padding: $space-8;
 
@@ -140,9 +134,8 @@
     left: 0;
     right: 0;
     background: $white;
-    border-top: 1px solid $gray-100;
+    border-top: 2px dashed $orange-light;
     padding: $space-2 $space-1 $space-4;
-    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
     z-index: 100;
   }
 }
@@ -156,22 +149,23 @@
   padding: $space-2 $space-1;
   color: $gray-400;
   transition: all $transition-fast;
-  border-radius: $radius-lg;
+  border-radius: $radius-xl;
+  font-family: $font-display;
 }
 
 .bottomActive {
-  color: $primary !important;
+  color: $orange !important;
 
   .bottomIconWrap {
-    background: $purple-50;
-    color: $primary;
+    background: $orange-pale;
+    color: $orange;
   }
 }
 
 .bottomIconWrap {
   width: 40px;
   height: 36px;
-  border-radius: $radius-lg;
+  border-radius: $radius-xl;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -181,6 +175,5 @@
 
 .bottomLabel {
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
 }

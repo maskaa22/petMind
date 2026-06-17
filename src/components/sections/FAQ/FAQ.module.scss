@@ -1,0 +1,67 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.section {
+  padding: $space-20 $space-4;
+  background: $purple-50;
+}
+
+.inner {
+  @include container;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+}
+
+.title {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.item {
+  background: $white;
+  border: 1.5px solid $purple-100;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &.opened {
+    border-color: $primary;
+    box-shadow: 0 4px 16px rgba($purple-600, 0.1);
+  }
+}
+
+.question {
+  @include button-reset;
+  @include flex-between;
+  width: 100%;
+  padding: $space-5 $space-6;
+  font-size: $font-size-base;
+  font-weight: 600;
+  text-align: left;
+  gap: $space-4;
+  color: $gray-900;
+
+  &:hover { background: $purple-50; }
+}
+
+.chevron {
+  font-size: $font-size-xl;
+  color: $primary;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.answer {
+  padding: 0 $space-6 $space-5;
+  font-size: $font-size-sm;
+  color: $gray-600;
+  line-height: 1.7;
+}

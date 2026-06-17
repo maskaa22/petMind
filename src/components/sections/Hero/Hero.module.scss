@@ -1,0 +1,370 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.hero {
+  background: linear-gradient(160deg, $purple-900 0%, $purple-700 50%, $purple-600 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: $space-20 $space-4 $space-16;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba($purple-400, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.inner {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-16;
+  align-items: center;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+    gap: $space-12;
+  }
+}
+
+// ── Left column ──
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: rgba($white, 0.1);
+  border: 1px solid rgba($white, 0.15);
+  color: rgba($white, 0.85);
+  font-size: $font-size-xs;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  width: fit-content;
+  backdrop-filter: blur(8px);
+}
+
+.eyebrowDot {
+  width: 6px;
+  height: 6px;
+  background: $orange-400;
+  border-radius: $radius-full;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.75); }
+}
+
+.headline {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: $white;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.highlight {
+  background: linear-gradient(90deg, $orange-300, $orange-400);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sub {
+  font-size: $font-size-lg;
+  color: rgba($white, 0.72);
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+.demoBtn {
+  @include button-reset;
+  color: rgba($white, 0.7);
+  font-size: $font-size-sm;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color $transition-fast;
+
+  &:hover { color: $white; }
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding-top: $space-2;
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, $purple-400, $orange-400);
+  border: 2px solid rgba($white, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: $white;
+  margin-left: -8px;
+
+  &:first-child { margin-left: 0; }
+}
+
+.socialText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: $font-size-sm;
+  color: rgba($white, 0.75);
+
+  strong { color: $white; }
+}
+
+.rating {
+  display: flex;
+  gap: 2px;
+}
+
+.starIcon {
+  fill: $orange-400;
+  stroke: $orange-400;
+}
+
+// ── Right column ──
+
+.right {
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  @include mobile-only {
+    display: none;
+  }
+}
+
+.blob1 {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba($orange-400, 0.25) 0%, transparent 70%);
+  border-radius: $radius-full;
+  top: -50px;
+  left: -30px;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.blob2 {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba($purple-300, 0.3) 0%, transparent 70%);
+  border-radius: $radius-full;
+  bottom: -40px;
+  right: -20px;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.phone {
+  width: 260px;
+  background: rgba($white, 0.06);
+  border: 1px solid rgba($white, 0.12);
+  border-radius: 36px;
+  padding: 28px 16px 24px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 40px 80px rgba($purple-900, 0.5), inset 0 0 0 1px rgba($white, 0.05);
+}
+
+.phoneNotch {
+  width: 80px;
+  height: 5px;
+  background: rgba($white, 0.15);
+  border-radius: $radius-full;
+  margin: 0 auto $space-5;
+}
+
+.phoneContent {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.appHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.appHeaderTitle {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $white;
+}
+
+.appHeaderBadge {
+  background: $orange-500;
+  color: $white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+.petCard {
+  background: rgba($white, 0.08);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-xl;
+  padding: $space-4;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.petAvatar {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, $purple-400, $orange-400);
+  border-radius: $radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.petName {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $white;
+}
+
+.petType {
+  font-size: 11px;
+  color: $orange-300;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.petScore {
+  margin-left: auto;
+  font-size: $font-size-xl;
+  font-weight: 900;
+  color: $white;
+
+  span {
+    font-size: $font-size-xs;
+    color: rgba($white, 0.5);
+  }
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.barLabel {
+  font-size: 10px;
+  color: rgba($white, 0.6);
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.barTrack {
+  flex: 1;
+  height: 5px;
+  background: rgba($white, 0.1);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: linear-gradient(90deg, $purple-400, $orange-400);
+  border-radius: $radius-full;
+}
+
+.barVal {
+  font-size: 10px;
+  color: rgba($white, 0.5);
+  width: 24px;
+  text-align: right;
+}
+
+.insightCard {
+  background: rgba($orange-500, 0.15);
+  border: 1px solid rgba($orange-400, 0.25);
+  border-radius: $radius-lg;
+  padding: $space-3;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-2;
+  font-size: 11px;
+  color: $orange-200;
+  line-height: 1.5;
+}
+
+.insightIcon {
+  color: $orange-400;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.floatBadge {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  background: $white;
+  color: $purple-700;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  padding: $space-2 $space-3;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  box-shadow: 0 8px 24px rgba($purple-900, 0.2);
+  z-index: 2;
+}
+
+.floatBadgeIcon {
+  color: #22c55e;
+}

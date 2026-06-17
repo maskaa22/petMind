@@ -1,0 +1,180 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.header {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: $space-4;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+}
+
+.sub {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  margin-top: $space-1;
+}
+
+.formCard {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.formTitle {
+  font-size: $font-size-lg;
+  font-weight: 700;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-700;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sliderVal {
+  color: $gray-400;
+  font-weight: 400;
+}
+
+.moodRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.moodBtn {
+  @include button-reset;
+  background: $gray-100;
+  border: 1px solid $gray-200;
+  border-radius: $radius-full;
+  padding: $space-2 $space-3;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+
+  &:hover { background: $gray-200; }
+}
+
+.selectedMood {
+  background: $gray-900 !important;
+  color: $white !important;
+  border-color: $gray-900 !important;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  background: $gray-200;
+  border-radius: $radius-full;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: $gray-900;
+    border-radius: $radius-full;
+    cursor: pointer;
+  }
+}
+
+.textarea {
+  width: 100%;
+  padding: $space-3;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  font: inherit;
+  font-size: $font-size-sm;
+  resize: vertical;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus { border-color: $gray-900; }
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-3;
+}
+
+.empty {
+  @include card;
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-16;
+  color: $gray-400;
+  font-size: $font-size-sm;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+}
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.entry {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.entryDate {
+  font-size: $font-size-xs;
+  color: $gray-400;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.entryMood {
+  font-size: $font-size-base;
+  font-weight: 600;
+}
+
+.entryStats {
+  display: flex;
+  gap: $space-4;
+  font-size: $font-size-sm;
+  color: $gray-500;
+}
+
+.entryNotes {
+  font-size: $font-size-sm;
+  color: $gray-600;
+  line-height: 1.6;
+  padding-top: $space-2;
+  border-top: 1px solid $gray-100;
+}

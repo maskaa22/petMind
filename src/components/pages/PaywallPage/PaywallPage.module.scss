@@ -1,0 +1,190 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  min-height: 100vh;
+  background: $purple-50;
+  padding: $space-8 $space-4;
+}
+
+.inner {
+  @include container;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-8;
+  align-items: start;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.previewLabel {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $primary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.personalityCard {
+  background: $white;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  border: 1.5px solid $purple-200;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  box-shadow: 0 4px 24px rgba($purple-600, 0.08);
+}
+
+.personalityType {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+  color: $primary;
+}
+
+.teaser {
+  font-size: $font-size-base;
+  color: $gray-600;
+  line-height: 1.7;
+}
+
+.lockedContent {
+  position: relative;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  p {
+    font-size: $font-size-sm;
+    color: $gray-600;
+    line-height: 1.6;
+    margin-bottom: $space-3;
+  }
+}
+
+.lockOverlay {
+  position: absolute;
+  inset: 0;
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-2;
+  background: rgba($purple-50, 0.7);
+  backdrop-filter: blur(2px);
+  font-weight: 700;
+  font-size: $font-size-sm;
+  color: $primary;
+}
+
+.lockIcon {
+  font-size: 2rem;
+}
+
+.plans {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.plansTitle {
+  font-size: $font-size-xl;
+  font-weight: 800;
+}
+
+.planList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.planCard {
+  @include button-reset;
+  background: $white;
+  border: 2px solid $gray-100;
+  border-radius: $radius-2xl;
+  padding: $space-4 $space-5;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: $space-1 $space-4;
+  text-align: left;
+  position: relative;
+  transition: all $transition-fast;
+
+  &:hover { border-color: $purple-300; box-shadow: 0 4px 16px rgba($purple-600, 0.1); }
+}
+
+.selectedPlan {
+  border-color: $primary !important;
+  background: $primary-light !important;
+  box-shadow: 0 4px 20px rgba($purple-600, 0.2) !important;
+}
+
+.badge {
+  position: absolute;
+  top: -11px;
+  right: $space-4;
+  background: $accent;
+  color: $white;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  padding: 2px $space-3;
+  border-radius: $radius-full;
+}
+
+.planLabel { font-weight: 600; color: $gray-800; }
+
+.planPrice {
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: $primary;
+}
+
+.planPeriod {
+  font-size: $font-size-xs;
+  color: $gray-400;
+}
+
+.disclaimer {
+  font-size: $font-size-xs;
+  color: $gray-400;
+  text-align: center;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding-top: $space-4;
+  border-top: 1px solid $purple-100;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: $gray-700;
+}
+
+.check {
+  width: 20px;
+  height: 20px;
+  background: $primary-light;
+  color: $primary;
+  border-radius: $radius-full;
+  @include flex-center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}

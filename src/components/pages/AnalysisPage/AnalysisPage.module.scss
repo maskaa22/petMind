@@ -1,0 +1,220 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  min-height: 100vh;
+  background: $gray-900;
+  color: $white;
+  @include flex-center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba($purple-600, 0.35) 0%, transparent 70%);
+    border-radius: $radius-full;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-10;
+  padding: $space-8;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+// ── Orbit animation ──────────────────────────────────
+
+.orbitWrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  @include flex-center;
+}
+
+.orbit1, .orbit2, .orbit3 {
+  position: absolute;
+  border-radius: $radius-full;
+  border: 1px solid transparent;
+  @include flex-center;
+}
+
+.orbit1 {
+  inset: 0;
+  border-color: rgba($purple-400, 0.3);
+  animation: spin 6s linear infinite;
+
+  .dot {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: $purple-400;
+    border-radius: $radius-full;
+    box-shadow: 0 0 8px $purple-400;
+  }
+}
+
+.orbit2 {
+  inset: 16px;
+  border-color: rgba($orange-400, 0.25);
+  animation: spin 4s linear infinite reverse;
+
+  .dot {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: $orange-400;
+    border-radius: $radius-full;
+    box-shadow: 0 0 10px $orange-400;
+  }
+}
+
+.orbit3 {
+  inset: 32px;
+  border-color: rgba($purple-300, 0.2);
+  animation: spin 8s linear infinite;
+
+  .dot {
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: $purple-300;
+    border-radius: $radius-full;
+    box-shadow: 0 0 6px $purple-300;
+  }
+}
+
+.core {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, $purple-700, $purple-500);
+  border-radius: $radius-2xl;
+  @include flex-center;
+  color: $white;
+  box-shadow: 0 0 32px rgba($purple-500, 0.5);
+  animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 32px rgba($purple-500, 0.5); }
+  50% { box-shadow: 0 0 48px rgba($purple-400, 0.7); }
+}
+
+// ── Text ─────────────────────────────────────────────
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.message {
+  font-size: $font-size-base;
+  color: rgba($white, 0.6);
+  min-height: 24px;
+  animation: fadeSlide 0.4s ease;
+}
+
+// ── Progress ─────────────────────────────────────────
+
+.barWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  align-items: center;
+}
+
+.barTrack {
+  width: 100%;
+  height: 4px;
+  background: rgba($white, 0.1);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: linear-gradient(90deg, $purple-500, $orange-400);
+  border-radius: $radius-full;
+  transition: width 100ms linear;
+}
+
+.pct {
+  font-size: $font-size-xs;
+  color: rgba($white, 0.4);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Chips ─────────────────────────────────────────────
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $space-2;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: rgba($white, 0.06);
+  border: 1px solid rgba($white, 0.1);
+  color: rgba($white, 0.45);
+  font-size: $font-size-xs;
+  font-weight: 500;
+  padding: $space-2 $space-3;
+  border-radius: $radius-full;
+  transition: all $transition-base;
+}
+
+.chipDone {
+  background: rgba($purple-500, 0.2);
+  border-color: rgba($purple-400, 0.35);
+  color: $purple-300;
+}
+
+.chipCheck {
+  color: $purple-400;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,106 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.title {
+  font-size: $font-size-3xl;
+  font-weight: 800;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: 700;
+  padding-bottom: $space-3;
+  border-bottom: 2px solid $gray-900;
+}
+
+.personalityCard {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.personalityLabel {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+}
+
+.personalityDesc {
+  font-size: $font-size-base;
+  color: $gray-600;
+  line-height: 1.7;
+}
+
+.traits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $gray-100;
+}
+
+.trait {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.traitLabel {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $gray-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.traitText {
+  font-size: $font-size-sm;
+  color: $gray-600;
+  line-height: 1.6;
+}
+
+.card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  font-size: $font-size-sm;
+  color: $gray-700;
+  line-height: 1.6;
+}
+
+.moodBig {
+  font-size: $font-size-3xl;
+  font-weight: 800;
+}
+
+.needsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $space-3;
+}
+
+.needCard {
+  @include card;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  font-weight: 500;
+}
+
+.needIcon {
+  font-size: 1.5rem;
+}

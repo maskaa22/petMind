@@ -1,0 +1,108 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.section {
+  padding: $space-20 $space-4;
+  background: $white;
+}
+
+.inner {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-12;
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+}
+
+.tag {
+  display: inline-block;
+  background: $purple-50;
+  color: $primary;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  border: 1px solid $purple-200;
+}
+
+.title {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+  font-weight: 900;
+  color: $gray-900;
+  letter-spacing: -0.02em;
+  max-width: 560px;
+}
+
+.sub {
+  font-size: $font-size-lg;
+  color: $gray-500;
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-5;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: $white;
+  border: 1.5px solid $gray-100;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  transition: transform $transition-base, box-shadow $transition-base, border-color $transition-base;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba($purple-600, 0.1);
+    border-color: $purple-200;
+  }
+}
+
+.iconWrap {
+  width: 52px;
+  height: 52px;
+  background: $purple-50;
+  border-radius: $radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary;
+  border: 1px solid $purple-100;
+}
+
+.cardTitle {
+  font-size: $font-size-base;
+  font-weight: 800;
+  color: $gray-900;
+  letter-spacing: -0.01em;
+}
+
+.cardDesc {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  line-height: 1.7;
+}

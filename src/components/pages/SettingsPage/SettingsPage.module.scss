@@ -1,0 +1,123 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+  max-width: 600px;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.section {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.sectionTitle {
+  font-size: $font-size-base;
+  font-weight: 700;
+  padding-bottom: $space-3;
+  border-bottom: 1px solid $gray-100;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-600;
+}
+
+.input {
+  padding: $space-3 $space-4;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  font: inherit;
+  font-size: $font-size-sm;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus { border-color: $gray-900; }
+}
+
+.planInfo {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.planBadge {
+  display: inline-block;
+  background: $gray-900;
+  color: $white;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  align-self: flex-start;
+}
+
+.planDesc {
+  font-size: $font-size-sm;
+  color: $gray-500;
+}
+
+.toggleList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.toggle {
+  @include flex-between;
+}
+
+.toggleLabel {
+  font-size: $font-size-sm;
+  color: $gray-700;
+}
+
+.toggleSwitch {
+  width: 44px;
+  height: 24px;
+  background: $gray-200;
+  border-radius: $radius-full;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $gray-300; }
+}
+
+.dangerZone {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.dangerDesc {
+  font-size: $font-size-sm;
+  color: $gray-500;
+}

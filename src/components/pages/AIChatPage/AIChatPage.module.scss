@@ -1,0 +1,134 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - $space-16);
+  gap: $space-4;
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+}
+
+.sub {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  margin-top: $space-1;
+}
+
+.chatWrap {
+  flex: 1;
+  @include card;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: $space-4;
+  padding: $space-4;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-2;
+}
+
+.msg {
+  display: flex;
+  gap: $space-3;
+  align-items: flex-end;
+
+  &.user {
+    flex-direction: row-reverse;
+
+    .bubble {
+      background: $gray-900;
+      color: $white;
+      border-radius: $radius-2xl $radius-2xl 0 $radius-2xl;
+    }
+  }
+
+  &.ai {
+    .bubble {
+      background: $gray-100;
+      color: $gray-800;
+      border-radius: $radius-2xl $radius-2xl $radius-2xl 0;
+    }
+  }
+}
+
+.avatar {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.bubble {
+  max-width: 75%;
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.typing {
+  font-size: $font-size-xl;
+  letter-spacing: 0.2em;
+  animation: blink 1s steps(3) infinite;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  flex-shrink: 0;
+}
+
+.suggestion {
+  @include button-reset;
+  background: $gray-100;
+  border: 1px solid $gray-200;
+  border-radius: $radius-full;
+  padding: $space-2 $space-3;
+  font-size: $font-size-xs;
+  color: $gray-600;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $gray-900;
+    color: $white;
+    border-color: $gray-900;
+  }
+}
+
+.inputRow {
+  display: flex;
+  gap: $space-3;
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  padding: $space-3 $space-4;
+  border: 1px solid $gray-200;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus { border-color: $gray-900; }
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}

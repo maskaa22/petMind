@@ -1,0 +1,177 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.section {
+  padding: $space-20 $space-4;
+  background: $gray-50;
+}
+
+.inner {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-16;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-4;
+  width: 100%;
+
+  @include mobile-only {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.metric {
+  background: $white;
+  border: 1.5px solid $gray-100;
+  border-radius: $radius-2xl;
+  padding: $space-6 $space-4;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+}
+
+.metricIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.metricValue {
+  font-size: $font-size-2xl;
+  font-weight: 900;
+  color: $gray-900;
+  letter-spacing: -0.02em;
+}
+
+.metricLabel {
+  font-size: $font-size-xs;
+  color: $gray-400;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+}
+
+.tag {
+  display: inline-block;
+  background: $white;
+  color: $primary;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  border: 1px solid $purple-200;
+}
+
+.title {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+  font-weight: 900;
+  color: $gray-900;
+  letter-spacing: -0.02em;
+  max-width: 520px;
+}
+
+.sub {
+  font-size: $font-size-lg;
+  color: $gray-500;
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-5;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: $white;
+  border: 1.5px solid $gray-100;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.starIcon {
+  fill: $orange-400;
+  stroke: $orange-400;
+}
+
+.quote {
+  font-size: $font-size-base;
+  color: $gray-700;
+  line-height: 1.75;
+  flex: 1;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  border-top: 1px solid $gray-100;
+  padding-top: $space-4;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
+  color: $white;
+  font-size: $font-size-xs;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.authorName {
+  font-weight: 700;
+  color: $gray-900;
+  font-size: $font-size-sm;
+  display: block;
+}
+
+.authorRole {
+  font-size: $font-size-xs;
+  color: $gray-400;
+  display: block;
+  margin-top: 1px;
+}

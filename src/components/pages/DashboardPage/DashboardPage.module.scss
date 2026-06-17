@@ -1,0 +1,144 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.topBar {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: $space-4;
+  background: linear-gradient(135deg, $purple-700, $purple-500);
+  color: $white;
+  padding: $space-6;
+  border-radius: $radius-2xl;
+}
+
+.greeting {
+  font-size: $font-size-xl;
+  font-weight: 800;
+}
+
+.petName {
+  font-size: $font-size-sm;
+  color: rgba($white, 0.7);
+  margin-top: $space-1;
+}
+
+.moodBadge {
+  background: rgba($white, 0.2);
+  backdrop-filter: blur(8px);
+  color: $white;
+  padding: $space-2 $space-5;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  border: 1px solid rgba($white, 0.25);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $space-4;
+}
+
+.card {
+  background: $white;
+  border-radius: $radius-2xl;
+  padding: $space-5;
+  border: 1.5px solid $purple-100;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  transition: box-shadow $transition-fast;
+
+  &:hover { box-shadow: 0 4px 20px rgba($purple-600, 0.1); }
+}
+
+.cardLabel {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $purple-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardValue {
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: $primary;
+}
+
+.cardDesc {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  line-height: 1.6;
+}
+
+.needsList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.needItem {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $gray-700;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: $accent;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+}
+
+.profileSection, .activitiesSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: 800;
+  color: $gray-900;
+}
+
+.profileBars {
+  background: $white;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  border: 1.5px solid $purple-100;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.activities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $space-3;
+}
+
+.activityCard {
+  background: $white;
+  border-radius: $radius-2xl;
+  padding: $space-4;
+  border: 1.5px solid $purple-100;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $primary;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+}

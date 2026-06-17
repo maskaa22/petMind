@@ -18,8 +18,10 @@ body {
   line-height: 1.6;
   color: $gray-900;
   background-color: $white;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cellipse cx='40' cy='54' rx='13' ry='11' fill='%23e8e8e8'/%3E%3Cellipse cx='21' cy='35' rx='7' ry='9' fill='%23e8e8e8' transform='rotate(-20 21 35)'/%3E%3Cellipse cx='33' cy='27' rx='6' ry='8' fill='%23e8e8e8'/%3E%3Cellipse cx='47' cy='27' rx='6' ry='8' fill='%23e8e8e8'/%3E%3Cellipse cx='59' cy='35' rx='7' ry='9' fill='%23e8e8e8' transform='rotate(20 59 35)'/%3E%3C/svg%3E");
-  background-size: 80px 80px;
+  background-image: url('/bg-paws.svg');
+  background-size: 1400px 1000px;
+  background-repeat: repeat;
+  background-attachment: local;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

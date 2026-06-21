@@ -7,6 +7,15 @@ import styles from './QuizPage.module.scss'
 
 const PERSONALITY_IMAGES = ['🌊', '🔥', '🌿', '⭐', '🌙', '🌈']
 
+const PET_MOOD_FOLDER: Partial<Record<string, string>> = {
+  cat:     'cat',
+  dog:     'dog',
+  rabbit:  'rabbit',
+  bird:    'chicken',
+  hamster: 'ho',
+  // 'other' intentionally absent → falls back to emoji icons
+}
+
 export function QuizPage() {
   const navigate = useNavigate()
   const [step, setStep] = useState(1)
@@ -62,12 +71,12 @@ export function QuizPage() {
           <Question title="What type of pet do you have?">
             <OptionGrid
               options={[
-                { value: 'cat', label: 'Cat', icon: '🐱' },
-                { value: 'dog', label: 'Dog', icon: '🐶' },
-                { value: 'rabbit', label: 'Rabbit', icon: '🐰' },
-                { value: 'bird', label: 'Bird', icon: '🐦' },
-                { value: 'hamster', label: 'Hamster', icon: '🐹' },
-                { value: 'other', label: 'Other', icon: '🐾' },
+                { value: 'cat',     label: 'Cat',     img: '/cat.png' },
+                { value: 'dog',     label: 'Dog',     img: '/dog1.png' },
+                { value: 'rabbit',  label: 'Rabbit',  img: '/rabbit.png' },
+                { value: 'bird',    label: 'Bird',    img: '/chiken.png' },
+                { value: 'hamster', label: 'Hamster', img: '/ho.png' },
+                { value: 'other',   label: 'Other',   icon: '🐾' },
               ]}
               selected={answers.petType}
               onSelect={v => patch({ petType: v as PetType })}
@@ -92,10 +101,10 @@ export function QuizPage() {
           <Question title="How old is your pet?">
             <OptionGrid
               options={[
-                { value: 'under1', label: 'Under 1 year', icon: '🌱' },
-                { value: '1-3', label: '1–3 years', icon: '🌿' },
-                { value: '4-7', label: '4–7 years', icon: '🌳' },
-                { value: '8+', label: '8+ years', icon: '🎖️' },
+                { value: 'under1', label: 'Under 1 year', img: '/tree/1.png' },
+                { value: '1-3',    label: '1–3 years',    img: '/tree/2.png' },
+                { value: '4-7',    label: '4–7 years',    img: '/tree/3.png' },
+                { value: '8+',     label: '8+ years',     img: '/tree/4.png' },
               ]}
               selected={answers.petAge}
               onSelect={v => patch({ petAge: v as PetAge })}
@@ -105,17 +114,31 @@ export function QuizPage() {
 
         {step === 4 && (
           <Question title={`How would you describe ${answers.petName || 'your pet'} today?`}>
-            <OptionGrid
-              options={[
-                { value: 'playful', label: 'Playful', icon: '🎾' },
-                { value: 'calm', label: 'Calm', icon: '😌' },
-                { value: 'excited', label: 'Excited', icon: '⚡' },
-                { value: 'sleepy', label: 'Sleepy', icon: '😴' },
-                { value: 'anxious', label: 'Anxious', icon: '😟' },
-              ]}
-              selected={answers.petMood}
-              onSelect={v => patch({ petMood: v as PetMood })}
-            />
+            {(() => {
+              const folder = PET_MOOD_FOLDER[answers.petType ?? '']
+              const isOther = !folder
+              return (
+                <OptionGrid
+                  options={isOther ? [
+                    { value: 'playful',  label: 'Playful',  icon: '🎾' },
+                    { value: 'calm',     label: 'Calm',     icon: '😌' },
+                    { value: 'excited',  label: 'Excited',  icon: '⚡' },
+                    { value: 'sleepy',   label: 'Sleepy',   icon: '😴' },
+                    { value: 'anxious',  label: 'Anxious',  icon: '😟' },
+                    { value: 'curious',  label: 'Curious',  icon: '🤔' },
+                  ] : [
+                    { value: 'playful',  label: 'Playful',  img: `/test/${folder}/Playful.png` },
+                    { value: 'calm',     label: 'Calm',     img: `/test/${folder}/Calm.png` },
+                    { value: 'excited',  label: 'Excited',  img: `/test/${folder}/Excited.png` },
+                    { value: 'sleepy',   label: 'Sleepy',   img: `/test/${folder}/Sleepy.png` },
+                    { value: 'anxious',  label: 'Anxious',  img: `/test/${folder}/Anxious.png` },
+                    { value: 'curious',  label: 'Curious',  img: `/test/${folder}/curious.png` },
+                  ]}
+                  selected={answers.petMood}
+                  onSelect={v => patch({ petMood: v as PetMood })}
+                />
+              )
+            })()}
           </Question>
         )}
 
@@ -206,7 +229,7 @@ function Question({ title, children }: { title: string; children: React.ReactNod
 }
 
 interface OptionGridProps {
-  options: { value: string; label: string; icon: string }[]
+  options: { value: string; label: string; icon?: string; img?: string }[]
   selected?: string
   onSelect: (v: string) => void
 }
@@ -214,13 +237,16 @@ interface OptionGridProps {
 function OptionGrid({ options, selected, onSelect }: OptionGridProps) {
   return (
     <div className={styles.optionGrid}>
-      {options.map(({ value, label, icon }) => (
+      {options.map(({ value, label, icon, img }) => (
         <button
           key={value}
           className={[styles.option, selected === value ? styles.selectedOption : ''].join(' ')}
           onClick={() => onSelect(value)}
         >
-          <span className={styles.optionIcon}>{icon}</span>
+          {img
+            ? <img src={img} alt={label} className={styles.optionImg} />
+            : <span className={styles.optionIcon}>{icon}</span>
+          }
           <span className={styles.optionLabel}>{label}</span>
         </button>
       ))}

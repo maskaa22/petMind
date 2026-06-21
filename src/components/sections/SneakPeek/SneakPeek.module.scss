@@ -1,0 +1,250 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.section {
+  background: $teal;
+  padding: $space-20 $space-4;
+  position: relative;
+}
+
+// ── Two-column layout ─────────────────────────────────
+
+.inner {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-16;
+  align-items: center;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+    gap: $space-10;
+  }
+}
+
+// ── Copy column ───────────────────────────────────────
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $orange-light;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.headline {
+  font-family: $font-display;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: $white;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.highlight {
+  color: $orange-light;
+}
+
+.perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin: $space-2 0;
+}
+
+.perk {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-base;
+  color: rgba($white, 0.88);
+  line-height: 1.5;
+}
+
+.check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: $green;
+  color: $white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.hint {
+  font-size: $font-size-sm;
+  color: rgba($white, 0.5);
+}
+
+// ── Preview card ──────────────────────────────────────
+
+.cardWrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background: $white;
+  border-radius: $radius-3xl;
+  padding: $space-6;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+// Header row: cat + name/type
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  margin-bottom: $space-4;
+}
+
+.catIllu {
+  width: 70px;
+  height: 85px;
+  flex-shrink: 0;
+  filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.12));
+}
+
+.petName {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: $teal;
+  margin-bottom: $space-1;
+}
+
+.typeBadge {
+  display: inline-block;
+  background: $orange-pale;
+  color: $orange-dark;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  border: 2px dashed $orange-light;
+}
+
+// Mood badges
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-5;
+}
+
+.badge {
+  background: $teal-pale;
+  color: $teal;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+}
+
+// Traits / bars
+
+.traits {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  position: relative;
+}
+
+.trait {
+  &.blurred {
+    filter: blur(6px);
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
+.traitRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: $space-1;
+}
+
+.traitLabel {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-700;
+}
+
+.traitPct {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $orange;
+}
+
+.bar {
+  height: 8px;
+  background: $gray-100;
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: linear-gradient(90deg, $orange-light, $orange);
+  border-radius: $radius-full;
+  transition: width 1s ease-out;
+}
+
+// Lock overlay (sits over blurred traits)
+
+.lockOverlay {
+  position: absolute;
+  bottom: 0;
+  left: -$space-6;
+  right: -$space-6;
+  height: 140px;
+  background: linear-gradient(to top, rgba($white, 1) 50%, rgba($white, 0));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: $space-4;
+  gap: $space-2;
+}
+
+.lockIcon {
+  font-size: 1.5rem;
+}
+
+.lockText {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: $font-size-sm;
+  color: $gray-500;
+}
+
+// Decorative glow behind card
+
+.glow {
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(ellipse at center, rgba($orange, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}

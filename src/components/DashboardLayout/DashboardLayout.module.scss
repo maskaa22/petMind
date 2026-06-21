@@ -3,7 +3,8 @@
 
 .shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 // ── Sidebar (desktop) ─────────────────────────────────
@@ -110,16 +111,130 @@
   border-radius: $radius-xl;
 }
 
-// ── Main content ──────────────────────────────────────
+// ── Wavy sidebar divider ──────────────────────────────
+.sidebarWave {
+  flex-shrink: 0;
+  width: 36px;
+  position: relative;
+  z-index: 5;
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  @include mobile-only { display: none; }
+}
+
+// ── Main area ─────────────────────────────────────────
 .main {
   flex: 1;
   background: $cream;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  @include mobile-only {
+    padding-bottom: 64px;
+  }
+}
+
+// ── Top bar ───────────────────────────────────────────
+.topBar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-5 $space-8;
+  background: $white;
+  border-bottom: 1px solid $gray-100;
+
+  @include mobile-only {
+    padding: $space-4 $space-4;
+  }
+}
+
+.topBarLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.topBarTitle {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  color: $teal;
+  line-height: 1.2;
+}
+
+.topBarPet {
+  color: $orange;
+}
+
+.topBarDate {
+  font-size: $font-size-sm;
+  color: $gray-400;
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.contentBtn {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-4;
+  border: 1.5px solid $orange-light;
+  border-radius: $radius-full;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $orange;
+  background: $white;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $orange-pale; }
+}
+
+.chevron {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: $teal;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+// ── Page content (Outlet) ─────────────────────────────
+.mainContent {
+  flex: 1;
   overflow-y: auto;
-  padding: $space-8;
+  padding: $space-6 $space-8;
+  display: flex;
+  flex-direction: column;
 
   @include mobile-only {
     padding: $space-4;
-    padding-bottom: 96px;
   }
 }
 

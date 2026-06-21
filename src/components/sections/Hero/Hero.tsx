@@ -6,15 +6,21 @@ import styles from './Hero.module.scss'
 export function Hero() {
   const navigate = useNavigate()
   return (
-    <section className={styles.hero}>
+    <section id="hero" className={styles.hero}>
       <div className={styles.cornerOrange} />
       <div className={styles.cornerTeal} />
+      {/* Wave that flows into the teal-pale HowItWorks section */}
+      <div className={styles.waveBottom} aria-hidden="true">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,44 C360,80 1080,10 1440,44 L1440,80 L0,80 Z" fill="#e8f4f8" />
+        </svg>
+      </div>
 
       <div className={styles.inner}>
         <div className={styles.left}>
           <div className={styles.petBubble}>
-            <span className={styles.petDog}>🐶</span>
-            <span className={styles.petCat}>🐱</span>
+            <img src="/dog1.png" alt="" className={styles.petDog} />
+            <img src="/cat.png" alt="" className={styles.petCat} />
           </div>
         </div>
 
@@ -59,8 +65,8 @@ export function Hero() {
 
         <div className={styles.right}>
           <div className={styles.petBubbleRight}>
-            <span className={styles.petCat2}>🐈</span>
-            <span className={styles.petRabbit}>🐰</span>
+            <img src="/ho.png" alt="" className={styles.petCat2} />
+            <img src="/rabbit.png" alt="" className={styles.petRabbit} />
           </div>
         </div>
       </div>

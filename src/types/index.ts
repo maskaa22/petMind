@@ -2,7 +2,7 @@ export type PetType = 'cat' | 'dog' | 'rabbit' | 'bird' | 'hamster' | 'other'
 
 export type PetAge = 'under1' | '1-3' | '4-7' | '8+'
 
-export type PetMood = 'playful' | 'calm' | 'excited' | 'sleepy' | 'anxious'
+export type PetMood = 'playful' | 'calm' | 'excited' | 'sleepy' | 'anxious' | 'curious'
 
 export type PetActivity = 'sleeping' | 'playing' | 'eating' | 'exploring' | 'watchingMe'
 

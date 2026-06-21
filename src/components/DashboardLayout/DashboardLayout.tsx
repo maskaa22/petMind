@@ -12,9 +12,24 @@ const NAV_ITEMS: { to: string; label: string; icon: IconName; end?: boolean }[] 
   { to: ROUTES.SETTINGS, label: 'Settings', icon: 'settings' },
 ]
 
+function getPetName() {
+  try { return JSON.parse(localStorage.getItem('petmind_quiz') || '{}').petName || 'Your pet' }
+  catch { return 'Your pet' }
+}
+
+function getToday() {
+  return new Date().toLocaleDateString('en-US', {
+    weekday: 'long', month: 'short', day: 'numeric', year: 'numeric',
+  })
+}
+
 export function DashboardLayout() {
+  const petName = getPetName()
+  const today = getToday()
+
   return (
     <div className={styles.shell}>
+      {/* ── Sidebar (desktop) ── */}
       <nav className={styles.sidebar}>
         <div className={styles.brand}>
           <div className={styles.brandMark}>
@@ -48,10 +63,46 @@ export function DashboardLayout() {
         </div>
       </nav>
 
+      {/* ── Wavy divider ── */}
+      <div className={styles.sidebarWave} aria-hidden="true">
+        <svg viewBox="0 0 36 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="sw" x="0" y="0" width="36" height="400" patternUnits="userSpaceOnUse">
+              <path d="M0,0 L26,0 C26,100 10,100 10,200 C10,300 26,300 26,400 L0,400 Z" fill="#1a3a4a" />
+              <path d="M26,0 C26,100 10,100 10,200 C10,300 26,300 26,400 L36,400 L36,0 Z" fill="#fff9f5" />
+            </pattern>
+          </defs>
+          <rect width="36" height="100%" fill="url(#sw)" />
+        </svg>
+      </div>
+
+      {/* ── Main area ── */}
       <main className={styles.main}>
-        <Outlet />
+        {/* Top bar */}
+        <div className={styles.topBar}>
+          <div className={styles.topBarLeft}>
+            <h1 className={styles.topBarTitle}>
+              Hello! 👋 <span className={styles.topBarPet}>{petName}'s dashboard</span>
+            </h1>
+            <p className={styles.topBarDate}>{today}</p>
+          </div>
+          <div className={styles.topBarRight}>
+            <button className={styles.contentBtn}>
+              <span>😊</span>
+              <span>Content</span>
+              <span className={styles.chevron}>▾</span>
+            </button>
+            <div className={styles.userAvatar}>AL</div>
+          </div>
+        </div>
+
+        {/* Page content */}
+        <div className={styles.mainContent}>
+          <Outlet />
+        </div>
       </main>
 
+      {/* ── Bottom nav (mobile) ── */}
       <nav className={styles.bottomNav}>
         {NAV_ITEMS.map(({ to, label, icon, end }) => (
           <NavLink

@@ -1,0 +1,210 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.footer {
+  position: relative;
+  background: $teal;
+  color: $white;
+}
+
+/* ─── Wave ─── */
+.wave {
+  position: absolute;
+  top: -55px;
+  left: 0;
+  right: 0;
+  height: 56px;
+  color: $teal;
+  pointer-events: none;
+
+  // white fill above the wave so body paw-bg doesn't show through
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $white;
+    z-index: -1;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+/* ─── Main grid ─── */
+.inner {
+  @include container;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: $space-10;
+  padding-top: $space-16;
+  padding-bottom: $space-12;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    gap: $space-8;
+  }
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+    gap: $space-6;
+    padding-top: $space-12;
+  }
+}
+
+/* ─── Brand column ─── */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  text-decoration: none;
+}
+
+.logoIcon {
+  width: 38px;
+  height: 38px;
+  background: $orange;
+  color: $white;
+  border-radius: $radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 $orange-dark;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  color: $white;
+  letter-spacing: -0.02em;
+
+  strong { color: $orange-light; }
+}
+
+.tagline {
+  font-size: $font-size-sm;
+  line-height: 1.7;
+  color: rgba($white, 0.65);
+  max-width: 280px;
+}
+
+/* ─── Socials ─── */
+.socials {
+  display: flex;
+  gap: $space-2;
+}
+
+.socialBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-xl;
+  border: 2px solid rgba($white, 0.2);
+  color: rgba($white, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $orange;
+    border-color: $orange;
+    color: $white;
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 $orange-dark;
+  }
+}
+
+/* ─── Trust badge ─── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: rgba($white, 0.08);
+  border: 1px dashed rgba($white, 0.25);
+  border-radius: $radius-full;
+  padding: $space-2 $space-4;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: rgba($white, 0.75);
+  width: fit-content;
+}
+
+/* ─── Link columns ─── */
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.colTitle {
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 800;
+  color: $orange-light;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.colList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  list-style: none;
+}
+
+.colLink {
+  @include button-reset;
+  font-size: $font-size-sm;
+  color: rgba($white, 0.65);
+  transition: color $transition-fast;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.5;
+
+  &:hover {
+    color: $orange-light;
+  }
+}
+
+/* ─── Bottom bar ─── */
+.bottom {
+  border-top: 2px dashed rgba($white, 0.15);
+}
+
+.bottomInner {
+  @include container;
+  @include flex-between;
+  padding-top: $space-5;
+  padding-bottom: $space-5;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+.copyright {
+  font-size: $font-size-xs;
+  color: rgba($white, 0.45);
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+
+  svg { color: $orange-light; flex-shrink: 0; }
+}
+
+.pawRow {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  color: rgba($white, 0.2);
+
+  svg:nth-child(2) { opacity: 0.6; }
+}

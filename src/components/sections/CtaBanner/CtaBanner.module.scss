@@ -2,62 +2,30 @@
 @use '@/styles/mixins' as *;
 
 .section {
-  padding: $space-20 $space-4;
+  padding: $space-8 $space-4 $space-20;
+  background: $white;
 }
 
 .inner {
   @include container;
-  max-width: 900px;
-  background: $teal;
-  border-radius: $radius-3xl;
-  padding: $space-16 $space-12;
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  border: 2px dashed rgba($white, 0.2);
-
-  &::before {
-    content: '🐾';
-    position: absolute;
-    font-size: 10rem;
-    opacity: 0.04;
-    top: -20px;
-    right: -20px;
-    pointer-events: none;
-  }
-
-  &::after {
-    content: '🐾';
-    position: absolute;
-    font-size: 8rem;
-    opacity: 0.04;
-    bottom: -10px;
-    left: -10px;
-    pointer-events: none;
-  }
-
-  @include mobile-only {
-    padding: $space-12 $space-6;
-    border-radius: $radius-2xl;
-  }
-}
-
-.content {
-  position: relative;
-  z-index: 1;
+  max-width: 860px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: $space-6;
 }
 
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-2;
-  background: rgba($white, 0.12);
-  border: 1px dashed rgba($white, 0.3);
-  color: $orange-light;
+.title {
+  font-family: $font-display;
+  font-size: clamp($font-size-3xl, 4vw, $font-size-4xl);
+  font-weight: 800;
+  color: $teal;
+  text-align: center;
+}
+
+.offerBadge {
+  background: $orange;
+  color: $white;
   font-family: $font-display;
   font-size: $font-size-sm;
   font-weight: 700;
@@ -65,29 +33,196 @@
   border-radius: $radius-full;
 }
 
-.title {
-  font-family: $font-display;
-  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
-  font-weight: 800;
-  color: $white;
-  line-height: 1.2;
+// ── Plans grid ────────────────────────────────────────
+
+.plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-6;
+  width: 100%;
+  align-items: start;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
 }
 
-.sub {
-  font-size: $font-size-lg;
-  color: rgba($white, 0.7);
-  max-width: 520px;
-  line-height: 1.7;
-}
+// ── Card ──────────────────────────────────────────────
 
-.actions {
+.card {
+  background: $white;
+  border: 2px solid $gray-200;
+  border-radius: $radius-3xl;
+  padding: $space-8;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: $space-3;
+  gap: $space-4;
+  position: relative;
 }
 
-.hint {
+.cardPremium {
+  background: $teal;
+  border-color: $teal;
+}
+
+.popularBadge {
+  position: absolute;
+  top: -$space-4;
+  right: $space-6;
+  background: #f0a830;
+  color: $white;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+}
+
+// ── Plan names ────────────────────────────────────────
+
+.planName {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: $teal;
+}
+
+.planNamePremium {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: #f0a830;
+}
+
+// ── Price ─────────────────────────────────────────────
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+  line-height: 1;
+}
+
+.priceAmount {
+  font-family: $font-display;
+  font-size: 3rem;
+  font-weight: 800;
+  color: $teal;
+
+  .cardPremium & { color: $white; }
+}
+
+.priceOld {
+  font-size: $font-size-lg;
+  color: rgba($white, 0.5);
+  text-decoration: line-through;
+}
+
+.pricePeriod {
   font-size: $font-size-sm;
-  color: rgba($white, 0.45);
+  color: rgba($white, 0.6);
+}
+
+// ── Descriptions ──────────────────────────────────────
+
+.planDesc {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  line-height: 1.5;
+}
+
+.planDescLight {
+  font-size: $font-size-sm;
+  color: rgba($white, 0.6);
+  line-height: 1.5;
+}
+
+// ── Features ──────────────────────────────────────────
+
+.features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  flex: 1;
+}
+
+.feat {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: $teal;
+}
+
+.featOff {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: $gray-300;
+}
+
+.featIcon {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $green;
+  flex-shrink: 0;
+
+  .featOff & { color: $gray-300; }
+}
+
+.featPremium {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: rgba($white, 0.88);
+}
+
+.featIconGreen {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $green;
+  flex-shrink: 0;
+}
+
+// ── Buttons ───────────────────────────────────────────
+
+.btnFree {
+  @include button-reset;
+  width: 100%;
+  padding: $space-4;
+  border: 2px solid $teal;
+  border-radius: $radius-full;
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: 700;
+  color: $teal;
+  cursor: pointer;
+  transition: background $transition-fast, color $transition-fast;
+  margin-top: $space-2;
+
+  &:hover {
+    background: $teal;
+    color: $white;
+  }
+}
+
+.btnPremium {
+  @include button-reset;
+  width: 100%;
+  padding: $space-4;
+  background: $orange;
+  border-radius: $radius-full;
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: 700;
+  color: $white;
+  cursor: pointer;
+  transition: background $transition-fast;
+  margin-top: $space-2;
+
+  &:hover { background: $orange-dark; }
 }

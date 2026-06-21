@@ -6,18 +6,19 @@
   display: flex;
   align-items: center;
   position: relative;
-  overflow: hidden;
-  padding: $space-20 $space-4 $space-16;
+  // No overflow: hidden — corner blobs stay within bounds,
+  // and the bottom wave can bleed into the next section.
+  padding: calc(68px + #{$space-16}) $space-4 calc(#{$space-16} + 72px);
 }
 
 // ── Corner blobs ──────────────────────────────────────
 
 .cornerOrange {
   position: absolute;
-  top: -40px;
-  left: -60px;
-  width: 340px;
-  height: 300px;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 280px;
   background: $orange;
   border-radius: 0 0 80% 0;
   pointer-events: none;
@@ -34,10 +35,10 @@
 
 .cornerTeal {
   position: absolute;
-  bottom: -40px;
-  right: -60px;
-  width: 300px;
-  height: 280px;
+  bottom: 40px;
+  right: 0;
+  width: 280px;
+  height: 260px;
   background: $teal;
   border-radius: 80% 0 0 0;
   pointer-events: none;
@@ -49,6 +50,25 @@
     inset: 8px;
     border: 2px dashed rgba($white, 0.2);
     border-radius: 80% 0 0 0;
+  }
+}
+
+// ── Bottom wave (flows into HowItWorks) ───────────────
+
+.waveBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  pointer-events: none;
+  z-index: 2;
+  line-height: 0;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -83,30 +103,37 @@
 }
 
 .petDog {
-  font-size: 5rem;
+  width: 100px;
+  height: 108px;
   display: block;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+  filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.14));
   animation: float 3s ease-in-out infinite;
 }
 
 .petCat {
-  font-size: 4rem;
+  width: 100px;
+  height: 95px;
+  object-fit: contain;
   display: block;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.12));
+  filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.12));
   animation: float 3.5s ease-in-out infinite 0.5s;
 }
 
 .petCat2 {
-  font-size: 4.5rem;
+  width: 100px;
+  height: 95px;
+  object-fit: contain;
   display: block;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.12));
+  filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.12));
   animation: float 4s ease-in-out infinite 1s;
 }
 
 .petRabbit {
-  font-size: 4rem;
+  width: 118px;
+  height: 112px;
+  object-fit: contain;
   display: block;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+  filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.1));
   animation: float 3.2s ease-in-out infinite 0.3s;
 }
 

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000">
   <!-- Paw print template: main pad (bottom) + 4 toe pads -->
 
-  <!-- 1: pink, top-left area, small, tilted right -->
-  <g transform="translate(85,105) rotate(22) scale(0.72)" opacity="0.55">
+  <!-- 1: pink, top-left area, tilted right -->
+  <g transform="translate(85,105) rotate(22) scale(1.8)" opacity="0.55">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f9bfcb"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f9bfcb"/>
@@ -10,8 +10,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 2: teal, top-right, medium, tilted left -->
-  <g transform="translate(1280,75) rotate(-18) scale(0.85)" opacity="0.5">
+  <!-- 2: teal, top-right, tilted left -->
+  <g transform="translate(1260,60) rotate(-18) scale(2.1)" opacity="0.5">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#a8dbd6"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#a8dbd6"/>
@@ -19,8 +19,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 3: peach, left side mid, tiny, rotated 40 -->
-  <g transform="translate(42,460) rotate(40) scale(0.52)" opacity="0.48">
+  <!-- 3: peach, left side mid, rotated 40 -->
+  <g transform="translate(30,470) rotate(40) scale(1.4)" opacity="0.48">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f5d8bc"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f5d8bc"/>
@@ -28,8 +28,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 4: pink, top-center, small, slight tilt -->
-  <g transform="translate(620,38) rotate(8) scale(0.65)" opacity="0.45">
+  <!-- 4: pink, top-center, slight tilt -->
+  <g transform="translate(600,25) rotate(8) scale(1.6)" opacity="0.45">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f9bfcb"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f9bfcb"/>
@@ -37,8 +37,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 5: teal, right side, large, rotated -30 -->
-  <g transform="translate(1345,370) rotate(-30) scale(1.05)" opacity="0.42">
+  <!-- 5: teal, right side, rotated -30 -->
+  <g transform="translate(1340,360) rotate(-30) scale(2.5)" opacity="0.42">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#a8dbd6"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#a8dbd6"/>
@@ -47,7 +47,7 @@
   </g>
 
   <!-- 6: mint/green, bottom-left, large -->
-  <g transform="translate(155,855) rotate(15) scale(1.1)" opacity="0.4">
+  <g transform="translate(130,840) rotate(15) scale(2.8)" opacity="0.4">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#bce8d4"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#bce8d4"/>
@@ -55,8 +55,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 7: pink, bottom-right, small, tilted -->
-  <g transform="translate(1210,870) rotate(-22) scale(0.68)" opacity="0.5">
+  <!-- 7: pink, bottom-right, tilted -->
+  <g transform="translate(1195,855) rotate(-22) scale(1.7)" opacity="0.5">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f9bfcb"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f9bfcb"/>
@@ -64,8 +64,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 8: peach, upper-right area, tiny, rotated 45 -->
-  <g transform="translate(1010,165) rotate(44) scale(0.58)" opacity="0.45">
+  <!-- 8: peach, upper-right area, rotated 45 -->
+  <g transform="translate(990,150) rotate(44) scale(1.5)" opacity="0.45">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f5d8bc"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f5d8bc"/>
@@ -73,8 +73,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 9: teal, center-right, medium, slight tilt -->
-  <g transform="translate(1090,520) rotate(-12) scale(0.78)" opacity="0.42">
+  <!-- 9: teal, center-right, slight tilt -->
+  <g transform="translate(1070,505) rotate(-12) scale(2.0)" opacity="0.42">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#a8dbd6"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#a8dbd6"/>
@@ -82,8 +82,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 10: teal, bottom-center, small -->
-  <g transform="translate(685,945) rotate(26) scale(0.62)" opacity="0.44">
+  <!-- 10: teal, bottom-center -->
+  <g transform="translate(670,930) rotate(26) scale(1.55)" opacity="0.44">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#a8dbd6"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#a8dbd6"/>
@@ -92,7 +92,7 @@
   </g>
 
   <!-- 11: peach, upper-left area, large, rotated -38 -->
-  <g transform="translate(310,240) rotate(-38) scale(1.15)" opacity="0.38">
+  <g transform="translate(290,225) rotate(-38) scale(2.9)" opacity="0.38">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f5d8bc"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f5d8bc"/>
@@ -100,8 +100,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 12: pink, lower-left, tiny -->
-  <g transform="translate(430,750) rotate(14) scale(0.55)" opacity="0.5">
+  <!-- 12: pink, lower-left -->
+  <g transform="translate(420,740) rotate(14) scale(1.4)" opacity="0.5">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f9bfcb"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f9bfcb"/>
@@ -109,8 +109,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 13: mint, center, medium, rotated -28 -->
-  <g transform="translate(800,510) rotate(-28) scale(0.72)" opacity="0.4">
+  <!-- 13: mint, center, rotated -28 -->
+  <g transform="translate(790,500) rotate(-28) scale(1.8)" opacity="0.4">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#bce8d4"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#bce8d4"/>
@@ -118,8 +118,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 14: pink, left-center, medium, steep tilt -->
-  <g transform="translate(195,590) rotate(52) scale(0.88)" opacity="0.45">
+  <!-- 14: pink, left-center, steep tilt -->
+  <g transform="translate(175,575) rotate(52) scale(2.2)" opacity="0.45">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f9bfcb"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f9bfcb"/>
@@ -127,8 +127,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f9bfcb" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 15: mint, upper-center-right, small -->
-  <g transform="translate(760,190) rotate(-6) scale(0.6)" opacity="0.42">
+  <!-- 15: mint, upper-center-right -->
+  <g transform="translate(750,175) rotate(-6) scale(1.5)" opacity="0.42">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#bce8d4"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#bce8d4"/>
@@ -136,8 +136,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 16: teal, upper-left-ish, tiny -->
-  <g transform="translate(460,148) rotate(32) scale(0.54)" opacity="0.46">
+  <!-- 16: teal, upper-left-ish -->
+  <g transform="translate(450,135) rotate(32) scale(1.35)" opacity="0.46">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#a8dbd6"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#a8dbd6"/>
@@ -145,8 +145,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#a8dbd6" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 17: peach, bottom-right-ish, medium -->
-  <g transform="translate(920,820) rotate(-16) scale(0.8)" opacity="0.4">
+  <!-- 17: peach, bottom-right-ish -->
+  <g transform="translate(900,805) rotate(-16) scale(2.0)" opacity="0.4">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#f5d8bc"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#f5d8bc"/>
@@ -154,8 +154,8 @@
     <ellipse cx="14" cy="-1" rx="6" ry="7.5" fill="#f5d8bc" transform="rotate(24,14,-1)"/>
   </g>
 
-  <!-- 18: mint, right-center-bottom, tiny -->
-  <g transform="translate(1160,690) rotate(35) scale(0.5)" opacity="0.48">
+  <!-- 18: mint, right-center-bottom -->
+  <g transform="translate(1145,675) rotate(35) scale(1.25)" opacity="0.48">
     <ellipse cx="0" cy="13" rx="13" ry="11" fill="#bce8d4"/>
     <ellipse cx="-14" cy="-1" rx="6" ry="7.5" fill="#bce8d4" transform="rotate(-24,-14,-1)"/>
     <ellipse cx="-6" cy="-13" rx="6" ry="7.5" fill="#bce8d4"/>

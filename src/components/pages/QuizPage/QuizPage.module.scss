@@ -131,6 +131,12 @@
   font-size: 2rem;
 }
 
+.optionImg {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
 .optionLabel {
   font-family: $font-display;
   font-size: $font-size-sm;

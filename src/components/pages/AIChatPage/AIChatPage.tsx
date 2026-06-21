@@ -1,26 +1,32 @@
 import { useState, useRef, useEffect } from 'react'
-import { Button } from '@/components/Button'
 import styles from './AIChatPage.module.scss'
 
 interface Message {
   role: 'user' | 'ai'
   text: string
+  time: string
 }
 
-const SUGGESTIONS = [
-  'Why does my cat wake me up at night?',
-  'Why is my dog barking more lately?',
-  'Why is my rabbit hiding?',
-  'How can I reduce my pet\'s anxiety?',
-]
-
-const AI_RESPONSES: Record<string, string> = {
-  default: 'That\'s a great question! Based on your pet\'s profile, this behavior often relates to their emotional state and environment. I recommend observing patterns around the time it happens and ensuring their basic needs (food, rest, stimulation) are consistently met.\n\n⚠️ Note: If you notice this alongside other symptoms, please consult a licensed veterinarian.',
+function now() {
+  return new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
 }
+
+function getPetName() {
+  try { return JSON.parse(localStorage.getItem('petmind_quiz') || '{}').petName || 'your pet' }
+  catch { return 'your pet' }
+}
+
+const AI_RESPONSE = `That's actually very typical for The Curious Explorer type! Your pet isn't ignoring you — they're likely in the middle of a sensory focus moment. Try engaging them with a small toy or treat when you arrive, rather than calling their name directly.`
 
 export function AIChatPage() {
+  const petName = getPetName()
+
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', text: 'Hi! I\'m your AI Pet Coach. Ask me anything about your pet\'s behavior, mood, or needs. I\'m here to help! 🐾' },
+    {
+      role: 'ai',
+      text: `Hi! I'm ${petName}'s AI coach. Ask me anything about their behavior, mood or daily needs.`,
+      time: now(),
+    },
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -28,61 +34,88 @@ export function AIChatPage() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages, loading])
 
   function send(text: string) {
     if (!text.trim()) return
-    setMessages(m => [...m, { role: 'user', text }])
+    setMessages(m => [...m, { role: 'user', text, time: now() }])
     setInput('')
     setLoading(true)
     setTimeout(() => {
-      setMessages(m => [...m, { role: 'ai', text: AI_RESPONSES.default }])
+      setMessages(m => [...m, { role: 'ai', text: AI_RESPONSE, time: now() }])
       setLoading(false)
     }, 1200)
   }
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>AI Pet Coach</h1>
-        <p className={styles.sub}>Ask anything about your pet's behavior</p>
-      </div>
+      <div className={styles.card}>
 
-      <div className={styles.chatWrap}>
+        {/* ── Chat header ── */}
+        <div className={styles.chatHeader}>
+          <div className={styles.chatAvatarWrap}>
+            <img src="/cat.png" alt="AI Coach" className={styles.chatAvatarImg} />
+          </div>
+          <div className={styles.chatInfo}>
+            <p className={styles.chatName}>{petName}'s AI Coach</p>
+            <p className={styles.chatStatus}>
+              <span className={styles.onlineDot} />
+              Online
+            </p>
+          </div>
+        </div>
+
+        {/* ── Messages ── */}
         <div className={styles.messages}>
           {messages.map((m, i) => (
             <div key={i} className={[styles.msg, styles[m.role]].join(' ')}>
-              {m.role === 'ai' && <span className={styles.avatar}>🤖</span>}
-              <div className={styles.bubble}>{m.text}</div>
+              {m.role === 'ai' && (
+                <div className={styles.msgAvatar}>
+                  <img src="/cat.png" alt="" className={styles.msgAvatarImg} />
+                </div>
+              )}
+              <div className={styles.msgBody}>
+                <div className={styles.bubble}>{m.text}</div>
+                <p className={styles.time}>{m.time}</p>
+              </div>
             </div>
           ))}
+
           {loading && (
             <div className={[styles.msg, styles.ai].join(' ')}>
-              <span className={styles.avatar}>🤖</span>
-              <div className={styles.bubble}>
-                <span className={styles.typing}>···</span>
+              <div className={styles.msgAvatar}>
+                <img src="/cat.png" alt="" className={styles.msgAvatarImg} />
+              </div>
+              <div className={styles.msgBody}>
+                <div className={styles.bubble}>
+                  <span className={styles.typing}><span /><span /><span /></span>
+                </div>
               </div>
             </div>
           )}
+
           <div ref={bottomRef} />
         </div>
 
-        <div className={styles.suggestions}>
-          {SUGGESTIONS.map(s => (
-            <button key={s} className={styles.suggestion} onClick={() => send(s)}>{s}</button>
-          ))}
-        </div>
-
-        <div className={styles.inputRow}>
+        {/* ── Input ── */}
+        <div className={styles.inputArea}>
           <input
             className={styles.input}
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && send(input)}
-            placeholder="Ask about your pet..."
+            placeholder={`Ask about ${petName}'s behavior...`}
           />
-          <Button onClick={() => send(input)} disabled={!input.trim() || loading}>Send</Button>
+          <button
+            className={styles.sendBtn}
+            onClick={() => send(input)}
+            disabled={!input.trim() || loading}
+            aria-label="Send"
+          >
+            →
+          </button>
         </div>
+
       </div>
     </div>
   )

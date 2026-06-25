@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, SECTION_IDS } from '@/lib/constants'
+import { useAuth } from '@/lib/auth'
 import { Button } from '@/components/Button'
 import { Icon } from '@/components/Icon'
 import styles from './Navbar.module.scss'
@@ -14,8 +15,15 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const navigate = useNavigate()
+  const { session, signOut } = useAuth()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+
+  async function logout() {
+    setOpen(false)
+    await signOut()
+    navigate(ROUTES.HOME)
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -54,12 +62,25 @@ export function Navbar() {
 
         {/* CTA */}
         <div className={styles.actions}>
-          <Button variant="ghost" size="sm" onClick={() => navigate(ROUTES.AUTH)}>
-            Log in
-          </Button>
-          <Button variant="primary" size="sm" onClick={() => navigate(ROUTES.QUIZ)}>
-            Start Free Analysis
-          </Button>
+          {session ? (
+            <>
+              <Button variant="ghost" size="sm" onClick={logout}>
+                Log out
+              </Button>
+              <Button variant="primary" size="sm" onClick={() => navigate(ROUTES.DASHBOARD)}>
+                Dashboard
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" onClick={() => navigate(ROUTES.AUTH)}>
+                Log in
+              </Button>
+              <Button variant="primary" size="sm" onClick={() => navigate(ROUTES.QUIZ)}>
+                Start Free Analysis
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Burger */}
@@ -84,12 +105,25 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <Button variant="secondary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.AUTH) }}>
-            Log in
-          </Button>
-          <Button variant="primary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.QUIZ) }}>
-            Start Free Analysis 🐾
-          </Button>
+          {session ? (
+            <>
+              <Button variant="secondary" size="md" onClick={logout}>
+                Log out
+              </Button>
+              <Button variant="primary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.DASHBOARD) }}>
+                Dashboard 🐾
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="secondary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.AUTH) }}>
+                Log in
+              </Button>
+              <Button variant="primary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.QUIZ) }}>
+                Start Free Analysis 🐾
+              </Button>
+            </>
+          )}
         </div>
       )}
     </header>

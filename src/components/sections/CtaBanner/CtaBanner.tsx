@@ -63,7 +63,7 @@ export function CtaBanner() {
                 </li>
               ))}
             </ul>
-            <button className={styles.btnPremium} onClick={() => navigate(ROUTES.CHECKOUT)}>
+            <button className={styles.btnPremium} onClick={() => navigate(ROUTES.AUTH)}>
               Get Premium — $9/mo
             </button>
           </div>

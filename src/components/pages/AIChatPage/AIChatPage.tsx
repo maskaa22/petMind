@@ -21,6 +21,7 @@ const PET_IMAGE: Record<string, string> = {
   rabbit: '/rabbit.png',
   bird: '/chiken.png',
   hamster: '/ho.png',
+  other: '/cub.png',
 }
 
 function getQuiz(): { petName?: string; petType?: string } {

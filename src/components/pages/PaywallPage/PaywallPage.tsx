@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
+import { useAuth } from '@/lib/auth'
 import { Button } from '@/components/Button'
 import { generateReport } from '@/lib/quizLogic'
 import type { QuizAnswers } from '@/types'
@@ -12,6 +13,7 @@ const PET_IMAGE: Record<string, string> = {
   rabbit: '/rabbit.png',
   bird: '/chiken.png',
   hamster: '/ho.png',
+  other: '/cub.png',
 }
 
 type PlanId = 'free' | 'premium'
@@ -35,6 +37,7 @@ const PLAN_FEATURES: Record<PlanId, { label: string; included: boolean }[]> = {
 
 export function PaywallPage() {
   const navigate = useNavigate()
+  const { setPremium } = useAuth()
   const [plan, setPlan] = useState<PlanId>('premium')
 
   const raw = localStorage.getItem('petmind_quiz')
@@ -42,10 +45,10 @@ export function PaywallPage() {
   const report = generateReport(answers)
   const petImg = PET_IMAGE[answers.petType ?? ''] ?? '/cat.png'
 
-  function handleContinue() {
-    // Free is the default (profile.prem stays false) → straight to dashboard.
-    // Premium → go pay; checkout sets profile.prem = true.
-    navigate(plan === 'free' ? ROUTES.DASHBOARD : ROUTES.CHECKOUT)
+  async function handleContinue() {
+    // TEST mode: skip checkout. Premium → set prem in DB; then go to dashboard.
+    if (plan === 'premium') await setPremium(true)
+    navigate(ROUTES.DASHBOARD)
   }
 
   return (

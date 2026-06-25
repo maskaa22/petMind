@@ -25,6 +25,7 @@ const PET_IMAGE: Record<string, string> = {
   rabbit: '/rabbit.png',
   bird: '/chiken.png',
   hamster: '/ho.png',
+  other: '/cub.png',
 }
 
 function getQuiz(): { petName?: string; petType?: string; petMood?: string } {
@@ -108,12 +109,12 @@ export function DashboardLayout() {
 
       {/* ── Sidebar (desktop) ── */}
       <nav className={styles.sidebar}>
-        <div className={styles.brand}>
+        <button className={styles.brand} onClick={() => navigate(ROUTES.HOME)} aria-label="Go to home">
           <div className={styles.brandMark}>
             <Icon name="paw-print" size={18} />
           </div>
           <span className={styles.brandName}>PetMind</span>
-        </div>
+        </button>
         <ul className={styles.nav}>
           {NAV_ITEMS.map(({ to, label, icon, end, premium: isPremiumItem }) => {
             const locked = isPremiumItem && !premium

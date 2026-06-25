@@ -24,7 +24,7 @@ const PET_MOOD_FOLDER: Partial<Record<string, string>> = {
   rabbit:  'rabbit',
   bird:    'chicken',
   hamster: 'ho',
-  // 'other' intentionally absent → falls back to emoji icons
+  other:   'cub', // "Cow"
 }
 
 // Map quiz age buckets to a representative number (years).
@@ -99,7 +99,7 @@ export function QuizPage() {
                 { value: 'rabbit',  label: 'Rabbit',  img: '/rabbit.png' },
                 { value: 'bird',    label: 'Bird',    img: '/chiken.png' },
                 { value: 'hamster', label: 'Hamster', img: '/ho.png' },
-                { value: 'other',   label: 'Other',   icon: '🐾' },
+                { value: 'other',   label: 'Cow',     img: '/cub.png' },
               ]}
               selected={answers.petType}
               onSelect={v => patch({ petType: v as PetType })}

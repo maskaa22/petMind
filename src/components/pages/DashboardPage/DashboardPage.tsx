@@ -13,13 +13,27 @@ import styles from './DashboardPage.module.scss'
 export function DashboardPage() {
   const navigate = useNavigate()
   const { premium } = useAuth()
-  const { mood } = useOutletContext<DashboardContext>()
+  const { mood, pets, journal } = useOutletContext<DashboardContext>()
   const { dailyTip } = usePrefs()
 
   const raw = localStorage.getItem('petmind_quiz')
   const answers: QuizAnswers = raw ? JSON.parse(raw) : {}
   const report = generateReport(answers)
   const petName = answers.petName || 'Your Pet'
+
+  // Which pets were logged today? (data comes from the layout — no refetch)
+  const todayStr = new Date().toDateString()
+  const loggedTodayIds = new Set(
+    journal.filter(e => new Date(e.created_at).toDateString() === todayStr).map(e => e.pet_id),
+  )
+  const petsMissingToday = pets.filter(p => !loggedTodayIds.has(p.id))
+
+  // Vaccinations due within 2 days (or overdue).
+  const vaccineDue = pets.filter(p => {
+    if (!p.next_vaccination) return false
+    const days = Math.ceil((new Date(p.next_vaccination).getTime() - Date.now()) / 86_400_000)
+    return days <= 2
+  })
 
   const currentMood = findMood(mood)
 
@@ -101,11 +115,40 @@ export function DashboardPage() {
         <button className={styles.upgradeBanner} onClick={() => navigate(ROUTES.PAYWALL)}>
           <Icon name="sparkles" size={18} />
           <span>
-            You're on the <strong>Free plan</strong> — unlock the full profile, AI Coach & journal
+            You're on the <strong>Free plan</strong> — unlock the full profile, AI Coach & trends
           </span>
           <span className={styles.upgradeCta}>Upgrade →</span>
         </button>
       )}
+
+      {/* ── Reminders ── */}
+      {petsMissingToday.length > 0 && (
+        <button className={styles.reminderJournal} onClick={() => navigate(ROUTES.JOURNAL)}>
+          <span className={styles.reminderIcon}>📖</span>
+          <span className={styles.reminderText}>
+            {petsMissingToday.length === 1
+              ? <>You haven't logged <strong>{petsMissingToday[0].name}</strong>'s journal today.</>
+              : <>You haven't journaled today for: <strong>{petsMissingToday.map(p => p.name).join(', ')}</strong>.</>}
+          </span>
+          <span className={styles.reminderCta}>Log now →</span>
+        </button>
+      )}
+
+      {vaccineDue.map(p => {
+        const days = Math.ceil((new Date(p.next_vaccination!).getTime() - Date.now()) / 86_400_000)
+        return (
+          <div key={p.id} className={styles.reminderVaccine}>
+            <span className={styles.reminderIcon}>💉</span>
+            <span className={styles.reminderText}>
+              {days < 0
+                ? <><strong>{p.name}</strong>'s vaccination is overdue (was {p.next_vaccination}).</>
+                : days === 0
+                  ? <><strong>{p.name}</strong>'s vaccination is due today!</>
+                  : <><strong>{p.name}</strong>'s vaccination is due in {days} day{days > 1 ? 's' : ''} ({p.next_vaccination}).</>}
+            </span>
+          </div>
+        )
+      })}
 
       <div className={styles.grid}>
         {/* Always shown */}

@@ -55,6 +55,7 @@ export function AuthPage() {
       const pet = pets[0]
       if (pet?.quiz) {
         localStorage.setItem('petmind_quiz', JSON.stringify(pet.quiz))
+        localStorage.setItem('petmind_active_pet', pet.id)
         navigate(ROUTES.DASHBOARD)
         return
       }

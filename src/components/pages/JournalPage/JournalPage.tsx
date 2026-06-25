@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Icon } from '@/components/Icon'
 import { useAuth } from '@/lib/auth'
-import { getJournalEntries, addJournalEntry, deleteJournalEntry } from '@/lib/db'
-import type { JournalEntry } from '@/lib/db'
+import { addJournalEntry, deleteJournalEntry, updatePet } from '@/lib/db'
 import type { DashboardContext } from '@/lib/moods'
 import styles from './JournalPage.module.scss'
 
@@ -19,37 +18,61 @@ const JOURNAL_TO_MOOD: Record<string, string> = {
   '😟 Anxious': 'anxious',
 }
 
+const EMPTY_FORM = { mood: '', energy: 5, appetite: 5, sleep: 5, notes: '', weight: '', vaccination: '' }
+
 function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 export function JournalPage() {
-  const { setMood } = useOutletContext<DashboardContext>()
+  const { setMood, journal, setJournal, pets, setPets, activePet, dataLoading } = useOutletContext<DashboardContext>()
   const { user } = useAuth()
-  const [entries, setEntries] = useState<JournalEntry[]>([])
-  const [form, setForm] = useState({ mood: '', energy: 5, appetite: 5, sleep: 5, notes: '' })
+  const [form, setForm] = useState(EMPTY_FORM)
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  useEffect(() => {
-    if (user) getJournalEntries(user.id).then(setEntries)
-  }, [user])
+  // Only this pet's entries.
+  const petJournal = journal.filter(e => e.pet_id === activePet?.id)
+
+  function openForm() {
+    // Prefill weight / vaccination from the active pet's current values.
+    setForm({
+      ...EMPTY_FORM,
+      weight: activePet?.weight != null ? String(activePet.weight) : '',
+      vaccination: activePet?.next_vaccination ?? '',
+    })
+    setShowForm(true)
+  }
 
   async function save() {
     if (!user || saving) return
     setSaving(true)
-    const created = await addJournalEntry(user.id, { ...form })
+    const petId = localStorage.getItem('petmind_active_pet')
+    const created = await addJournalEntry(user.id, {
+      petId, mood: form.mood, energy: form.energy, appetite: form.appetite, sleep: form.sleep, notes: form.notes,
+    })
+    // Also update the pet's weight & next vaccination from this entry.
+    if (petId) {
+      await updatePet(petId, {
+        weight: form.weight ? Number(form.weight) : null,
+        next_vaccination: form.vaccination || null,
+      })
+      // Reflect the pet change in the shared context so reminders update instantly.
+      setPets(pets.map(p => p.id === petId
+        ? { ...p, weight: form.weight ? Number(form.weight) : null, next_vaccination: form.vaccination || null }
+        : p))
+    }
     setSaving(false)
-    if (created) setEntries(prev => [created, ...prev])
+    if (created) setJournal([created, ...journal])
     // Saving an entry updates the pet's current mood app-wide.
     const mapped = JOURNAL_TO_MOOD[form.mood]
     if (mapped) setMood(mapped)
-    setForm({ mood: '', energy: 5, appetite: 5, sleep: 5, notes: '' })
+    setForm(EMPTY_FORM)
     setShowForm(false)
   }
 
   async function remove(id: string) {
-    setEntries(prev => prev.filter(e => e.id !== id))
+    setJournal(journal.filter(e => e.id !== id))
     await deleteJournalEntry(id)
   }
 
@@ -57,10 +80,10 @@ export function JournalPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Pet Journal</h1>
+          <h1 className={styles.title}>{activePet ? `${activePet.name}'s Journal` : 'Pet Journal'}</h1>
           <p className={styles.sub}>Track your pet's daily wellbeing</p>
         </div>
-        <Button onClick={() => setShowForm(!showForm)}>+ New Entry</Button>
+        <Button onClick={() => (showForm ? setShowForm(false) : openForm())}>+ New Entry</Button>
       </div>
 
       {showForm && (
@@ -86,6 +109,24 @@ export function JournalPage() {
               </div>
             ))}
             <div className={styles.field}>
+              <label className={styles.label}>Weight (kg)</label>
+              <input
+                className={styles.numInput}
+                type="number" min="0" step="0.1" placeholder="e.g. 4.2"
+                value={form.weight}
+                onChange={e => setForm(f => ({ ...f, weight: e.target.value }))}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Next vaccination</label>
+              <input
+                className={styles.numInput}
+                type="date"
+                value={form.vaccination}
+                onChange={e => setForm(f => ({ ...f, vaccination: e.target.value }))}
+              />
+            </div>
+            <div className={styles.field}>
               <label className={styles.label}>Notes</label>
               <textarea className={styles.textarea} rows={3} placeholder="How was your pet today?" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
             </div>
@@ -97,14 +138,18 @@ export function JournalPage() {
         </div>
       )}
 
-      {entries.length === 0 ? (
+      {dataLoading ? (
+        <div className={styles.loadingBox}>
+          <span className={styles.spinner} />
+        </div>
+      ) : petJournal.length === 0 ? (
         <div className={styles.empty}>
           <span className={styles.emptyIcon}><Icon name="book-open" size={80} /></span>
-          <p>No entries yet. Start tracking your pet's daily mood!</p>
+          <p>No entries yet. Start tracking {activePet ? `${activePet.name}'s` : "your pet's"} daily mood!</p>
         </div>
       ) : (
         <div className={styles.entries}>
-          {entries.map(e => (
+          {petJournal.map(e => (
             <div key={e.id} className={styles.entry}>
               <button className={styles.entryDelete} onClick={() => remove(e.id)} aria-label="Delete entry">✕</button>
               <div className={styles.entryDate}>{fmtDate(e.created_at)}</div>

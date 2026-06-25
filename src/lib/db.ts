@@ -36,6 +36,7 @@ export interface Pet {
   name: string
   age: number | null
   weight: number | null
+  next_vaccination: string | null
   quiz: QuizAnswers | null
   created_at: string
 }
@@ -72,6 +73,14 @@ export async function createPet(
 export async function updatePetQuiz(petId: string, quiz: QuizAnswers): Promise<void> {
   const { error } = await supabase.from('pets').update({ quiz }).eq('id', petId)
   if (error) console.error('[db] updatePetQuiz', error)
+}
+
+export async function updatePet(
+  petId: string,
+  fields: { weight?: number | null; next_vaccination?: string | null },
+): Promise<void> {
+  const { error } = await supabase.from('pets').update(fields).eq('id', petId)
+  if (error) console.error('[db] updatePet', error)
 }
 
 export async function deletePet(petId: string): Promise<void> {

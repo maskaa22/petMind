@@ -1,23 +1,13 @@
-import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate, useOutletContext } from 'react-router-dom'
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   PieChart, Pie, Cell, Legend,
 } from 'recharts'
 import { useAuth } from '@/lib/auth'
-import { getJournalEntries } from '@/lib/db'
-import type { JournalEntry } from '@/lib/db'
+import type { DashboardContext } from '@/lib/moods'
 import { ROUTES } from '@/lib/constants'
 import { Button } from '@/components/Button'
 import styles from './TrendsPage.module.scss'
-
-interface Entry {
-  date: string
-  mood: string
-  energy: number
-  appetite: number
-  sleep: number
-}
 
 function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -47,24 +37,19 @@ function PawDot(props: { cx?: number; cy?: number; fill?: string }) {
 
 export function TrendsPage() {
   const navigate = useNavigate()
-  const { user, premium } = useAuth()
-  const [entries, setEntries] = useState<Entry[]>([])
-
-  useEffect(() => {
-    if (!user) return
-    getJournalEntries(user.id).then((rows: JournalEntry[]) =>
-      setEntries(rows.map(r => ({
-        date: fmtDate(r.created_at),
-        mood: r.mood,
-        energy: r.energy,
-        appetite: r.appetite,
-        sleep: r.sleep,
-      }))),
-    )
-  }, [user])
+  const { premium } = useAuth()
+  const { journal } = useOutletContext<DashboardContext>()
 
   if (!premium) return <Navigate to={ROUTES.PAYWALL} replace />
 
+  // Shared journal from the layout → mapped for the charts.
+  const entries = journal.map(r => ({
+    date: fmtDate(r.created_at),
+    mood: r.mood,
+    energy: r.energy,
+    appetite: r.appetite,
+    sleep: r.sleep,
+  }))
   const chrono = [...entries].reverse()
   const n = chrono.length
   const data = chrono.map((e, i) => ({

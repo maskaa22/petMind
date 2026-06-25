@@ -86,4 +86,11 @@ export const MOOD_GUIDE: Record<string, MoodGuide> = {
 export interface DashboardContext {
   mood: string
   setMood: (value: string) => void
+  // Shared data loaded once in the layout (no per-page refetch).
+  pets: import('./db').Pet[]
+  journal: import('./db').JournalEntry[]
+  activePet: import('./db').Pet | null
+  dataLoading: boolean
+  setPets: (pets: import('./db').Pet[]) => void
+  setJournal: (entries: import('./db').JournalEntry[]) => void
 }

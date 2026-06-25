@@ -81,6 +81,107 @@
   white-space: nowrap;
 }
 
+// ── Reminders ─────────────────────────────────────────
+.reminderJournal {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: $teal-pale;
+  border: 2px dashed $teal-light;
+  border-radius: $radius-2xl;
+  padding: $space-4 $space-5;
+  color: $teal;
+  font-size: $font-size-sm;
+  transition: transform $transition-fast;
+
+  strong { font-weight: 800; }
+  &:hover { transform: translate(-2px, -2px); }
+}
+
+.reminderVaccine {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  background: #fff4e6;
+  border: 2px dashed #f0a830;
+  border-radius: $radius-2xl;
+  padding: $space-4 $space-5;
+  color: #9a5a00;
+  font-size: $font-size-sm;
+
+  strong { font-weight: 800; }
+}
+
+.reminderIcon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.reminderText { line-height: 1.5; }
+
+.reminderCta {
+  margin-left: auto;
+  font-family: $font-display;
+  font-weight: 800;
+  color: $teal;
+  white-space: nowrap;
+}
+
+// ── Pet care card ─────────────────────────────────────
+.careSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.careCard {
+  background: $white;
+  border: 2px dashed $green;
+  border-radius: $radius-3xl;
+  padding: $space-6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: $space-5;
+  box-shadow: 3px 3px 0 $green-pale;
+}
+
+.careField {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  flex: 1;
+  min-width: 160px;
+}
+
+.careLabel {
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $teal;
+}
+
+.careInput {
+  padding: $space-3 $space-4;
+  border: 2px solid $gray-200;
+  border-radius: $radius-xl;
+  font-size: $font-size-base;
+  color: $teal;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus { border-color: $green; }
+}
+
+.careSave {
+  flex-shrink: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

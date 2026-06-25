@@ -16,10 +16,11 @@ create table if not exists public.pets (
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid not null references auth.users (id) on delete cascade,
   name       text not null,
-  age        numeric,                 -- years (add more fields anytime)
-  weight     numeric,                 -- kg
-  quiz       jsonb,                   -- full quiz answers (for the report)
-  created_at timestamptz not null default now()
+  age              numeric,           -- years (add more fields anytime)
+  weight           numeric,           -- kg
+  next_vaccination date,              -- date of the next due vaccination
+  quiz             jsonb,             -- full quiz answers (for the report)
+  created_at       timestamptz not null default now()
 );
 
 -- ── journal_entries: daily wellbeing log per pet ──

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { useAuth } from '@/lib/auth'
-import { getPets } from '@/lib/db'
-import type { Pet } from '@/lib/db'
+import { getPets, getJournalEntries } from '@/lib/db'
+import type { Pet, JournalEntry } from '@/lib/db'
 import { MOODS, findMood } from '@/lib/moods'
 import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
@@ -12,9 +12,9 @@ import styles from './DashboardLayout.module.scss'
 
 const NAV_ITEMS: { to: string; label: string; icon: IconName; end?: boolean; premium?: boolean }[] = [
   { to: ROUTES.DASHBOARD, label: 'Dashboard', icon: 'home', end: true },
+  { to: ROUTES.JOURNAL, label: 'Journal', icon: 'book-open' },
   { to: ROUTES.REPORTS, label: 'Reports', icon: 'bar-chart', premium: true },
   { to: ROUTES.AI_CHAT, label: 'AI Chat', icon: 'message-circle', premium: true },
-  { to: ROUTES.JOURNAL, label: 'Journal', icon: 'book-open', premium: true },
   { to: ROUTES.TRENDS, label: 'Trends', icon: 'trending-up', premium: true },
   { to: ROUTES.SETTINGS, label: 'Settings', icon: 'settings' },
 ]
@@ -50,15 +50,30 @@ export function DashboardLayout() {
   const [moodOpen, setMoodOpen] = useState(false)
   const currentMood = findMood(mood)
 
-  // ── Pets (switch between, add new) ──
+  // ── Shared data loaded once for all dashboard pages ──
   const [pets, setPets] = useState<Pet[]>([])
+  const [journal, setJournal] = useState<JournalEntry[]>([])
+  const [dataLoading, setDataLoading] = useState(true)
   const [petsOpen, setPetsOpen] = useState(false)
   const [switching, setSwitching] = useState(false)
   const activePetId = localStorage.getItem('petmind_active_pet')
 
   useEffect(() => {
-    if (user) getPets(user.id).then(setPets)
+    if (!user) return
+    Promise.all([getPets(user.id), getJournalEntries(user.id)]).then(([list, entries]) => {
+      setPets(list)
+      setJournal(entries)
+      setDataLoading(false)
+      // Make sure an active pet is always set (e.g. after login) so journal
+      // entries attach to the right pet.
+      if (!localStorage.getItem('petmind_active_pet') && list.length) {
+        const match = list.find(p => p.quiz?.petName === quiz.petName) ?? list[0]
+        localStorage.setItem('petmind_active_pet', match.id)
+      }
+    })
   }, [user])
+
+  const activePet = pets.find(p => p.id === activePetId) ?? pets[0] ?? null
 
   function switchPet(pet: Pet) {
     if (!pet.quiz) return
@@ -262,7 +277,7 @@ export function DashboardLayout() {
 
         {/* Page content */}
         <div className={styles.mainContent}>
-          <Outlet context={{ mood, setMood }} />
+          <Outlet context={{ mood, setMood, pets, journal, activePet, dataLoading, setPets, setJournal }} />
         </div>
       </main>
 

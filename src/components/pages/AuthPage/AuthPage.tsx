@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { useAuth } from '@/lib/auth'
+import { supabase } from '@/lib/supabase'
+import { getPets } from '@/lib/db'
 import { Icon } from '@/components/Icon'
 import { Button } from '@/components/Button'
 import styles from './AuthPage.module.scss'
@@ -42,9 +44,22 @@ export function AuthPage() {
       // If email confirmation is on, there's no session yet.
       setNotice('Account created! Check your email to confirm, then sign in.')
       setMode('signin')
-    } else {
-      navigate(ROUTES.QUIZ)
+      return
     }
+
+    // Signed in → if they already have a pet, hydrate it and go to the dashboard.
+    const { data } = await supabase.auth.getUser()
+    const uid = data.user?.id
+    if (uid) {
+      const pets = await getPets(uid)
+      const pet = pets[0]
+      if (pet?.quiz) {
+        localStorage.setItem('petmind_quiz', JSON.stringify(pet.quiz))
+        navigate(ROUTES.DASHBOARD)
+        return
+      }
+    }
+    navigate(ROUTES.QUIZ)
   }
 
   function switchMode(m: Mode) {

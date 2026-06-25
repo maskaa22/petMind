@@ -43,12 +43,9 @@ export function PaywallPage() {
   const petImg = PET_IMAGE[answers.petType ?? ''] ?? '/cat.png'
 
   function handleContinue() {
-    if (plan === 'free') {
-      localStorage.setItem('petmind_plan', 'free')
-      navigate(ROUTES.DASHBOARD)
-    } else {
-      navigate(ROUTES.CHECKOUT)
-    }
+    // Free is the default (profile.prem stays false) → straight to dashboard.
+    // Premium → go pay; checkout sets profile.prem = true.
+    navigate(plan === 'free' ? ROUTES.DASHBOARD : ROUTES.CHECKOUT)
   }
 
   return (

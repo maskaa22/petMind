@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { NavLink, Outlet, Navigate, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
-import { isPremium, hasPlan } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
 import { MOODS, findMood } from '@/lib/moods'
 import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
@@ -37,10 +37,10 @@ function getToday() {
 
 export function DashboardLayout() {
   const navigate = useNavigate()
+  const { premium } = useAuth()
   const quiz = getQuiz()
   const petName = quiz.petName || 'Your pet'
   const today = getToday()
-  const premium = isPremium()
   const petImg = PET_IMAGE[quiz.petType ?? '']
 
   const [mood, setMoodState] = useState<string>(quiz.petMood || 'calm')
@@ -57,9 +57,6 @@ export function DashboardLayout() {
       localStorage.setItem('petmind_quiz', JSON.stringify(data))
     } catch { /* ignore */ }
   }
-
-  // No plan chosen yet → block the dashboard, send back to the paywall.
-  if (!hasPlan()) return <Navigate to={ROUTES.PAYWALL} replace />
 
   return (
     <div className={styles.shell}>

@@ -1,6 +1,6 @@
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { generateReport } from '@/lib/quizLogic'
-import { isPremium } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
 import { findMood } from '@/lib/moods'
 import type { DashboardContext } from '@/lib/moods'
 import { usePrefs } from '@/lib/prefs'
@@ -12,7 +12,7 @@ import styles from './DashboardPage.module.scss'
 
 export function DashboardPage() {
   const navigate = useNavigate()
-  const premium = isPremium()
+  const { premium } = useAuth()
   const { mood } = useOutletContext<DashboardContext>()
   const { dailyTip } = usePrefs()
 

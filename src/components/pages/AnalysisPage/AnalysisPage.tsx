@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, ANALYSIS_MESSAGES } from '@/lib/constants'
-import { isPremium } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
 import { Icon } from '@/components/Icon'
 import styles from './AnalysisPage.module.scss'
 
 export function AnalysisPage() {
   const navigate = useNavigate()
+  const { premium } = useAuth()
   const [progress, setProgress] = useState(0)
   const [messageIdx, setMessageIdx] = useState(0)
 
@@ -28,7 +29,7 @@ export function AnalysisPage() {
 
     // Already premium (e.g. bought before taking the quiz) → straight to dashboard.
     const navTimer = setTimeout(
-      () => navigate(isPremium() ? ROUTES.DASHBOARD : ROUTES.PAYWALL),
+      () => navigate(premium ? ROUTES.DASHBOARD : ROUTES.PAYWALL),
       duration + 500,
     )
 
@@ -37,7 +38,7 @@ export function AnalysisPage() {
       clearInterval(messageTimer)
       clearTimeout(navTimer)
     }
-  }, [navigate])
+  }, [navigate, premium])
 
   return (
     <div className={styles.page}>

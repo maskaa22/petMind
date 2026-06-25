@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
-import { isPremium } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
 import { getCoachReply } from '@/lib/coach'
 import { ROUTES } from '@/lib/constants'
 import styles from './AIChatPage.module.scss'
@@ -53,6 +53,7 @@ const QUICK_QA: { q: string; a: string }[] = [
 ]
 
 export function AIChatPage() {
+  const { premium } = useAuth()
   const quiz = getQuiz()
   const petName = quiz.petName || 'your pet'
   const petImg = PET_IMAGE[quiz.petType ?? ''] ?? '/cat.png'
@@ -115,7 +116,7 @@ export function AIChatPage() {
   }
 
   // Free users can't access the AI coach
-  if (!isPremium()) return <Navigate to={ROUTES.PAYWALL} replace />
+  if (!premium) return <Navigate to={ROUTES.PAYWALL} replace />
 
   return (
     <div className={styles.page}>

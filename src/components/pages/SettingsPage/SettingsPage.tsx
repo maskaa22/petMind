@@ -4,8 +4,8 @@ import { Button } from '@/components/Button'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { usePrefs, setPref } from '@/lib/prefs'
 import type { PrefKey } from '@/lib/prefs'
-import { getPlan, setPlan } from '@/lib/plan'
-import type { PlanId } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
+import { deleteAccount as dbDeleteAccount } from '@/lib/db'
 import { ROUTES } from '@/lib/constants'
 import { playClick } from '@/lib/sound'
 import styles from './SettingsPage.module.scss'
@@ -20,7 +20,7 @@ const PREFS: { key: PrefKey; label: string; hint: string }[] = [
 export function SettingsPage() {
   const navigate = useNavigate()
   const prefs = usePrefs()
-  const [plan, setPlanState] = useState<PlanId>(getPlan())
+  const { user, profile, premium, setPremium, signOut } = useAuth()
   const [deleteOpen, setDeleteOpen] = useState(false)
 
   function toggle(key: PrefKey) {
@@ -29,13 +29,16 @@ export function SettingsPage() {
     playClick()
   }
 
-  function cancelPlan() {
-    setPlan('free')
-    setPlanState('free')
+  async function cancelPlan() {
+    await setPremium(false)
   }
 
-  function deleteAccount() {
+  async function deleteAccount() {
+    // Remove the user + all their data (pets, journal, profile) from the DB.
+    const { error } = await dbDeleteAccount()
+    if (error) console.error('Delete account failed:', error)
     localStorage.clear()
+    await signOut()
     navigate(ROUTES.HOME)
   }
 
@@ -49,20 +52,22 @@ export function SettingsPage() {
           <div className={styles.fieldGroup}>
             <div className={styles.field}>
               <label className={styles.label}>Email</label>
-              <input className={styles.input} type="email" defaultValue="user@example.com" />
+              <input className={styles.input} type="email" value={user?.email ?? ''} readOnly />
             </div>
             <div className={styles.field}>
               <label className={styles.label}>Name</label>
-              <input className={styles.input} type="text" defaultValue="" placeholder="Your name" />
+              <input className={styles.input} type="text" value={profile?.name ?? ''} readOnly placeholder="Your name" />
             </div>
-            <Button className={styles.actionBtn}>Save Changes</Button>
+            <Button variant="secondary" className={styles.actionBtn} onClick={async () => { await signOut(); navigate(ROUTES.HOME) }}>
+              Sign out
+            </Button>
           </div>
         </section>
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Subscription</h2>
           <div className={styles.planInfo}>
-            {plan === 'premium' ? (
+            {premium ? (
               <>
                 <div className={`${styles.planBadge} ${styles.planBadgePremium}`}>✨ Premium — Active</div>
                 <p className={styles.planDesc}>Your Premium subscription is active. You can cancel anytime — you'll keep access until the end of the period.</p>

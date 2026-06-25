@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { hasQuiz } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
 import { Icon } from '@/components/Icon'
 import { Button } from '@/components/Button'
 import styles from './CheckoutPage.module.scss'
@@ -24,6 +25,7 @@ function formatExpiry(v: string) {
 
 export function CheckoutPage() {
   const navigate = useNavigate()
+  const { setPremium } = useAuth()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [card, setCard] = useState('')
@@ -41,8 +43,8 @@ export function CheckoutPage() {
   function handlePay() {
     if (!valid || processing) return
     setProcessing(true)
-    setTimeout(() => {
-      localStorage.setItem('petmind_plan', 'premium')
+    setTimeout(async () => {
+      await setPremium(true) // persist premium to the user's profile in the DB
       // No quiz yet → take the quiz first; it'll lead to the dashboard afterwards.
       navigate(hasQuiz() ? ROUTES.DASHBOARD : ROUTES.QUIZ)
     }, 1800)

@@ -4,6 +4,8 @@ import { ROUTES, QUIZ_TOTAL_STEPS } from '@/lib/constants'
 import { Button } from '@/components/Button'
 import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
+import { useAuth } from '@/lib/auth'
+import { createPet } from '@/lib/db'
 import type { QuizAnswers, PetType, PetAge, PetMood, PetActivity, StrangerReaction } from '@/types'
 import styles from './QuizPage.module.scss'
 
@@ -25,19 +27,30 @@ const PET_MOOD_FOLDER: Partial<Record<string, string>> = {
   // 'other' intentionally absent → falls back to emoji icons
 }
 
+// Map quiz age buckets to a representative number (years).
+const AGE_YEARS: Record<string, number> = { under1: 0.5, '1-3': 2, '4-7': 5, '8+': 9 }
+
 export function QuizPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [step, setStep] = useState(1)
   const [answers, setAnswers] = useState<QuizAnswers>({})
 
   const progress = (step / QUIZ_TOTAL_STEPS) * 100
 
-  function next() {
-    if (step < QUIZ_TOTAL_STEPS) setStep(s => s + 1)
-    else {
-      localStorage.setItem('petmind_quiz', JSON.stringify(answers))
-      navigate(ROUTES.ANALYSIS)
+  async function next() {
+    if (step < QUIZ_TOTAL_STEPS) { setStep(s => s + 1); return }
+
+    // Final step → save locally (for the report) and create a pet row in the DB.
+    localStorage.setItem('petmind_quiz', JSON.stringify(answers))
+    if (user) {
+      await createPet(user.id, {
+        name: answers.petName?.trim() || 'My pet',
+        age: answers.petAge ? AGE_YEARS[answers.petAge] ?? null : null,
+        quiz: answers,
+      })
     }
+    navigate(ROUTES.ANALYSIS)
   }
 
   function back() {

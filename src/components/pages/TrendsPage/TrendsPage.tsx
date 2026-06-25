@@ -1,28 +1,26 @@
+import { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   PieChart, Pie, Cell, Legend,
 } from 'recharts'
-import { isPremium } from '@/lib/plan'
+import { useAuth } from '@/lib/auth'
+import { getJournalEntries } from '@/lib/db'
+import type { JournalEntry } from '@/lib/db'
 import { ROUTES } from '@/lib/constants'
 import { Button } from '@/components/Button'
 import styles from './TrendsPage.module.scss'
 
 interface Entry {
-  id: number
   date: string
   mood: string
   energy: number
   appetite: number
   sleep: number
-  notes: string
 }
 
-function loadEntries(): Entry[] {
-  try {
-    const raw = localStorage.getItem('petmind_journal')
-    return raw ? JSON.parse(raw) : []
-  } catch { return [] }
+function fmtDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 const METRICS = [
@@ -49,9 +47,23 @@ function PawDot(props: { cx?: number; cy?: number; fill?: string }) {
 
 export function TrendsPage() {
   const navigate = useNavigate()
-  const entries = loadEntries()
+  const { user, premium } = useAuth()
+  const [entries, setEntries] = useState<Entry[]>([])
 
-  if (!isPremium()) return <Navigate to={ROUTES.PAYWALL} replace />
+  useEffect(() => {
+    if (!user) return
+    getJournalEntries(user.id).then((rows: JournalEntry[]) =>
+      setEntries(rows.map(r => ({
+        date: fmtDate(r.created_at),
+        mood: r.mood,
+        energy: r.energy,
+        appetite: r.appetite,
+        sleep: r.sleep,
+      }))),
+    )
+  }, [user])
+
+  if (!premium) return <Navigate to={ROUTES.PAYWALL} replace />
 
   const chrono = [...entries].reverse()
   const n = chrono.length

@@ -2,21 +2,13 @@ import { useState, useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Icon } from '@/components/Icon'
+import { useAuth } from '@/lib/auth'
+import { getJournalEntries, addJournalEntry, deleteJournalEntry } from '@/lib/db'
+import type { JournalEntry } from '@/lib/db'
 import type { DashboardContext } from '@/lib/moods'
 import styles from './JournalPage.module.scss'
 
-interface Entry {
-  id: number
-  date: string
-  mood: string
-  energy: number
-  appetite: number
-  sleep: number
-  notes: string
-}
-
 const MOODS = ['😊 Happy', '😌 Calm', '😄 Excited', '😴 Tired', '😟 Anxious']
-const STORAGE_KEY = 'petmind_journal'
 
 // Map a journal mood to the app-wide mood value (used by the topbar / dashboard).
 const JOURNAL_TO_MOOD: Record<string, string> = {
@@ -27,30 +19,28 @@ const JOURNAL_TO_MOOD: Record<string, string> = {
   '😟 Anxious': 'anxious',
 }
 
-function loadEntries(): Entry[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch { return [] }
+function fmtDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 export function JournalPage() {
   const { setMood } = useOutletContext<DashboardContext>()
-  const [entries, setEntries] = useState<Entry[]>(loadEntries)
+  const { user } = useAuth()
+  const [entries, setEntries] = useState<JournalEntry[]>([])
   const [form, setForm] = useState({ mood: '', energy: 5, appetite: 5, sleep: 5, notes: '' })
   const [showForm, setShowForm] = useState(false)
+  const [saving, setSaving] = useState(false)
 
-  // Persist entries whenever they change.
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
-  }, [entries])
+    if (user) getJournalEntries(user.id).then(setEntries)
+  }, [user])
 
-  function save() {
-    setEntries(prev => [{
-      id: Date.now(),
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      ...form,
-    }, ...prev])
+  async function save() {
+    if (!user || saving) return
+    setSaving(true)
+    const created = await addJournalEntry(user.id, { ...form })
+    setSaving(false)
+    if (created) setEntries(prev => [created, ...prev])
     // Saving an entry updates the pet's current mood app-wide.
     const mapped = JOURNAL_TO_MOOD[form.mood]
     if (mapped) setMood(mapped)
@@ -58,8 +48,9 @@ export function JournalPage() {
     setShowForm(false)
   }
 
-  function remove(id: number) {
+  async function remove(id: string) {
     setEntries(prev => prev.filter(e => e.id !== id))
+    await deleteJournalEntry(id)
   }
 
   return (
@@ -101,7 +92,7 @@ export function JournalPage() {
           </div>
           <div className={styles.formActions}>
             <Button variant="ghost" onClick={() => setShowForm(false)}>Cancel</Button>
-            <Button onClick={save} disabled={!form.mood}>Save Entry</Button>
+            <Button onClick={save} disabled={!form.mood || saving}>{saving ? 'Saving…' : 'Save Entry'}</Button>
           </div>
         </div>
       )}
@@ -116,7 +107,7 @@ export function JournalPage() {
           {entries.map(e => (
             <div key={e.id} className={styles.entry}>
               <button className={styles.entryDelete} onClick={() => remove(e.id)} aria-label="Delete entry">✕</button>
-              <div className={styles.entryDate}>{e.date}</div>
+              <div className={styles.entryDate}>{fmtDate(e.created_at)}</div>
               <div className={styles.entryMood}>{e.mood}</div>
               <div className={styles.entryStats}>
                 <span>⚡ {e.energy}/10</span>

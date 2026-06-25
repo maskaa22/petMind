@@ -322,7 +322,12 @@
   flex-shrink: 0;
 }
 
+.petPicker {
+  position: relative;
+}
+
 .userAvatar {
+  @include button-reset;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -335,12 +340,139 @@
   flex-shrink: 0;
   overflow: hidden;
   border: 2px dashed $teal;
+  cursor: pointer;
+  transition: transform $transition-fast;
+
+  &:hover { transform: scale(1.05); }
 }
 
 .userAvatarImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+// ── Add-pet button ────────────────────────────────────
+.addPetBtn {
+  @include button-reset;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $orange;
+  color: $white;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 $orange-dark;
+  transition: transform $transition-fast, background $transition-fast;
+
+  &:hover { background: $orange-dark; transform: translate(-1px, -1px); }
+}
+
+// ── Pet switcher menu ─────────────────────────────────
+.petMenu {
+  position: absolute;
+  top: calc(100% + #{$space-2});
+  right: 0;
+  z-index: 50;
+  min-width: 200px;
+  background: $white;
+  border: 2px solid $orange-light;
+  border-radius: $radius-2xl;
+  padding: $space-2;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 12px 32px rgba($teal, 0.16);
+  animation: moodIn 0.14s ease-out;
+}
+
+.petMenuTitle {
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $gray-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: $space-2 $space-3;
+}
+
+.petOption {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  padding: $space-2 $space-3;
+  border-radius: $radius-xl;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $teal;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $orange-pale; }
+}
+
+.petOptionActive {
+  background: $orange-pale;
+}
+
+.petOptionImg {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $teal-pale;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.petOptionName { flex: 1; }
+
+.petAdd {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  padding: $space-2 $space-3;
+  margin-top: 2px;
+  border-top: 1px dashed $gray-200;
+  border-radius: $radius-xl;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $orange;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $orange-pale; }
+}
+
+.petAddIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $orange;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 // ── Page content (Outlet) ─────────────────────────────

@@ -24,6 +24,11 @@ export async function setPremium(userId: string, prem: boolean): Promise<void> {
   if (error) console.error('[db] setPremium', error)
 }
 
+export async function updateProfileName(userId: string, name: string): Promise<{ error: string | null }> {
+  const { error } = await supabase.from('profiles').update({ name }).eq('id', userId)
+  return { error: error?.message ?? null }
+}
+
 // ── Pets ──────────────────────────────────────────────
 export interface Pet {
   id: string

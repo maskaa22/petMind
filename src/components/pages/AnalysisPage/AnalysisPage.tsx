@@ -1,15 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, ANALYSIS_MESSAGES } from '@/lib/constants'
 import { useAuth } from '@/lib/auth'
+import { getPets } from '@/lib/db'
 import { Icon } from '@/components/Icon'
 import styles from './AnalysisPage.module.scss'
 
 export function AnalysisPage() {
   const navigate = useNavigate()
-  const { premium } = useAuth()
+  const { premium, user } = useAuth()
   const [progress, setProgress] = useState(0)
   const [messageIdx, setMessageIdx] = useState(0)
+
+  // How many pets the user already has — used to skip the paywall for returning users.
+  const petCount = useRef(0)
+  useEffect(() => {
+    if (user) getPets(user.id).then(p => { petCount.current = p.length })
+  }, [user])
 
   useEffect(() => {
     const duration = 10000
@@ -27,11 +34,12 @@ export function AnalysisPage() {
       setMessageIdx(i => (i + 1) % ANALYSIS_MESSAGES.length)
     }, 2000)
 
-    // Already premium (e.g. bought before taking the quiz) → straight to dashboard.
-    const navTimer = setTimeout(
-      () => navigate(premium ? ROUTES.DASHBOARD : ROUTES.PAYWALL),
-      duration + 500,
-    )
+    const navTimer = setTimeout(() => {
+      // Show the paywall only during first-time onboarding (their first pet).
+      // Premium users, or anyone who already has a pet, go straight to the dashboard.
+      const onboarding = petCount.current <= 1
+      navigate(premium || !onboarding ? ROUTES.DASHBOARD : ROUTES.PAYWALL)
+    }, duration + 500)
 
     return () => {
       clearInterval(progressTimer)

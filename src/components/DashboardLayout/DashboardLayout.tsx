@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { useAuth } from '@/lib/auth'
+import { getPets } from '@/lib/db'
+import type { Pet } from '@/lib/db'
 import { MOODS, findMood } from '@/lib/moods'
 import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
+import { Loader } from '@/components/Loader'
 import styles from './DashboardLayout.module.scss'
 
 const NAV_ITEMS: { to: string; label: string; icon: IconName; end?: boolean; premium?: boolean }[] = [
@@ -37,7 +40,7 @@ function getToday() {
 
 export function DashboardLayout() {
   const navigate = useNavigate()
-  const { premium } = useAuth()
+  const { premium, user } = useAuth()
   const quiz = getQuiz()
   const petName = quiz.petName || 'Your pet'
   const today = getToday()
@@ -46,6 +49,32 @@ export function DashboardLayout() {
   const [mood, setMoodState] = useState<string>(quiz.petMood || 'calm')
   const [moodOpen, setMoodOpen] = useState(false)
   const currentMood = findMood(mood)
+
+  // ── Pets (switch between, add new) ──
+  const [pets, setPets] = useState<Pet[]>([])
+  const [petsOpen, setPetsOpen] = useState(false)
+  const [switching, setSwitching] = useState(false)
+  const activePetId = localStorage.getItem('petmind_active_pet')
+
+  useEffect(() => {
+    if (user) getPets(user.id).then(setPets)
+  }, [user])
+
+  function switchPet(pet: Pet) {
+    if (!pet.quiz) return
+    setPetsOpen(false)
+    setSwitching(true) // show the loader before the hard reload
+    localStorage.setItem('petmind_active_pet', pet.id)
+    localStorage.setItem('petmind_quiz', JSON.stringify(pet.quiz))
+    // Let the loader paint, then reload so every page re-reads the active pet.
+    setTimeout(() => { window.location.href = ROUTES.DASHBOARD }, 60)
+  }
+
+  function addPet() {
+    setPetsOpen(false)
+    localStorage.removeItem('petmind_active_pet')
+    navigate(ROUTES.QUIZ)
+  }
 
   function setMood(value: string) {
     setMoodState(value)
@@ -60,6 +89,8 @@ export function DashboardLayout() {
 
   return (
     <div className={styles.shell}>
+      {switching && <Loader label="Switching pet…" />}
+
       {/* ── Sidebar (desktop) ── */}
       <nav className={styles.sidebar}>
         <div className={styles.brand}>
@@ -174,11 +205,58 @@ export function DashboardLayout() {
                 </>
               )}
             </div>
-            <div className={styles.userAvatar}>
-              {petImg
-                ? <img src={petImg} alt={petName} className={styles.userAvatarImg} />
-                : '🐾'}
+
+            {/* Pet switcher */}
+            <div className={styles.petPicker}>
+              <button
+                className={styles.userAvatar}
+                onClick={() => setPetsOpen(o => !o)}
+                aria-label="Switch pet"
+                aria-expanded={petsOpen}
+              >
+                {petImg
+                  ? <img src={petImg} alt={petName} className={styles.userAvatarImg} />
+                  : '🐾'}
+              </button>
+
+              {petsOpen && (
+                <>
+                  <div className={styles.moodBackdrop} onClick={() => setPetsOpen(false)} />
+                  <ul className={styles.petMenu}>
+                    <li className={styles.petMenuTitle}>Your pets</li>
+                    {pets.map(p => {
+                      const img = PET_IMAGE[p.quiz?.petType ?? '']
+                      const isActive = p.id === activePetId || (!activePetId && p.quiz?.petName === quiz.petName)
+                      return (
+                        <li key={p.id}>
+                          <button
+                            className={`${styles.petOption} ${isActive ? styles.petOptionActive : ''}`}
+                            onClick={() => switchPet(p)}
+                          >
+                            <span className={styles.petOptionImg}>
+                              {img ? <img src={img} alt="" /> : '🐾'}
+                            </span>
+                            <span className={styles.petOptionName}>{p.name}</span>
+                            {isActive && <Icon name="check" size={14} className={styles.moodCheck} />}
+                          </button>
+                        </li>
+                      )
+                    })}
+                    <li>
+                      <button className={styles.petAdd} onClick={addPet}>
+                        <span className={styles.petAddIcon}>+</span>
+                        Add a pet
+                      </button>
+                    </li>
+                  </ul>
+                </>
+              )}
             </div>
+
+            {/* Quick add-pet button */}
+            <button className={styles.addPetBtn} onClick={addPet} aria-label="Add a pet">
+              +
+            </button>
           </div>
         </div>
 

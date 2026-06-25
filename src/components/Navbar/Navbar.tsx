@@ -54,6 +54,9 @@ export function Navbar() {
 
         {/* CTA */}
         <div className={styles.actions}>
+          <Button variant="ghost" size="sm" onClick={() => navigate(ROUTES.AUTH)}>
+            Log in
+          </Button>
           <Button variant="primary" size="sm" onClick={() => navigate(ROUTES.QUIZ)}>
             Start Free Analysis
           </Button>
@@ -81,6 +84,9 @@ export function Navbar() {
               </li>
             ))}
           </ul>
+          <Button variant="secondary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.AUTH) }}>
+            Log in
+          </Button>
           <Button variant="primary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.QUIZ) }}>
             Start Free Analysis 🐾
           </Button>

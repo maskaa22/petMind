@@ -44,11 +44,12 @@ export function QuizPage() {
     // Final step → save locally (for the report) and create a pet row in the DB.
     localStorage.setItem('petmind_quiz', JSON.stringify(answers))
     if (user) {
-      await createPet(user.id, {
+      const pet = await createPet(user.id, {
         name: answers.petName?.trim() || 'My pet',
         age: answers.petAge ? AGE_YEARS[answers.petAge] ?? null : null,
         quiz: answers,
       })
+      if (pet) localStorage.setItem('petmind_active_pet', pet.id)
     }
     navigate(ROUTES.ANALYSIS)
   }

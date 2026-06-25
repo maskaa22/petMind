@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { usePrefs, setPref } from '@/lib/prefs'
 import type { PrefKey } from '@/lib/prefs'
 import { useAuth } from '@/lib/auth'
-import { deleteAccount as dbDeleteAccount } from '@/lib/db'
+import { deleteAccount as dbDeleteAccount, updateProfileName } from '@/lib/db'
 import { ROUTES } from '@/lib/constants'
 import { playClick } from '@/lib/sound'
 import styles from './SettingsPage.module.scss'
@@ -20,8 +20,29 @@ const PREFS: { key: PrefKey; label: string; hint: string }[] = [
 export function SettingsPage() {
   const navigate = useNavigate()
   const prefs = usePrefs()
-  const { user, profile, premium, setPremium, signOut } = useAuth()
+  const { user, profile, premium, setPremium, signOut, refreshProfile } = useAuth()
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [name, setName] = useState('')
+  const [savingName, setSavingName] = useState(false)
+  const [nameSaved, setNameSaved] = useState(false)
+
+  // Sync the editable name when the profile loads.
+  useEffect(() => {
+    setName(profile?.name ?? '')
+  }, [profile?.name])
+
+  async function saveName() {
+    if (!user || savingName) return
+    setSavingName(true)
+    setNameSaved(false)
+    const { error } = await updateProfileName(user.id, name.trim())
+    setSavingName(false)
+    if (!error) {
+      await refreshProfile()
+      setNameSaved(true)
+      setTimeout(() => setNameSaved(false), 2000)
+    }
+  }
 
   function toggle(key: PrefKey) {
     setPref(key, !prefs[key])
@@ -56,8 +77,21 @@ export function SettingsPage() {
             </div>
             <div className={styles.field}>
               <label className={styles.label}>Name</label>
-              <input className={styles.input} type="text" value={profile?.name ?? ''} readOnly placeholder="Your name" />
+              <input
+                className={styles.input}
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Your name"
+              />
             </div>
+            <Button
+              className={styles.actionBtn}
+              onClick={saveName}
+              disabled={savingName || name.trim() === (profile?.name ?? '')}
+            >
+              {savingName ? 'Saving…' : nameSaved ? 'Saved ✓' : 'Save Changes'}
+            </Button>
             <Button variant="secondary" className={styles.actionBtn} onClick={async () => { await signOut(); navigate(ROUTES.HOME) }}>
               Sign out
             </Button>

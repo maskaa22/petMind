@@ -14,7 +14,7 @@ export function AuthPage() {
   const navigate = useNavigate()
   const { signIn, signUp } = useAuth()
 
-  const [mode, setMode] = useState<Mode>('signup')
+  const [mode, setMode] = useState<Mode>('signin')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

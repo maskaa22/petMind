@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Layout } from '@/components/Layout'
 import { DashboardLayout } from '@/components/DashboardLayout'
 import { LandingPage } from '@/components/pages/LandingPage'
+import { AuthPage } from '@/components/pages/AuthPage'
 import { QuizPage } from '@/components/pages/QuizPage'
 import { AnalysisPage } from '@/components/pages/AnalysisPage'
 import { PaywallPage } from '@/components/pages/PaywallPage'
@@ -19,6 +20,7 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path={ROUTES.HOME} element={<LandingPage />} />
+        <Route path={ROUTES.AUTH} element={<AuthPage />} />
         <Route path={ROUTES.QUIZ} element={<QuizPage />} />
         <Route path={ROUTES.ANALYSIS} element={<AnalysisPage />} />
         <Route path={ROUTES.PAYWALL} element={<PaywallPage />} />

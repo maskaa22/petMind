@@ -7,6 +7,7 @@ export const SECTION_IDS = {
 
 export const ROUTES = {
   HOME: '/',
+  AUTH: '/auth',
   QUIZ: '/quiz',
   ANALYSIS: '/analysis',
   PAYWALL: '/paywall',

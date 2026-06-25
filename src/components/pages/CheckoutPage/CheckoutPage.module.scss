@@ -1,0 +1,296 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.page {
+  min-height: 100vh;
+  background: $cream;
+  padding: $space-12 $space-4;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.inner {
+  width: 100%;
+  max-width: 980px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-bottom: $space-6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: $space-8;
+  align-items: start;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Left form column ──────────────────────────────────
+
+.formCol {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.back {
+  @include button-reset;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $gray-500;
+  cursor: pointer;
+  width: fit-content;
+  transition: color $transition-fast;
+
+  &:hover { color: $orange; }
+}
+
+.title {
+  font-family: $font-display;
+  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+  font-weight: 800;
+  color: $teal;
+  line-height: 1.15;
+}
+
+.subtitle {
+  font-size: $font-size-base;
+  color: $gray-500;
+}
+
+.formCard {
+  @include dashed-card($orange-light);
+  padding: $space-8;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  box-shadow: 6px 6px 0 $orange-pale;
+
+  @include mobile-only {
+    padding: $space-6;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  flex: 1;
+}
+
+.label {
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $teal;
+}
+
+.input {
+  width: 100%;
+  padding: $space-3 $space-4;
+  background: $white;
+  border: 2px solid $gray-200;
+  border-radius: $radius-xl;
+  font-size: $font-size-base;
+  color: $teal;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &::placeholder { color: $gray-300; }
+  &:focus { border-color: $orange; }
+}
+
+.cardInputWrap {
+  position: relative;
+
+  .input { padding-right: $space-10; }
+}
+
+.cardIcon {
+  position: absolute;
+  right: $space-4;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.row {
+  display: flex;
+  gap: $space-4;
+}
+
+.processing {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba($white, 0.4);
+  border-top-color: $white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.secureNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $gray-500;
+
+  svg { color: $green; }
+}
+
+// ── Right summary column ──────────────────────────────
+
+.summaryCol {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  position: sticky;
+  top: $space-8;
+
+  @include mobile-only {
+    position: static;
+  }
+}
+
+.summaryCard {
+  background: $teal;
+  border-radius: $radius-3xl;
+  padding: $space-8;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '🐾';
+    position: absolute;
+    font-size: 7rem;
+    opacity: 0.05;
+    bottom: -12px;
+    right: -10px;
+    pointer-events: none;
+  }
+}
+
+.offerBadge {
+  align-self: flex-start;
+  background: $orange;
+  color: $white;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  position: relative;
+  z-index: 1;
+}
+
+.planName {
+  font-family: $font-display;
+  font-size: $font-size-lg;
+  font-weight: 800;
+  color: #f0a830;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+}
+
+.price {
+  font-family: $font-display;
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: $white;
+  line-height: 1;
+}
+
+.priceOld {
+  font-size: $font-size-lg;
+  color: rgba($white, 0.5);
+  text-decoration: line-through;
+}
+
+.pricePeriod {
+  font-size: $font-size-sm;
+  color: rgba($white, 0.6);
+}
+
+.planDesc {
+  font-size: $font-size-sm;
+  color: rgba($white, 0.6);
+}
+
+.features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  position: relative;
+  z-index: 1;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: rgba($white, 0.88);
+}
+
+.check {
+  color: $green;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: $space-4;
+  border-top: 1px dashed rgba($white, 0.2);
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: $font-size-base;
+}
+
+.totalAmount {
+  font-size: $font-size-xl;
+  color: #f0a830;
+}
+
+.guarantee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $gray-500;
+  font-weight: 600;
+}

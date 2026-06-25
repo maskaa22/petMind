@@ -5,6 +5,7 @@ export type IconName =
   | 'brain' | 'sparkles' | 'shield' | 'zap' | 'heart' | 'check-circle'
   | 'arrow-right' | 'star' | 'users' | 'target' | 'eye' | 'lock'
   | 'check' | 'paw-print' | 'activity' | 'camera' | 'trending-up'
+  | 'moon' | 'play' | 'compass' | 'bowl' | 'eye-off'
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName
@@ -147,6 +148,37 @@ const PATHS: Record<IconName, JSX.Element> = {
     <>
       <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
       <polyline points="17 6 23 6 23 12" />
+    </>
+  ),
+  moon: (
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  ),
+  play: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="10 8 16 12 10 16 10 8" />
+    </>
+  ),
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </>
+  ),
+  bowl: (
+    <>
+      <path d="M3 11h18" />
+      <path d="M5 11a7 7 0 0 0 14 0" />
+      <line x1="9" y1="3" x2="9" y2="6" />
+      <line x1="13" y1="3" x2="13" y2="6" />
+    </>
+  ),
+  'eye-off': (
+    <>
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 11 8 11 8a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 1 12s4 8 11 8a9.74 9.74 0 0 0 5.39-1.61" />
+      <line x1="2" y1="2" x2="22" y2="22" />
     </>
   ),
 }

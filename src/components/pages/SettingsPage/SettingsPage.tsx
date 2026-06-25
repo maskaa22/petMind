@@ -1,7 +1,44 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
+import { ConfirmModal } from '@/components/ConfirmModal'
+import { usePrefs, setPref } from '@/lib/prefs'
+import type { PrefKey } from '@/lib/prefs'
+import { getPlan, setPlan } from '@/lib/plan'
+import type { PlanId } from '@/lib/plan'
+import { ROUTES } from '@/lib/constants'
+import { playClick } from '@/lib/sound'
 import styles from './SettingsPage.module.scss'
 
+// In-app preferences — stored locally in the browser (no backend / email).
+const PREFS: { key: PrefKey; label: string; hint: string }[] = [
+  { key: 'dailyTip',     label: 'Show daily tip on dashboard', hint: 'Display the tip banner on your dashboard' },
+  { key: 'soundEffects', label: 'Interface sound effects',     hint: 'Play subtle sounds on actions' },
+  { key: 'reduceMotion', label: 'Reduce animations',           hint: 'Minimise motion across the app' },
+]
+
 export function SettingsPage() {
+  const navigate = useNavigate()
+  const prefs = usePrefs()
+  const [plan, setPlanState] = useState<PlanId>(getPlan())
+  const [deleteOpen, setDeleteOpen] = useState(false)
+
+  function toggle(key: PrefKey) {
+    setPref(key, !prefs[key])
+    // Audible feedback (only sounds if the sound pref is currently on).
+    playClick()
+  }
+
+  function cancelPlan() {
+    setPlan('free')
+    setPlanState('free')
+  }
+
+  function deleteAccount() {
+    localStorage.clear()
+    navigate(ROUTES.HOME)
+  }
+
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Settings</h1>
@@ -18,26 +55,50 @@ export function SettingsPage() {
               <label className={styles.label}>Name</label>
               <input className={styles.input} type="text" defaultValue="" placeholder="Your name" />
             </div>
-            <Button>Save Changes</Button>
+            <Button className={styles.actionBtn}>Save Changes</Button>
           </div>
         </section>
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Subscription</h2>
           <div className={styles.planInfo}>
-            <div className={styles.planBadge}>Premium — Yearly</div>
-            <p className={styles.planDesc}>Your subscription renews annually. Cancel anytime from here.</p>
-            <Button variant="secondary">Manage Subscription</Button>
+            {plan === 'premium' ? (
+              <>
+                <div className={`${styles.planBadge} ${styles.planBadgePremium}`}>✨ Premium — Active</div>
+                <p className={styles.planDesc}>Your Premium subscription is active. You can cancel anytime — you'll keep access until the end of the period.</p>
+                <Button variant="secondary" className={styles.actionBtn} onClick={cancelPlan}>
+                  Cancel Subscription
+                </Button>
+              </>
+            ) : (
+              <>
+                <div className={`${styles.planBadge} ${styles.planBadgeFree}`}>Free Plan</div>
+                <p className={styles.planDesc}>You're on the Free plan with limited access. Upgrade to unlock the full profile, AI Coach and journal.</p>
+                <Button className={styles.actionBtn} onClick={() => navigate(ROUTES.PAYWALL)}>
+                  Upgrade to Premium
+                </Button>
+              </>
+            )}
           </div>
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Notifications</h2>
+          <h2 className={styles.sectionTitle}>Preferences</h2>
           <div className={styles.toggleList}>
-            {['Weekly insights email', 'Mood reminders', 'New feature announcements'].map(n => (
-              <div key={n} className={styles.toggle}>
-                <span className={styles.toggleLabel}>{n}</span>
-                <div className={styles.toggleSwitch} />
+            {PREFS.map(p => (
+              <div key={p.key} className={styles.toggle}>
+                <div className={styles.toggleText}>
+                  <span className={styles.toggleLabel}>{p.label}</span>
+                  <span className={styles.toggleHint}>{p.hint}</span>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={prefs[p.key]}
+                  aria-label={p.label}
+                  className={`${styles.toggleSwitch} ${prefs[p.key] ? styles.toggleOn : ''}`}
+                  onClick={() => toggle(p.key)}
+                />
               </div>
             ))}
           </div>
@@ -47,10 +108,22 @@ export function SettingsPage() {
           <h2 className={styles.sectionTitle}>Data</h2>
           <div className={styles.dangerZone}>
             <p className={styles.dangerDesc}>Permanently delete all your data and close your account.</p>
-            <Button variant="secondary">Delete Account</Button>
+            <Button variant="secondary" className={styles.actionBtn} onClick={() => setDeleteOpen(true)}>Delete Account</Button>
           </div>
         </section>
       </div>
+
+      <ConfirmModal
+        open={deleteOpen}
+        emoji="🗑️"
+        danger
+        title="Delete account?"
+        message="This permanently erases all your data — quiz results, mood history and preferences. This can't be undone."
+        confirmLabel="Yes, delete everything"
+        cancelLabel="Keep my account"
+        onConfirm={deleteAccount}
+        onClose={() => setDeleteOpen(false)}
+      />
     </div>
   )
 }

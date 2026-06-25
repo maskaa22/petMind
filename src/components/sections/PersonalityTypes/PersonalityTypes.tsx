@@ -1,41 +1,61 @@
+import { Icon } from '@/components/Icon'
+import type { IconName } from '@/components/Icon'
 import styles from './PersonalityTypes.module.scss'
 
-const TYPES = [
+const TYPES: { icon: IconName; name: string; color: string; bg: string; border: string; traits: string[]; desc: string }[] = [
   {
-    emoji: '🦁',
-    name: 'The Leader',
-    color: '#f97316',
-    bg: '#fff7ed',
-    border: '#fed7aa',
-    traits: ['Confident', 'Territorial', 'Protective'],
-    desc: 'Natural born leaders who take charge and set the boundaries in their environment.',
-  },
-  {
-    emoji: '🦋',
-    name: 'The Explorer',
+    icon: 'eye',
+    name: 'The Curious Explorer',
     color: '#7c3aed',
     bg: '#f5f3ff',
     border: '#ddd6fe',
-    traits: ['Curious', 'Adventurous', 'Playful'],
-    desc: 'Always investigating something new. Bored easily and thrives on stimulation.',
+    traits: ['Curious', 'Adventurous', 'Bold'],
+    desc: 'Always investigating something new — bored easily and thrives on fresh stimulation.',
   },
   {
-    emoji: '🌙',
-    name: 'The Dreamer',
+    icon: 'heart',
+    name: 'The Gentle Soul',
     color: '#2563eb',
     bg: '#eff6ff',
     border: '#bfdbfe',
-    traits: ['Sensitive', 'Intuitive', 'Calm'],
-    desc: 'Deeply emotional and observant. Builds trust slowly but bonds for life.',
+    traits: ['Sensitive', 'Affectionate', 'Calm'],
+    desc: 'Soft-natured and tender. Builds trust slowly but bonds deeply for life.',
   },
   {
-    emoji: '🌟',
-    name: 'The Socialite',
+    icon: 'shield',
+    name: 'The Loyal Guardian',
+    color: '#f97316',
+    bg: '#fff7ed',
+    border: '#fed7aa',
+    traits: ['Devoted', 'Alert', 'Protective'],
+    desc: 'Watchful and steadfast — fiercely devoted to their family and their space.',
+  },
+  {
+    icon: 'zap',
+    name: 'The Playful Trickster',
+    color: '#db2777',
+    bg: '#fdf2f8',
+    border: '#fbcfe8',
+    traits: ['Energetic', 'Clever', 'Mischievous'],
+    desc: 'Turns life into a game. Smart, agile and always up for a bit of fun.',
+  },
+  {
+    icon: 'users',
+    name: 'The Social Butterfly',
     color: '#16a34a',
     bg: '#f0fdf4',
     border: '#bbf7d0',
-    traits: ['Friendly', 'Attention-loving', 'Vocal'],
-    desc: 'Thrives on interaction and attention. The heart of every room they enter.',
+    traits: ['Friendly', 'Outgoing', 'Affectionate'],
+    desc: 'Thrives on company and attention — the heart of every room they enter.',
+  },
+  {
+    icon: 'brain',
+    name: 'The Independent Thinker',
+    color: '#0d9488',
+    bg: '#f0fdfa',
+    border: '#99f6e4',
+    traits: ['Self-reliant', 'Observant', 'Composed'],
+    desc: 'Confident and autonomous. Enjoys company very much on their own terms.',
   },
 ]
 
@@ -46,15 +66,15 @@ export function PersonalityTypes() {
         <div className={styles.header}>
           <div className={styles.tag}>Personality types</div>
           <h2 className={styles.title}>Every pet has a unique personality profile</h2>
-          <p className={styles.sub}>Our analysis identifies which of 8 core archetypes your pet belongs to — and what that means for their care.</p>
+          <p className={styles.sub}>Our analysis identifies which of 6 core archetypes your pet belongs to — and what that means for their care.</p>
         </div>
 
         <div className={styles.grid}>
-          {TYPES.map(({ emoji, name, color, bg, border, traits, desc }) => (
+          {TYPES.map(({ icon, name, color, bg, border, traits, desc }) => (
             <div key={name} className={styles.card} style={{ background: bg, borderColor: border }}>
               <div className={styles.cardTop}>
                 <div className={styles.emojiWrap} style={{ background: color }}>
-                  <span className={styles.emoji}>{emoji}</span>
+                  <Icon name={icon} size={24} />
                 </div>
                 <div>
                   <h3 className={styles.typeName} style={{ color }}>{name}</h3>
@@ -73,7 +93,7 @@ export function PersonalityTypes() {
         </div>
 
         <p className={styles.note}>
-          + 4 more personality types discovered in our full analysis
+          Take the free quiz to discover which archetype fits your pet.
         </p>
       </div>
     </section>

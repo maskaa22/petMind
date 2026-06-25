@@ -64,37 +64,26 @@ export function Footer() {
           <p className={styles.tagline}>
             AI-powered insights to truly understand your pet's personality, needs, and emotions.
           </p>
-          <div className={styles.socials}>
-            {SOCIALS.map(s => (
-              <a key={s.label} href={s.href} className={styles.socialBtn} aria-label={s.label}>
-                <Icon name={s.icon} size={16} />
-              </a>
-            ))}
-          </div>
+        </div>
+
+        {/* Badge — centered */}
+        <div className={styles.colCenter}>
           <div className={styles.badge}>
             <Icon name="shield" size={14} />
             <span>100% secure & private</span>
           </div>
         </div>
 
-        {/* Link columns */}
-        {Object.entries(FOOTER_LINKS).map(([title, links]) => (
-          <div key={title} className={styles.col}>
-            <h4 className={styles.colTitle}>{title}</h4>
-            <ul className={styles.colList}>
-              {links.map(link => (
-                <li key={link.label}>
-                  <button
-                    className={styles.colLink}
-                    onClick={() => handleLink(link.href, (link as { internal?: boolean }).internal)}
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
+        {/* Socials — rightmost column */}
+        <div className={styles.colRight}>
+          <div className={styles.socials}>
+            {SOCIALS.map(s => (
+              <span key={s.label} className={styles.socialBtn} aria-label={s.label}>
+                <Icon name={s.icon} size={16} />
+              </span>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
       {/* Bottom bar */}
@@ -103,11 +92,6 @@ export function Footer() {
           <span className={styles.copyright}>
             © 2025 petMind · Made with <Icon name="heart" size={12} /> for pet lovers
           </span>
-          <div className={styles.pawRow} aria-hidden="true">
-            <Icon name="paw-print" size={14} />
-            <Icon name="paw-print" size={10} />
-            <Icon name="paw-print" size={14} />
-          </div>
         </div>
       </div>
     </footer>

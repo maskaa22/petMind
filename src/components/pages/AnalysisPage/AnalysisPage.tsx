@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, ANALYSIS_MESSAGES } from '@/lib/constants'
+import { isPremium } from '@/lib/plan'
 import { Icon } from '@/components/Icon'
 import styles from './AnalysisPage.module.scss'
 
@@ -25,7 +26,11 @@ export function AnalysisPage() {
       setMessageIdx(i => (i + 1) % ANALYSIS_MESSAGES.length)
     }, 2000)
 
-    const navTimer = setTimeout(() => navigate(ROUTES.PAYWALL), duration + 500)
+    // Already premium (e.g. bought before taking the quiz) → straight to dashboard.
+    const navTimer = setTimeout(
+      () => navigate(isPremium() ? ROUTES.DASHBOARD : ROUTES.PAYWALL),
+      duration + 500,
+    )
 
     return () => {
       clearInterval(progressTimer)
@@ -39,16 +44,11 @@ export function AnalysisPage() {
       <div className={styles.cornerOrange} />
       <div className={styles.cornerTeal} />
       <div className={styles.inner}>
-        <div className={styles.orbitWrap}>
-          <div className={styles.orbit1}>
-            <div className={styles.dot} />
-          </div>
-          <div className={styles.orbit2}>
-            <div className={styles.dot} />
-          </div>
-          <div className={styles.orbit3}>
-            <div className={styles.dot} />
-          </div>
+        <div className={styles.pawWrap}>
+          <span className={`${styles.toe} ${styles.toe1}`} />
+          <span className={`${styles.toe} ${styles.toe2}`} />
+          <span className={`${styles.toe} ${styles.toe3}`} />
+          <span className={`${styles.toe} ${styles.toe4}`} />
           <div className={styles.core}>
             <Icon name="brain" size={32} />
           </div>

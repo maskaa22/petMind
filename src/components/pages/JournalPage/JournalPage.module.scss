@@ -136,19 +136,53 @@
 
 .emptyIcon {
   font-size: 3rem;
+  color: $orange;
+  display: inline-flex;
 }
 
 .entries {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: $space-3;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+  }
 }
 
 .entry {
   @include card;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: $space-2;
+}
+
+.entryDelete {
+  @include button-reset;
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  color: $gray-400;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: #fdecec;
+    color: #e23b3b;
+  }
 }
 
 .entryDate {

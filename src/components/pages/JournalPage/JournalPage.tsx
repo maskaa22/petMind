@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { Button } from '@/components/Button'
+import { Icon } from '@/components/Icon'
+import type { DashboardContext } from '@/lib/moods'
 import styles from './JournalPage.module.scss'
 
 interface Entry {
@@ -13,11 +16,34 @@ interface Entry {
 }
 
 const MOODS = ['😊 Happy', '😌 Calm', '😄 Excited', '😴 Tired', '😟 Anxious']
+const STORAGE_KEY = 'petmind_journal'
+
+// Map a journal mood to the app-wide mood value (used by the topbar / dashboard).
+const JOURNAL_TO_MOOD: Record<string, string> = {
+  '😊 Happy': 'playful',
+  '😌 Calm': 'calm',
+  '😄 Excited': 'excited',
+  '😴 Tired': 'sleepy',
+  '😟 Anxious': 'anxious',
+}
+
+function loadEntries(): Entry[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch { return [] }
+}
 
 export function JournalPage() {
-  const [entries, setEntries] = useState<Entry[]>([])
+  const { setMood } = useOutletContext<DashboardContext>()
+  const [entries, setEntries] = useState<Entry[]>(loadEntries)
   const [form, setForm] = useState({ mood: '', energy: 5, appetite: 5, sleep: 5, notes: '' })
   const [showForm, setShowForm] = useState(false)
+
+  // Persist entries whenever they change.
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
+  }, [entries])
 
   function save() {
     setEntries(prev => [{
@@ -25,8 +51,15 @@ export function JournalPage() {
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       ...form,
     }, ...prev])
+    // Saving an entry updates the pet's current mood app-wide.
+    const mapped = JOURNAL_TO_MOOD[form.mood]
+    if (mapped) setMood(mapped)
     setForm({ mood: '', energy: 5, appetite: 5, sleep: 5, notes: '' })
     setShowForm(false)
+  }
+
+  function remove(id: number) {
+    setEntries(prev => prev.filter(e => e.id !== id))
   }
 
   return (
@@ -75,13 +108,14 @@ export function JournalPage() {
 
       {entries.length === 0 ? (
         <div className={styles.empty}>
-          <span className={styles.emptyIcon}>📓</span>
+          <span className={styles.emptyIcon}><Icon name="book-open" size={80} /></span>
           <p>No entries yet. Start tracking your pet's daily mood!</p>
         </div>
       ) : (
         <div className={styles.entries}>
           {entries.map(e => (
             <div key={e.id} className={styles.entry}>
+              <button className={styles.entryDelete} onClick={() => remove(e.id)} aria-label="Delete entry">✕</button>
               <div className={styles.entryDate}>{e.date}</div>
               <div className={styles.entryMood}>{e.mood}</div>
               <div className={styles.entryStats}>

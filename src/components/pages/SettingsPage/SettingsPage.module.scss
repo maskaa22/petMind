@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   gap: $space-8;
-  max-width: 600px;
+  width: 100%;
 }
 
 .title {
@@ -63,6 +63,17 @@
   &:focus { border-color: $gray-900; }
 }
 
+.actionBtn {
+  align-self: center;
+  min-width: 400px;
+  margin-top: $space-2;
+
+  @include mobile-only {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 .planInfo {
   display: flex;
   flex-direction: column;
@@ -71,13 +82,24 @@
 
 .planBadge {
   display: inline-block;
-  background: $gray-900;
-  color: $white;
+  font-family: $font-display;
   font-size: $font-size-sm;
-  font-weight: 600;
+  font-weight: 700;
   padding: $space-2 $space-4;
   border-radius: $radius-full;
   align-self: flex-start;
+}
+
+.planBadgePremium {
+  background: $orange;
+  color: $white;
+  box-shadow: 2px 2px 0 $orange-dark;
+}
+
+.planBadgeFree {
+  background: $gray-100;
+  color: $gray-600;
+  border: 1px dashed $gray-300;
 }
 
 .planDesc {
@@ -93,22 +115,59 @@
 
 .toggle {
   @include flex-between;
+  gap: $space-4;
+}
+
+.toggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .toggleLabel {
   font-size: $font-size-sm;
+  font-weight: 600;
   color: $gray-700;
 }
 
+.toggleHint {
+  font-size: $font-size-xs;
+  color: $gray-400;
+}
+
 .toggleSwitch {
-  width: 44px;
-  height: 24px;
+  @include button-reset;
+  position: relative;
+  width: 46px;
+  height: 26px;
   background: $gray-200;
   border-radius: $radius-full;
   cursor: pointer;
+  flex-shrink: 0;
   transition: background $transition-fast;
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: $white;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform $transition-fast;
+  }
+
   &:hover { background: $gray-300; }
+}
+
+.toggleOn {
+  background: $orange;
+
+  &:hover { background: $orange-dark; }
+
+  &::after { transform: translateX(20px); }
 }
 
 .dangerZone {

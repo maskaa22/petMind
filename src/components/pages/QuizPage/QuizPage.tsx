@@ -2,10 +2,19 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, QUIZ_TOTAL_STEPS } from '@/lib/constants'
 import { Button } from '@/components/Button'
+import { Icon } from '@/components/Icon'
+import type { IconName } from '@/components/Icon'
 import type { QuizAnswers, PetType, PetAge, PetMood, PetActivity, StrangerReaction } from '@/types'
 import styles from './QuizPage.module.scss'
 
-const PERSONALITY_IMAGES = ['🌊', '🔥', '🌿', '⭐', '🌙', '🌈']
+const PERSONALITY_IMAGES: { icon: IconName; label: string }[] = [
+  { icon: 'activity', label: 'Flowing' },
+  { icon: 'zap', label: 'Fiery' },
+  { icon: 'heart', label: 'Gentle' },
+  { icon: 'star', label: 'Bright' },
+  { icon: 'moon', label: 'Dreamy' },
+  { icon: 'sparkles', label: 'Playful' },
+]
 
 const PET_MOOD_FOLDER: Partial<Record<string, string>> = {
   cat:     'cat',
@@ -146,11 +155,11 @@ export function QuizPage() {
           <Question title={`What is ${answers.petName || 'your pet'} doing right now?`}>
             <OptionGrid
               options={[
-                { value: 'sleeping', label: 'Sleeping', icon: '💤' },
-                { value: 'playing', label: 'Playing', icon: '🎮' },
-                { value: 'eating', label: 'Eating', icon: '🍽️' },
-                { value: 'exploring', label: 'Exploring', icon: '🔍' },
-                { value: 'watchingMe', label: 'Watching Me', icon: '👀' },
+                { value: 'sleeping', label: 'Sleeping', svg: 'moon' },
+                { value: 'playing', label: 'Playing', svg: 'play' },
+                { value: 'eating', label: 'Eating', svg: 'bowl' },
+                { value: 'exploring', label: 'Exploring', svg: 'compass' },
+                { value: 'watchingMe', label: 'Watching Me', svg: 'eye' },
               ]}
               selected={answers.petActivity}
               onSelect={v => patch({ petActivity: v as PetActivity })}
@@ -182,10 +191,10 @@ export function QuizPage() {
           <Question title={`How does ${answers.petName || 'your pet'} react to strangers?`}>
             <OptionGrid
               options={[
-                { value: 'friendly', label: 'Friendly', icon: '🤝' },
-                { value: 'curious', label: 'Curious', icon: '🤔' },
-                { value: 'shy', label: 'Shy', icon: '🙈' },
-                { value: 'defensive', label: 'Defensive', icon: '🛡️' },
+                { value: 'friendly', label: 'Friendly', svg: 'heart' },
+                { value: 'curious', label: 'Curious', svg: 'eye' },
+                { value: 'shy', label: 'Shy', svg: 'eye-off' },
+                { value: 'defensive', label: 'Defensive', svg: 'shield' },
               ]}
               selected={answers.strangerReaction}
               onSelect={v => patch({ strangerReaction: v as StrangerReaction })}
@@ -196,13 +205,14 @@ export function QuizPage() {
         {step === 8 && (
           <Question title={`Which best matches ${answers.petName || 'your pet'}'s personality?`}>
             <div className={styles.imageGrid}>
-              {PERSONALITY_IMAGES.map((emoji, i) => (
+              {PERSONALITY_IMAGES.map(({ icon, label }, i) => (
                 <button
                   key={i}
                   className={[styles.imageCard, answers.personalityImage === i ? styles.selectedImage : ''].join(' ')}
                   onClick={() => patch({ personalityImage: i })}
                 >
-                  <span>{emoji}</span>
+                  <span className={styles.imageIcon}><Icon name={icon} size={36} /></span>
+                  <span className={styles.optionLabel}>{label}</span>
                 </button>
               ))}
             </div>
@@ -229,7 +239,7 @@ function Question({ title, children }: { title: string; children: React.ReactNod
 }
 
 interface OptionGridProps {
-  options: { value: string; label: string; icon?: string; img?: string }[]
+  options: { value: string; label: string; icon?: string; img?: string; svg?: IconName }[]
   selected?: string
   onSelect: (v: string) => void
 }
@@ -237,7 +247,7 @@ interface OptionGridProps {
 function OptionGrid({ options, selected, onSelect }: OptionGridProps) {
   return (
     <div className={styles.optionGrid}>
-      {options.map(({ value, label, icon, img }) => (
+      {options.map(({ value, label, icon, img, svg }) => (
         <button
           key={value}
           className={[styles.option, selected === value ? styles.selectedOption : ''].join(' ')}
@@ -245,7 +255,9 @@ function OptionGrid({ options, selected, onSelect }: OptionGridProps) {
         >
           {img
             ? <img src={img} alt={label} className={styles.optionImg} />
-            : <span className={styles.optionIcon}>{icon}</span>
+            : svg
+              ? <span className={styles.optionSvg}><Icon name={svg} size={32} /></span>
+              : <span className={styles.optionIcon}>{icon}</span>
           }
           <span className={styles.optionLabel}>{label}</span>
         </button>

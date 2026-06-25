@@ -48,8 +48,9 @@ function resolveMood(answers: QuizAnswers): string {
     excited: 'Excited',
     sleepy: 'Tired',
     anxious: 'Attention Seeking',
+    curious: 'Curious',
   }
-  return answers.petMood ? map[answers.petMood] : 'Happy'
+  return (answers.petMood && map[answers.petMood]) || 'Happy'
 }
 
 function getMoodDescription(answers: QuizAnswers): string {

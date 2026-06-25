@@ -1,0 +1,104 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba($teal, 0.55);
+  backdrop-filter: blur(3px);
+  @include flex-center;
+  padding: $space-4;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.modal {
+  background: $white;
+  border-radius: $radius-3xl;
+  border: 2px dashed $orange-light;
+  box-shadow: 0 24px 64px rgba($teal, 0.35);
+  padding: $space-8;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+  animation: popIn 0.2s ease-out;
+}
+
+.iconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: $orange-pale;
+  @include flex-center;
+  font-size: 2rem;
+  border: 2px dashed $orange-light;
+}
+
+.iconDanger {
+  background: #fdecec;
+  border-color: #f5b5b5;
+}
+
+.title {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: $teal;
+}
+
+.message {
+  font-size: $font-size-base;
+  color: $gray-500;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: $space-4;
+  width: 100%;
+  margin-top: $space-2;
+
+  @include mobile-only {
+    flex-direction: column;
+    gap: $space-3;
+  }
+}
+
+.btn {
+  flex: 1;
+  min-width: 0;
+
+  @include mobile-only {
+    width: 100%;
+  }
+}
+
+.dangerBtn.dangerBtn {
+  background: #e23b3b;
+  border-color: #e23b3b;
+  box-shadow: 4px 4px 0 #a52121;
+
+  &:hover:not(:disabled) {
+    background: #c52d2d;
+    border-color: #c52d2d;
+    box-shadow: 6px 6px 0 #a52121;
+  }
+
+  &:active:not(:disabled) {
+    box-shadow: 2px 2px 0 #a52121;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}

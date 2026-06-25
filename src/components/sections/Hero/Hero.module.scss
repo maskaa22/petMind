@@ -6,8 +6,9 @@
   display: flex;
   align-items: center;
   position: relative;
-  // No overflow: hidden — corner blobs stay within bounds,
-  // and the bottom wave can bleed into the next section.
+  // Clip horizontal bleed of corner blobs (prevents mobile h-scroll),
+  // while the bottom wave still shows within bounds.
+  overflow-x: clip;
   padding: calc(68px + #{$space-16}) $space-4 calc(#{$space-16} + 72px);
 }
 
@@ -31,6 +32,11 @@
     border: 2px dashed rgba($white, 0.3);
     border-radius: 0 0 80% 0;
   }
+
+  @include mobile-only {
+    width: 150px;
+    height: 120px;
+  }
 }
 
 .cornerTeal {
@@ -50,6 +56,12 @@
     inset: 8px;
     border: 2px dashed rgba($white, 0.2);
     border-radius: 80% 0 0 0;
+  }
+
+  @include mobile-only {
+    width: 130px;
+    height: 110px;
+    bottom: 0;
   }
 }
 
@@ -208,6 +220,14 @@
   border-radius: $radius-3xl;
   padding: $space-4 $space-8;
   box-shadow: 4px 4px 0 $orange-pale;
+  max-width: 100%;
+
+  @include mobile-only {
+    gap: $space-4;
+    padding: $space-4 $space-5;
+    width: 100%;
+    justify-content: space-around;
+  }
 }
 
 .stat {

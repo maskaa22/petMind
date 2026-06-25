@@ -184,6 +184,55 @@
   40% { transform: scale(1.1); opacity: 1; }
 }
 
+// ── Quick question chips ──────────────────────────────
+.suggestions {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  padding: $space-3 $space-6 0;
+  background: $white;
+
+  // On mobile: single horizontal row you can swipe sideways.
+  @include mobile-only {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: $space-3 $space-4 $space-1;
+    scrollbar-width: none; // Firefox
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    touch-action: pan-x;
+    user-select: none;
+
+    &:active { cursor: grabbing; }
+    &::-webkit-scrollbar { display: none; } // WebKit
+  }
+}
+
+.suggestion {
+  @include button-reset;
+  background: $orange-pale;
+  border: 1.5px solid $orange-light;
+  border-radius: $radius-full;
+  padding: $space-2 $space-4;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $orange-dark;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  @include mobile-only {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background: $orange;
+    border-color: $orange;
+    color: $white;
+  }
+}
+
 // ── Input area ────────────────────────────────────────
 .inputArea {
   flex-shrink: 0;

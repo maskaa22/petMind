@@ -81,9 +81,123 @@
   line-height: 1.6;
 }
 
+// ── Care tips ─────────────────────────────────────────
+.tipsCard {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.tipsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: $gray-700;
+  line-height: 1.6;
+}
+
+.tipCheck {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  background: $green;
+  color: $white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.funFact {
+  background: $orange-pale;
+  border: 2px dashed $orange-light;
+  border-radius: $radius-2xl;
+  padding: $space-4 $space-5;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $gray-700;
+  line-height: 1.6;
+}
+
+.funFactLabel {
+  font-family: $font-display;
+  font-weight: 800;
+  color: $orange-dark;
+}
+
 .moodBig {
   font-size: $font-size-3xl;
   font-weight: 800;
+}
+
+.moodCols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-6;
+  padding-top: $space-4;
+  border-top: 1px solid $gray-100;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+    gap: $space-4;
+  }
+}
+
+.moodColTitle {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $gray-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-3;
+}
+
+.toyChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.toyChip {
+  background: $teal-pale;
+  color: $teal;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  padding: $space-2 $space-3;
+  border-radius: $radius-full;
+}
+
+.watchNote {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  background: $orange-pale;
+  border-left: 4px solid $orange;
+  border-radius: $radius-lg;
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  color: $gray-700;
+  line-height: 1.6;
+}
+
+.watchLabel {
+  font-family: $font-display;
+  font-weight: 800;
+  color: $orange-dark;
 }
 
 .needsGrid {
@@ -95,12 +209,69 @@
 .needCard {
   @include card;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: $space-3;
-  font-size: $font-size-sm;
-  font-weight: 500;
 }
 
 .needIcon {
   font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.needBody {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.needName {
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: 700;
+  color: $teal;
+}
+
+.needWhy {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  line-height: 1.6;
+}
+
+// ── Communication signals ─────────────────────────────
+.signalsHeader {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $gray-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: $space-4;
+  border-top: 1px solid $gray-100;
+}
+
+.signalsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $space-3;
+}
+
+.signalCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  background: $teal-pale;
+  border-radius: $radius-xl;
+  padding: $space-3 $space-4;
+}
+
+.signalName {
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  color: $teal;
+}
+
+.signalMeaning {
+  font-size: $font-size-sm;
+  color: $gray-600;
+  line-height: 1.5;
 }

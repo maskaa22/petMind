@@ -1,11 +1,12 @@
 import { Icon } from '@/components/Icon'
+import type { IconName } from '@/components/Icon'
 import styles from './SocialProof.module.scss'
 
-const METRICS = [
-  { value: '50,000+', label: 'Reports Generated', icon: '📊' },
-  { value: '4.9 / 5', label: 'Average Rating', icon: '⭐' },
-  { value: '120+', label: 'Countries', icon: '🌍' },
-  { value: '98%', label: 'Accuracy Score', icon: '🎯' },
+const METRICS: { value: string; label: string; icon: IconName }[] = [
+  { value: '50,000+', label: 'Reports Generated', icon: 'bar-chart' },
+  { value: '4.9 / 5', label: 'Average Rating', icon: 'star' },
+  { value: '120+', label: 'Countries', icon: 'users' },
+  { value: '98%', label: 'Accuracy Score', icon: 'target' },
 ]
 
 const TESTIMONIALS = [
@@ -13,6 +14,7 @@ const TESTIMONIALS = [
     quote: "I finally understand why my cat ignores me at night. The personality report was scarily accurate!",
     author: 'Sarah M.',
     role: 'Cat owner, 3 years',
+    date: '5 days ago',
     initials: 'SM',
     color: '#e8622a',
   },
@@ -20,6 +22,7 @@ const TESTIMONIALS = [
     quote: "My golden retriever's report nailed every single trait. Now I know why he acts out when guests come over.",
     author: 'James K.',
     role: 'Dog owner, 5 years',
+    date: '1 week ago',
     initials: 'JK',
     color: '#1a3a4a',
   },
@@ -27,6 +30,7 @@ const TESTIMONIALS = [
     quote: "The AI Coach answered questions my vet couldn't. It even caught an anxiety pattern I had been dismissing.",
     author: 'Priya L.',
     role: 'Rabbit owner, 2 years',
+    date: '2 weeks ago',
     initials: 'PL',
     color: '#5a9e3a',
   },
@@ -39,7 +43,7 @@ export function SocialProof() {
         <div className={styles.metrics}>
           {METRICS.map(({ value, label, icon }) => (
             <div key={label} className={styles.metric}>
-              <span className={styles.metricIcon}>{icon}</span>
+              <span className={styles.metricIcon}><Icon name={icon} size={26} /></span>
               <span className={styles.metricValue}>{value}</span>
               <span className={styles.metricLabel}>{label}</span>
             </div>
@@ -53,12 +57,15 @@ export function SocialProof() {
         </div>
 
         <div className={styles.testimonials}>
-          {TESTIMONIALS.map(({ quote, author, role, initials, color }) => (
+          {TESTIMONIALS.map(({ quote, author, role, date, initials, color }) => (
             <div key={author} className={styles.card}>
               <div className={styles.stars}>
-                {[1,2,3,4,5].map(i => (
-                  <Icon key={i} name="star" size={14} className={styles.starIcon} />
-                ))}
+                <span className={styles.starsRow}>
+                  {[1,2,3,4,5].map(i => (
+                    <Icon key={i} name="star" size={14} className={styles.starIcon} />
+                  ))}
+                </span>
+                <span className={styles.date}>{date}</span>
               </div>
               <p className={styles.quote}>"{quote}"</p>
               <div className={styles.author}>

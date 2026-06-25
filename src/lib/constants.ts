@@ -10,10 +10,12 @@ export const ROUTES = {
   QUIZ: '/quiz',
   ANALYSIS: '/analysis',
   PAYWALL: '/paywall',
+  CHECKOUT: '/checkout',
   DASHBOARD: '/dashboard',
   REPORTS: '/dashboard/reports',
   AI_CHAT: '/dashboard/chat',
   JOURNAL: '/dashboard/journal',
+  TRENDS: '/dashboard/trends',
   SETTINGS: '/dashboard/settings',
 } as const
 

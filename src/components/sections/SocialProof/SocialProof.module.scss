@@ -46,8 +46,15 @@
 }
 
 .metricIcon {
-  font-size: 1.5rem;
-  line-height: 1;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  border-radius: $radius-2xl;
+  background: $orange-pale;
+  color: $orange;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .metricValue {
@@ -134,7 +141,20 @@
 
 .stars {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.starsRow {
+  display: inline-flex;
   gap: 2px;
+}
+
+.date {
+  font-size: $font-size-xs;
+  color: $gray-400;
+  font-weight: 500;
 }
 
 .starIcon {

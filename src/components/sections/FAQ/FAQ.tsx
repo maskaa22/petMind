@@ -5,7 +5,7 @@ const FAQS = [
   { q: 'How does it work?', a: "You complete a short 8-question quiz about your pet's behavior, personality, and daily habits. Our AI analyzes the answers and generates a detailed personality report tailored to your specific pet." },
   { q: 'Is it accurate?', a: "Our analysis is based on established animal behavioral science combined with AI pattern recognition trained on thousands of pet profiles. While every pet is unique, our system provides highly relevant and personalized insights." },
   { q: 'What pets are supported?', a: "Currently we support cats, dogs, rabbits, birds, and hamsters. We're constantly expanding our database to cover more species and breeds." },
-  { q: 'How do subscriptions work?', a: "You can take the basic quiz for free and receive a teaser of your results. To unlock the full report, AI Chat, Journal, and Photo Analysis features, you can subscribe to our Monthly, Yearly, or Lifetime plans. Cancel anytime." },
+  { q: 'How do subscriptions work?', a: "You can take the basic quiz for free and receive a teaser of your results. To unlock the full report, AI Chat, Journal, and Trends features, you can upgrade to our Premium plan for $9/month. Cancel anytime." },
 ]
 
 export function FAQ() {

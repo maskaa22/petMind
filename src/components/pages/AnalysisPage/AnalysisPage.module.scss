@@ -46,89 +46,85 @@
   z-index: 1;
 }
 
-// ── Orbit animation ──────────────────────────────────
+// ── Paw-shaped loader ─────────────────────────────────
+// 4 toe beans arc above a central palm pad (brain core),
+// each pulsing in sequence to read as "loading".
 
-.orbitWrap {
+.pawWrap {
   position: relative;
-  width: 160px;
-  height: 160px;
-  @include flex-center;
+  width: 190px;
+  height: 180px;
 }
 
-.orbit1, .orbit2, .orbit3 {
+.toe {
   position: absolute;
-  border-radius: $radius-full;
-  @include flex-center;
+  border-radius: 50%;
+  animation: pawPulse 1.6s ease-in-out infinite;
 }
 
-.orbit1 {
-  inset: 0;
-  border: 2px dashed rgba($orange, 0.4);
-  animation: spin 6s linear infinite;
-
-  .dot {
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
-    background: $orange;
-    border-radius: $radius-full;
-    box-shadow: 0 0 8px rgba($orange, 0.5);
-  }
+// Outer toes — smaller, lower
+.toe1, .toe4 {
+  width: 32px;
+  height: 38px;
+}
+// Inner toes — larger, higher
+.toe2, .toe3 {
+  width: 36px;
+  height: 44px;
 }
 
-.orbit2 {
-  inset: 18px;
-  border: 2px dashed rgba($teal, 0.3);
-  animation: spin 4s linear infinite reverse;
-
-  .dot {
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
-    background: $teal;
-    border-radius: $radius-full;
-    box-shadow: 0 0 8px rgba($teal, 0.4);
-  }
-}
-
-.orbit3 {
-  inset: 36px;
-  border: 2px dashed rgba($green, 0.4);
-  animation: spin 8s linear infinite;
-
-  .dot {
-    position: absolute;
-    top: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 8px;
-    background: $green;
-    border-radius: $radius-full;
-    box-shadow: 0 0 6px rgba($green, 0.4);
-  }
-}
-
-.core {
-  width: 64px;
-  height: 64px;
+.toe1 {
+  top: 78px;
+  left: 18px;
   background: $orange;
-  border-radius: $radius-2xl;
+  box-shadow: 0 0 10px rgba($orange, 0.4);
+  animation-delay: 0s;
+}
+
+.toe2 {
+  top: 44px;
+  left: 56px;
+  background: $teal;
+  box-shadow: 0 0 10px rgba($teal, 0.35);
+  animation-delay: 0.2s;
+}
+
+.toe3 {
+  top: 44px;
+  right: 56px;
+  background: $green;
+  box-shadow: 0 0 10px rgba($green, 0.35);
+  animation-delay: 0.4s;
+}
+
+.toe4 {
+  top: 78px;
+  right: 18px;
+  background: $orange-light;
+  box-shadow: 0 0 10px rgba($orange, 0.3);
+  animation-delay: 0.6s;
+}
+
+// Palm pad = brain core
+.core {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -48px; // half of width — centering without transform
+  width: 96px;
+  height: 84px;
+  background: $orange;
+  border-radius: 48% 48% 46% 46% / 56% 56% 44% 44%;
   @include flex-center;
   color: $white;
-  box-shadow: 4px 4px 0 $orange-dark;
-  animation: corePulse 2.5s ease-in-out infinite;
+  box-shadow: 4px 5px 0 $orange-dark;
+  animation: pawPulse 1.6s ease-in-out infinite;
+  animation-delay: 0.8s;
 }
 
-@keyframes corePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+@keyframes pawPulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.55; }
+  45%      { transform: scale(1.05); opacity: 1; }
 }
 
 // ── Text ─────────────────────────────────────────────
@@ -218,11 +214,6 @@
 .chipCheck {
   color: $orange;
   flex-shrink: 0;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeSlide {

@@ -80,6 +80,25 @@
   box-shadow: 3px 3px 0 $orange-dark;
 }
 
+.linkLocked {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: rgba($white, 0.35);
+
+  &:hover {
+    color: rgba($white, 0.6);
+    background: rgba($white, 0.06);
+  }
+}
+
+.lockIcon {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
 .iconWrap {
   width: 32px;
   height: 32px;
@@ -111,6 +130,30 @@
   border-radius: $radius-xl;
 }
 
+.planFree {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  width: 100%;
+  background: rgba($white, 0.08);
+  border: 1px dashed rgba($white, 0.25);
+  color: rgba($white, 0.7);
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  padding: $space-2 $space-3;
+  border-radius: $radius-xl;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba($orange, 0.2);
+    border-color: rgba($orange, 0.4);
+    color: $orange-light;
+  }
+}
+
 // ── Wavy sidebar divider ──────────────────────────────
 .sidebarWave {
   flex-shrink: 0;
@@ -137,8 +180,9 @@
   flex-direction: column;
   overflow: hidden;
 
+  // Reserve room for the fixed bottom nav (~94px) plus a gap.
   @include mobile-only {
-    padding-bottom: 64px;
+    padding-bottom: 104px;
   }
 }
 
@@ -186,6 +230,10 @@
   gap: $space-3;
 }
 
+.moodPicker {
+  position: relative;
+}
+
 .contentBtn {
   @include button-reset;
   display: flex;
@@ -208,21 +256,91 @@
 .chevron {
   font-size: 0.75rem;
   opacity: 0.7;
+  transition: transform $transition-fast;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+// ── Mood dropdown ─────────────────────────────────────
+.moodBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.moodMenu {
+  position: absolute;
+  top: calc(100% + #{$space-2});
+  right: 0;
+  z-index: 50;
+  min-width: 180px;
+  background: $white;
+  border: 2px solid $orange-light;
+  border-radius: $radius-2xl;
+  padding: $space-2;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 12px 32px rgba($teal, 0.16);
+  animation: moodIn 0.14s ease-out;
+}
+
+@keyframes moodIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.moodOption {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  padding: $space-2 $space-3;
+  border-radius: $radius-xl;
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $teal;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $orange-pale; }
+}
+
+.moodOptionActive {
+  background: $orange-pale;
+  color: $orange-dark;
+}
+
+.moodCheck {
+  margin-left: auto;
+  color: $orange;
+  flex-shrink: 0;
 }
 
 .userAvatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: $teal;
+  background: $teal-pale;
   color: $white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: $font-display;
-  font-size: $font-size-sm;
-  font-weight: 800;
+  font-size: $font-size-lg;
   flex-shrink: 0;
+  overflow: hidden;
+  border: 2px dashed $teal;
+}
+
+.userAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 // ── Page content (Outlet) ─────────────────────────────
@@ -266,6 +384,12 @@
   transition: all $transition-fast;
   border-radius: $radius-xl;
   font-family: $font-display;
+}
+
+.bottomLocked {
+  @include button-reset;
+  cursor: pointer;
+  opacity: 0.5;
 }
 
 .bottomActive {

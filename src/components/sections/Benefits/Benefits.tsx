@@ -16,7 +16,7 @@ const BENEFITS: { icon: IconName; title: string; desc: string }[] = [
   {
     icon: 'message-circle',
     title: 'Communication Decoder',
-    desc: 'Learn to read the signals your pet sends every day — from body language to vocal cues.',
+    desc: 'Learn to read the signals your pet sends every day through their body language and behavior.',
   },
   {
     icon: 'heart',
@@ -31,7 +31,7 @@ const BENEFITS: { icon: IconName; title: string; desc: string }[] = [
   {
     icon: 'trending-up',
     title: 'Progress Tracking',
-    desc: 'Log daily moods and activities to track how your pet evolves over time.',
+    desc: 'Log daily moods and see beautiful charts that show how your pet evolves over time.',
   },
 ]
 

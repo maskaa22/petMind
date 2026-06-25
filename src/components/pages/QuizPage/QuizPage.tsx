@@ -56,7 +56,7 @@ export function QuizPage() {
 
   function back() {
     if (step > 1) setStep(s => s - 1)
-    else navigate(ROUTES.HOME)
+    else navigate(-1) // return to wherever the user came from (dashboard, landing…)
   }
 
   function patch(partial: Partial<QuizAnswers>) {

@@ -32,6 +32,7 @@ create table if not exists public.journal_entries (
   energy     int,
   appetite   int,
   sleep      int,
+  weight     numeric,
   notes      text,
   created_at timestamptz not null default now()
 );

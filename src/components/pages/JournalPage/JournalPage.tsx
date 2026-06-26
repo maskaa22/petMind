@@ -49,7 +49,8 @@ export function JournalPage() {
     setSaving(true)
     const petId = localStorage.getItem('petmind_active_pet')
     const created = await addJournalEntry(user.id, {
-      petId, mood: form.mood, energy: form.energy, appetite: form.appetite, sleep: form.sleep, notes: form.notes,
+      petId, mood: form.mood, energy: form.energy, appetite: form.appetite, sleep: form.sleep,
+      weight: form.weight ? Number(form.weight) : null, notes: form.notes,
     })
     // Also update the pet's weight & next vaccination from this entry.
     if (petId) {

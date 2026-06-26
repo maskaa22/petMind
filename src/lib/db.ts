@@ -97,6 +97,7 @@ export interface JournalEntry {
   energy: number
   appetite: number
   sleep: number
+  weight: number | null
   notes: string
   created_at: string
 }
@@ -113,7 +114,7 @@ export async function getJournalEntries(userId: string): Promise<JournalEntry[]>
 
 export async function addJournalEntry(
   userId: string,
-  entry: { petId?: string | null; mood: string; energy: number; appetite: number; sleep: number; notes: string },
+  entry: { petId?: string | null; mood: string; energy: number; appetite: number; sleep: number; weight?: number | null; notes: string },
 ): Promise<JournalEntry | null> {
   const { data, error } = await supabase
     .from('journal_entries')
@@ -124,6 +125,7 @@ export async function addJournalEntry(
       energy: entry.energy,
       appetite: entry.appetite,
       sleep: entry.sleep,
+      weight: entry.weight ?? null,
       notes: entry.notes,
     })
     .select()

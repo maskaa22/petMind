@@ -13,7 +13,7 @@ import styles from './DashboardLayout.module.scss'
 const NAV_ITEMS: { to: string; label: string; icon: IconName; end?: boolean; premium?: boolean }[] = [
   { to: ROUTES.DASHBOARD, label: 'Dashboard', icon: 'home', end: true },
   { to: ROUTES.JOURNAL, label: 'Journal', icon: 'book-open' },
-  { to: ROUTES.REPORTS, label: 'Reports', icon: 'bar-chart', premium: true },
+  { to: ROUTES.REPORTS, label: 'Personality', icon: 'bar-chart', premium: true },
   { to: ROUTES.AI_CHAT, label: 'AI Chat', icon: 'message-circle', premium: true },
   { to: ROUTES.TRENDS, label: 'Trends', icon: 'trending-up', premium: true },
   { to: ROUTES.SETTINGS, label: 'Settings', icon: 'settings' },

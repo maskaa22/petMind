@@ -1,4 +1,5 @@
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { generateReport } from '@/lib/quizLogic'
 import { useAuth } from '@/lib/auth'
 import { findMood } from '@/lib/moods'
@@ -10,16 +11,69 @@ import { Icon } from '@/components/Icon'
 import type { QuizAnswers } from '@/types'
 import styles from './DashboardPage.module.scss'
 
+// Journal moods → colour (light = top of the 3-D gradient, color = bottom).
+const MOOD_BARS = [
+  { key: '😊 Happy',   color: '#7eba5a', light: '#a3d182' },
+  { key: '😌 Calm',    color: '#4e8fa8', light: '#79b3c9' },
+  { key: '😄 Excited', color: '#f0a830', light: '#f7c46b' },
+  { key: '😴 Tired',   color: '#9b6dd6', light: '#bf9ee6' },
+  { key: '😟 Anxious', color: '#e26d8a', light: '#ef9bb0' },
+]
+
+const PET_IMAGE: Record<string, string> = {
+  cat: '/cat.png', dog: '/dog1.png', rabbit: '/rabbit.png',
+  bird: '/chiken.png', hamster: '/ho.png', other: '/cub.png',
+}
+
+// Custom X-axis tick that renders the pet's image instead of its name.
+function PetTick({ x, y, payload, imgByName }: {
+  x?: number; y?: number; payload?: { value: string }; imgByName?: Record<string, string>
+}) {
+  const name = payload?.value ?? ''
+  const img = imgByName?.[name]
+  const size = 38
+  if (x == null || y == null) return null
+  return img
+    ? <image href={img} x={x - size / 2} y={y + 6} width={size} height={size} />
+    : <text x={x} y={y + 20} textAnchor="middle" fontSize={12} fill="#525252">{name}</text>
+}
+
 export function DashboardPage() {
   const navigate = useNavigate()
   const { premium } = useAuth()
-  const { mood, pets, journal } = useOutletContext<DashboardContext>()
+  const { mood, pets, journal, activePet } = useOutletContext<DashboardContext>()
   const { dailyTip } = usePrefs()
 
   const raw = localStorage.getItem('petmind_quiz')
-  const answers: QuizAnswers = raw ? JSON.parse(raw) : {}
+  const localAnswers: QuizAnswers = raw ? JSON.parse(raw) : {}
+  // Personality / needs / communication come from the saved quiz (stable — the
+  // mood switcher never changes them). Fall back to localStorage before pets load.
+  const answers: QuizAnswers = activePet?.quiz ?? localAnswers
   const report = generateReport(answers)
-  const petName = answers.petName || 'Your Pet'
+  const petName = activePet?.name || answers.petName || 'Your Pet'
+
+  // ── Mood breakdown per pet (one stacked bar per pet) ──
+  const moodOverview = pets
+    .map(p => {
+      const row: Record<string, string | number> = { name: p.name }
+      for (const m of MOOD_BARS) row[m.key] = 0
+      for (const e of journal) {
+        if (e.pet_id === p.id && row[e.mood] !== undefined) {
+          row[e.mood] = (row[e.mood] as number) + 1
+        }
+      }
+      const total = MOOD_BARS.reduce((n, m) => n + (row[m.key] as number), 0)
+      return { row, total }
+    })
+    .filter(x => x.total > 0)
+    .map(x => x.row)
+
+  // Map each pet name to its image for the chart axis.
+  const petImgByName: Record<string, string> = {}
+  for (const p of pets) {
+    const img = PET_IMAGE[p.quiz?.petType ?? '']
+    if (img) petImgByName[p.name] = img
+  }
 
   // Which pets were logged today? (data comes from the layout — no refetch)
   const todayStr = new Date().toDateString()
@@ -189,6 +243,53 @@ export function DashboardPage() {
           </>
         )}
       </div>
+
+      {/* Mood breakdown per pet */}
+      {moodOverview.length > 0 && (
+        <div className={styles.moodOverviewSection}>
+          <h2 className={styles.sectionTitle}>Mood overview — all pets</h2>
+          <div className={styles.moodOverviewCard}>
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={moodOverview} margin={{ top: 10, right: 16, left: -16, bottom: 8 }}>
+                <defs>
+                  {MOOD_BARS.map(m => (
+                    <linearGradient key={m.key} id={`bar-${m.color}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor={m.light} />
+                      <stop offset="100%" stopColor={m.color} />
+                    </linearGradient>
+                  ))}
+                  <filter id="barShadow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#1a3a4a" floodOpacity="0.22" />
+                  </filter>
+                </defs>
+                <CartesianGrid strokeDasharray="4 4" stroke="#eee" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  height={52}
+                  interval={0}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={props => <PetTick {...props} imgByName={petImgByName} />}
+                />
+                <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#a3a3a3' }} axisLine={false} tickLine={false} width={32} />
+                <Tooltip contentStyle={{ borderRadius: 16, border: '2px dashed #f5a07a', fontFamily: 'inherit' }} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: 13, fontWeight: 600 }} />
+                {MOOD_BARS.map((m, i) => (
+                  <Bar
+                    key={m.key}
+                    dataKey={m.key}
+                    stackId="mood"
+                    fill={`url(#bar-${m.color})`}
+                    radius={i === MOOD_BARS.length - 1 ? [8, 8, 0, 0] : undefined}
+                    maxBarSize={70}
+                    style={{ filter: 'url(#barShadow)' }}
+                  />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
 
       {/* Emotional Profile — premium only */}
       <div className={styles.profileSection}>

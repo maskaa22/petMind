@@ -28,7 +28,7 @@ export function ReportsPage() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Full Report — {petName}</h1>
+      <h1 className={styles.title}>{petName}'s Personality</h1>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Personality Type</h2>

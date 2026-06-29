@@ -4,19 +4,29 @@ import { PERSONALITY_PROFILES, fill } from '@/lib/personalities'
 import { findMood, MOOD_GUIDE, toyIcon } from '@/lib/moods'
 import type { DashboardContext } from '@/lib/moods'
 import { needInfo, commSignals } from '@/lib/insights'
+import { adaptiveTips, weeklySummary } from '@/lib/journalInsights'
 import type { QuizAnswers } from '@/types'
 import styles from './ReportsPage.module.scss'
 
 export function ReportsPage() {
-  const { mood } = useOutletContext<DashboardContext>()
+  const { mood, journal, activePet } = useOutletContext<DashboardContext>()
 
+  // Personality comes from the saved quiz (stable), fallback to localStorage.
   const raw = localStorage.getItem('petmind_quiz')
-  const answers: QuizAnswers = raw ? JSON.parse(raw) : {}
+  const answers: QuizAnswers = activePet?.quiz ?? (raw ? JSON.parse(raw) : {})
   const report = generateReport(answers)
-  const petName = answers.petName || 'Your Pet'
+  const petName = activePet?.name || answers.petName || 'Your Pet'
 
   const currentMood = findMood(mood)
   const moodGuide = MOOD_GUIDE[currentMood.value] ?? MOOD_GUIDE.calm
+
+  // ── Journal-driven sections (this pet) ──
+  const now = Date.now()
+  const petEntries = journal.filter(e => e.pet_id === activePet?.id)
+  const within = (days: number) =>
+    petEntries.filter(e => (now - new Date(e.created_at).getTime()) / 86_400_000 <= days)
+  const tips = adaptiveTips(within(3), petName)
+  const summary = weeklySummary(within(7), petName)
 
   const profile = PERSONALITY_PROFILES[report.personalityType]
   const traits = [
@@ -63,6 +73,38 @@ export function ReportsPage() {
           </div>
         </div>
       </section>
+
+      {/* ── From the journal: adaptive tips (last 3 days) ── */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Tips from {petName}'s journal · last 3 days</h2>
+        <div className={styles.tipsCard}>
+          {tips.length > 0 ? (
+            <ul className={styles.tipsList}>
+              {tips.map(t => (
+                <li key={t.text} className={styles.tipItem}>
+                  <span className={t.warn ? styles.tipWarn : styles.tipCheck}>{t.warn ? '⚠️' : '✓'}</span>
+                  <span>{t.text}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.emptyHint}>
+              Log {petName}'s mood, energy, appetite and sleep over the next few days and personalised tips will appear here.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* ── Weekly summary (last 7 days) ── */}
+      {summary && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>This week · last 7 days</h2>
+          <div className={styles.weekCard}>
+            <span className={styles.weekIcon}>📅</span>
+            <p>{summary}</p>
+          </div>
+        </section>
+      )}
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Mood Analysis</h2>

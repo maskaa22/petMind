@@ -446,6 +446,31 @@
 
 .petOptionName { flex: 1; }
 
+.petRow {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  .petOption { flex: 1; }
+}
+
+.petDelete {
+  @include button-reset;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  color: $gray-300;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+
+  &:hover { background: #fdecec; color: #e23b3b; }
+}
+
 .petAdd {
   @include button-reset;
   display: flex;

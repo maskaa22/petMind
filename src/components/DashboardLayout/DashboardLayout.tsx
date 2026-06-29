@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { useAuth } from '@/lib/auth'
-import { getPets, getJournalEntries } from '@/lib/db'
+import { getPets, getJournalEntries, deletePet as dbDeletePet } from '@/lib/db'
 import type { Pet, JournalEntry } from '@/lib/db'
 import { MOODS, findMood } from '@/lib/moods'
 import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
 import { Loader } from '@/components/Loader'
+import { ConfirmModal } from '@/components/ConfirmModal'
 import styles from './DashboardLayout.module.scss'
 
 const NAV_ITEMS: { to: string; label: string; icon: IconName; end?: boolean; premium?: boolean }[] = [
@@ -57,6 +58,7 @@ export function DashboardLayout() {
   const [dataLoading, setDataLoading] = useState(true)
   const [petsOpen, setPetsOpen] = useState(false)
   const [switching, setSwitching] = useState(false)
+  const [petToDelete, setPetToDelete] = useState<Pet | null>(null)
   const activePetId = localStorage.getItem('petmind_active_pet')
 
   useEffect(() => {
@@ -92,6 +94,31 @@ export function DashboardLayout() {
     navigate(ROUTES.QUIZ)
   }
 
+  async function confirmDeletePet() {
+    const p = petToDelete
+    if (!p) return
+    setPetToDelete(null)
+    setPetsOpen(false)
+    await dbDeletePet(p.id) // cascades to this pet's journal entries
+    const remaining = pets.filter(x => x.id !== p.id)
+    setPets(remaining)
+
+    // If we deleted the active pet, switch to another (or back to the quiz).
+    if (p.id === activePet?.id) {
+      setSwitching(true)
+      if (remaining.length) {
+        const next = remaining[0]
+        localStorage.setItem('petmind_active_pet', next.id)
+        if (next.quiz) localStorage.setItem('petmind_quiz', JSON.stringify(next.quiz))
+        window.location.href = ROUTES.DASHBOARD
+      } else {
+        localStorage.removeItem('petmind_active_pet')
+        localStorage.removeItem('petmind_quiz')
+        navigate(ROUTES.QUIZ)
+      }
+    }
+  }
+
   function setMood(value: string) {
     setMoodState(value)
     setMoodOpen(false)
@@ -106,6 +133,18 @@ export function DashboardLayout() {
   return (
     <div className={styles.shell}>
       {switching && <Loader label="Switching pet…" />}
+
+      <ConfirmModal
+        open={!!petToDelete}
+        emoji="🗑️"
+        danger
+        title={`Delete ${petToDelete?.name ?? 'pet'}?`}
+        message="This permanently removes this pet and all its journal entries. This can't be undone."
+        confirmLabel="Delete pet"
+        cancelLabel="Keep"
+        onConfirm={confirmDeletePet}
+        onClose={() => setPetToDelete(null)}
+      />
 
       {/* ── Sidebar (desktop) ── */}
       <nav className={styles.sidebar}>
@@ -244,7 +283,7 @@ export function DashboardLayout() {
                       const img = PET_IMAGE[p.quiz?.petType ?? '']
                       const isActive = p.id === activePetId || (!activePetId && p.quiz?.petName === quiz.petName)
                       return (
-                        <li key={p.id}>
+                        <li key={p.id} className={styles.petRow}>
                           <button
                             className={`${styles.petOption} ${isActive ? styles.petOptionActive : ''}`}
                             onClick={() => switchPet(p)}
@@ -254,6 +293,13 @@ export function DashboardLayout() {
                             </span>
                             <span className={styles.petOptionName}>{p.name}</span>
                             {isActive && <Icon name="check" size={14} className={styles.moodCheck} />}
+                          </button>
+                          <button
+                            className={styles.petDelete}
+                            onClick={() => setPetToDelete(p)}
+                            aria-label={`Delete ${p.name}`}
+                          >
+                            ✕
                           </button>
                         </li>
                       )

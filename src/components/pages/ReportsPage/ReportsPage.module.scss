@@ -120,6 +120,36 @@
   font-weight: 700;
 }
 
+.tipWarn {
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.emptyHint {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  line-height: 1.6;
+}
+
+.weekCard {
+  @include card;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  background: $teal-pale;
+  border: 2px dashed $teal-light;
+  font-size: $font-size-base;
+  color: $teal;
+  line-height: 1.7;
+}
+
+.weekIcon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
 .funFact {
   background: $orange-pale;
   border: 2px dashed $orange-light;

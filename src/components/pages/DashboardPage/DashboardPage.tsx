@@ -1,6 +1,8 @@
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { generateReport } from '@/lib/quizLogic'
+import { updatePet } from '@/lib/db'
+import type { Pet } from '@/lib/db'
 import { useAuth } from '@/lib/auth'
 import { findMood } from '@/lib/moods'
 import type { DashboardContext } from '@/lib/moods'
@@ -41,8 +43,15 @@ function PetTick({ x, y, payload, imgByName }: {
 export function DashboardPage() {
   const navigate = useNavigate()
   const { premium } = useAuth()
-  const { mood, pets, journal, activePet } = useOutletContext<DashboardContext>()
+  const { mood, pets, journal, activePet, setPets } = useOutletContext<DashboardContext>()
   const { dailyTip } = usePrefs()
+
+  async function markVaccineDone(pet: Pet) {
+    const d = new Date()
+    const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    setPets(pets.map(p => p.id === pet.id ? { ...p, last_vaccination: today, next_vaccination: null } : p))
+    await updatePet(pet.id, { last_vaccination: today, next_vaccination: null })
+  }
 
   const raw = localStorage.getItem('petmind_quiz')
   const localAnswers: QuizAnswers = raw ? JSON.parse(raw) : {}
@@ -190,14 +199,23 @@ export function DashboardPage() {
 
       {vaccineDue.map(p => {
         const days = Math.ceil((new Date(p.next_vaccination!).getTime() - Date.now()) / 86_400_000)
+        const overdue = days < 0
         return (
-          <div key={p.id} className={styles.reminderVaccine}>
+          <div key={p.id} className={`${styles.reminderVaccine} ${overdue ? styles.reminderOverdue : ''}`}>
+            <button
+              className={styles.vaccCheck}
+              onClick={() => markVaccineDone(p)}
+              aria-label={`Mark ${p.name}'s vaccination done`}
+              title="Mark as done"
+            >
+              ✓
+            </button>
             <span className={styles.reminderIcon}>💉</span>
             <span className={styles.reminderText}>
-              {days < 0
-                ? <><strong>{p.name}</strong>'s vaccination is overdue (was {p.next_vaccination}).</>
+              {overdue
+                ? <><strong>{p.name}</strong>'s vaccination is overdue (was {p.next_vaccination}). Tick when done.</>
                 : days === 0
-                  ? <><strong>{p.name}</strong>'s vaccination is due today!</>
+                  ? <><strong>{p.name}</strong>'s vaccination is due today! Tick when done.</>
                   : <><strong>{p.name}</strong>'s vaccination is due in {days} day{days > 1 ? 's' : ''} ({p.next_vaccination}).</>}
             </span>
           </div>

@@ -24,6 +24,64 @@
   margin-top: $space-1;
 }
 
+.headerActions {
+  display: flex;
+  gap: $space-3;
+  flex-wrap: wrap;
+}
+
+// ── Vaccination modal ─────────────────────────────────
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba($teal, 0.55);
+  backdrop-filter: blur(3px);
+  @include flex-center;
+  padding: $space-4;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.modal {
+  background: $white;
+  border-radius: $radius-3xl;
+  border: 2px dashed $orange-light;
+  box-shadow: 0 24px 64px rgba($teal, 0.3);
+  padding: $space-8;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  animation: popIn 0.2s ease-out;
+}
+
+.modalTitle {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: 800;
+  color: $teal;
+}
+
+.modalSub {
+  font-size: $font-size-sm;
+  color: $gray-500;
+  margin-top: -$space-2;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-3;
+  margin-top: $space-2;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .formCard {
   @include card;
   display: flex;

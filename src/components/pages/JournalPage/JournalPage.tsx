@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Icon } from '@/components/Icon'
+import { DatePicker } from '@/components/DatePicker'
 import { useAuth } from '@/lib/auth'
 import { addJournalEntry, deleteJournalEntry, updatePet } from '@/lib/db'
 import type { DashboardContext } from '@/lib/moods'
@@ -18,7 +19,7 @@ const JOURNAL_TO_MOOD: Record<string, string> = {
   '😟 Anxious': 'anxious',
 }
 
-const EMPTY_FORM = { mood: '', energy: 5, appetite: 5, sleep: 5, notes: '', weight: '', vaccination: '' }
+const EMPTY_FORM = { mood: '', energy: 5, appetite: 5, sleep: 5, notes: '', weight: '' }
 
 function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -31,17 +32,44 @@ export function JournalPage() {
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
 
+  // Vaccination modal
+  const [vaccOpen, setVaccOpen] = useState(false)
+  const [lastVacc, setLastVacc] = useState('')
+  const [nextVacc, setNextVacc] = useState('')
+  const [savingVacc, setSavingVacc] = useState(false)
+
   // Only this pet's entries.
   const petJournal = journal.filter(e => e.pet_id === activePet?.id)
 
   function openForm() {
-    // Prefill weight / vaccination from the active pet's current values.
-    setForm({
-      ...EMPTY_FORM,
-      weight: activePet?.weight != null ? String(activePet.weight) : '',
-      vaccination: activePet?.next_vaccination ?? '',
-    })
+    // Prefill weight from the active pet's current value.
+    setForm({ ...EMPTY_FORM, weight: activePet?.weight != null ? String(activePet.weight) : '' })
     setShowForm(true)
+  }
+
+  function openVacc() {
+    setLastVacc(activePet?.last_vaccination ?? '')
+    setNextVacc(activePet?.next_vaccination ?? '')
+    setVaccOpen(true)
+  }
+
+  async function saveVacc() {
+    if (!activePet || savingVacc) return
+    setSavingVacc(true)
+    const { error } = await updatePet(activePet.id, {
+      last_vaccination: lastVacc || null,
+      next_vaccination: nextVacc || null,
+    })
+    setSavingVacc(false)
+    if (error) {
+      // Most likely the last_vaccination column is missing — run migration_07.sql.
+      alert(`Could not save vaccination: ${error}`)
+      return
+    }
+    setPets(pets.map(p => p.id === activePet.id
+      ? { ...p, last_vaccination: lastVacc || null, next_vaccination: nextVacc || null }
+      : p))
+    setVaccOpen(false)
   }
 
   async function save() {
@@ -52,15 +80,11 @@ export function JournalPage() {
       petId, mood: form.mood, energy: form.energy, appetite: form.appetite, sleep: form.sleep,
       weight: form.weight ? Number(form.weight) : null, notes: form.notes,
     })
-    // Also update the pet's weight & next vaccination from this entry.
+    // Also update the pet's current weight from this entry.
     if (petId) {
-      await updatePet(petId, {
-        weight: form.weight ? Number(form.weight) : null,
-        next_vaccination: form.vaccination || null,
-      })
-      // Reflect the pet change in the shared context so reminders update instantly.
+      await updatePet(petId, { weight: form.weight ? Number(form.weight) : null })
       setPets(pets.map(p => p.id === petId
-        ? { ...p, weight: form.weight ? Number(form.weight) : null, next_vaccination: form.vaccination || null }
+        ? { ...p, weight: form.weight ? Number(form.weight) : null }
         : p))
     }
     setSaving(false)
@@ -84,7 +108,10 @@ export function JournalPage() {
           <h1 className={styles.title}>{activePet ? `${activePet.name}'s Journal` : 'Pet Journal'}</h1>
           <p className={styles.sub}>Track your pet's daily wellbeing</p>
         </div>
-        <Button onClick={() => (showForm ? setShowForm(false) : openForm())}>+ New Entry</Button>
+        <div className={styles.headerActions}>
+          <Button variant="secondary" onClick={openVacc}>💉 Vaccination</Button>
+          <Button onClick={() => (showForm ? setShowForm(false) : openForm())}>+ New Entry</Button>
+        </div>
       </div>
 
       {showForm && (
@@ -116,15 +143,6 @@ export function JournalPage() {
                 type="number" min="0" step="0.1" placeholder="e.g. 4.2"
                 value={form.weight}
                 onChange={e => setForm(f => ({ ...f, weight: e.target.value }))}
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Next vaccination</label>
-              <input
-                className={styles.numInput}
-                type="date"
-                value={form.vaccination}
-                onChange={e => setForm(f => ({ ...f, vaccination: e.target.value }))}
               />
             </div>
             <div className={styles.field}>
@@ -163,6 +181,28 @@ export function JournalPage() {
               {e.notes && <p className={styles.entryNotes}>{e.notes}</p>}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* ── Vaccination modal ── */}
+      {vaccOpen && (
+        <div className={styles.modalOverlay} onClick={() => setVaccOpen(false)}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>💉 Vaccination</h3>
+            <p className={styles.modalSub}>Track {activePet?.name ?? 'your pet'}'s vaccination dates.</p>
+            <div className={styles.field}>
+              <span className={styles.label}>Last vaccination (done)</span>
+              <DatePicker value={lastVacc} onChange={setLastVacc} placeholder="Pick a date" />
+            </div>
+            <div className={styles.field}>
+              <span className={styles.label}>Next vaccination (planned)</span>
+              <DatePicker value={nextVacc} onChange={setNextVacc} placeholder="Pick a date" />
+            </div>
+            <div className={styles.modalActions}>
+              <Button variant="ghost" onClick={() => setVaccOpen(false)}>Cancel</Button>
+              <Button onClick={saveVacc} disabled={savingVacc}>{savingVacc ? 'Saving…' : 'Save'}</Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

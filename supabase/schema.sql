@@ -18,6 +18,7 @@ create table if not exists public.pets (
   name       text not null,
   age              numeric,           -- years (add more fields anytime)
   weight           numeric,           -- kg
+  last_vaccination date,              -- date the last vaccination was done
   next_vaccination date,              -- date of the next due vaccination
   subspecies       text,              -- e.g. Hamster / Snake (duplicates type for cat/dog/rabbit)
   quiz             jsonb,             -- full quiz answers (for the report)

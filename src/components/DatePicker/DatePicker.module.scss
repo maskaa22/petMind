@@ -1,0 +1,149 @@
+@use '@/styles/tokens' as *;
+@use '@/styles/mixins' as *;
+
+.wrap {
+  position: relative;
+}
+
+.field {
+  @include button-reset;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: $white;
+  border: 2px solid $gray-200;
+  border-radius: $radius-xl;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: border-color $transition-fast;
+
+  &:hover { border-color: $orange-light; }
+}
+
+.value { color: $teal; }
+.placeholder { color: $gray-300; }
+
+.icon {
+  color: $orange;
+  flex-shrink: 0;
+}
+
+// ── Popover ───────────────────────────────────────────
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.cal {
+  position: absolute;
+  top: calc(100% + #{$space-2});
+  left: 0;
+  z-index: 50;
+  width: 280px;
+  background: $white;
+  border: 2px solid $orange-light;
+  border-radius: $radius-2xl;
+  padding: $space-4;
+  box-shadow: 0 16px 40px rgba($teal, 0.18);
+  animation: calIn 0.14s ease-out;
+}
+
+@keyframes calIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.calHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-3;
+}
+
+.monthLabel {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: $font-size-base;
+  color: $teal;
+}
+
+.navBtn {
+  @include button-reset;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: $orange;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $orange-pale; }
+}
+
+.weekRow,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $gray-400;
+  padding-bottom: $space-2;
+}
+
+.day {
+  @include button-reset;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $teal;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover { background: $orange-pale; color: $orange-dark; }
+}
+
+.daySelected {
+  background: $orange !important;
+  color: $white !important;
+  box-shadow: 2px 2px 0 $orange-dark;
+}
+
+.dayToday {
+  border: 2px dashed $orange-light;
+}
+
+.calFoot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $space-3;
+  padding-top: $space-3;
+  border-top: 1px dashed $gray-200;
+}
+
+.footBtn {
+  @include button-reset;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: $font-size-sm;
+  color: $orange;
+  cursor: pointer;
+
+  &:hover { text-decoration: underline; }
+}

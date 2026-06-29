@@ -5,7 +5,7 @@ export type IconName =
   | 'brain' | 'sparkles' | 'shield' | 'zap' | 'heart' | 'check-circle'
   | 'arrow-right' | 'star' | 'users' | 'target' | 'eye' | 'lock'
   | 'check' | 'paw-print' | 'activity' | 'camera' | 'trending-up'
-  | 'moon' | 'play' | 'compass' | 'bowl' | 'eye-off'
+  | 'moon' | 'play' | 'compass' | 'bowl' | 'eye-off' | 'calendar'
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName
@@ -179,6 +179,14 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 11 8 11 8a13.16 13.16 0 0 1-1.67 2.68" />
       <path d="M6.61 6.61A13.526 13.526 0 0 0 1 12s4 8 11 8a9.74 9.74 0 0 0 5.39-1.61" />
       <line x1="2" y1="2" x2="22" y2="22" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
     </>
   ),
 }

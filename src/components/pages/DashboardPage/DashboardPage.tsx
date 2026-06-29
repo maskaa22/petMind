@@ -22,7 +22,7 @@ const MOOD_BARS = [
 
 const PET_IMAGE: Record<string, string> = {
   cat: '/cat.png', dog: '/dog1.png', rabbit: '/rabbit.png',
-  bird: '/chiken.png', hamster: '/ho.png', other: '/cub.png',
+  bird: '/chiken.png', hamster: '/ho.png', other: '/chameleon.png',
 }
 
 // Custom X-axis tick that renders the pet's image instead of its name.

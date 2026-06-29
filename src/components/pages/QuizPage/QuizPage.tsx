@@ -6,6 +6,7 @@ import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
 import { useAuth } from '@/lib/auth'
 import { createPet } from '@/lib/db'
+import { isCategory } from '@/lib/species'
 import type { QuizAnswers, PetType, PetAge, PetMood, PetActivity, StrangerReaction } from '@/types'
 import styles from './QuizPage.module.scss'
 
@@ -24,7 +25,7 @@ const PET_MOOD_FOLDER: Partial<Record<string, string>> = {
   rabbit:  'rabbit',
   bird:    'chicken',
   hamster: 'ho',
-  other:   'cub', // "Cow"
+  other:   'chameleon',
 }
 
 // Map quiz age buckets to a representative number (years).
@@ -47,6 +48,9 @@ export function QuizPage() {
       const pet = await createPet(user.id, {
         name: answers.petName?.trim() || 'My pet',
         age: answers.petAge ? AGE_YEARS[answers.petAge] ?? null : null,
+        // Concrete types duplicate the type as subspecies; categories (Rodents/
+        // Reptiles) stay null until the user picks the subspecies in the chat.
+        subspecies: isCategory(answers.petType) ? null : (answers.petType ?? null),
         quiz: answers,
       })
       if (pet) localStorage.setItem('petmind_active_pet', pet.id)
@@ -98,8 +102,8 @@ export function QuizPage() {
                 { value: 'dog',     label: 'Dog',     img: '/dog1.png' },
                 { value: 'rabbit',  label: 'Rabbit',  img: '/rabbit.png' },
                 { value: 'bird',    label: 'Bird',    img: '/chiken.png' },
-                { value: 'hamster', label: 'Hamster', img: '/ho.png' },
-                { value: 'other',   label: 'Cow',     img: '/cub.png' },
+                { value: 'hamster', label: 'Rodents',  img: '/ho.png' },
+                { value: 'other',   label: 'Reptiles', img: '/chameleon.png' },
               ]}
               selected={answers.petType}
               onSelect={v => patch({ petType: v as PetType })}

@@ -122,24 +122,23 @@ const TRAINING_BY_TYPE: Record<string, string> = {
   cat: "Cats learn well with patience — just don't expect dog-style obedience. Use a clicker and treats to teach 'come', 'sit', 'high-five' or targeting a stick. Keep sessions under 3 minutes and always end before {name} loses interest. Litter habits reinforce themselves with a clean, quiet box.",
   rabbit: "Rabbits are smart and clicker-trainable! Litter training comes first, then 'come', 'spin' or 'stand' using their favourite veg as a reward. Train at floor level so {name} feels safe, keep it calm, and never chase or grab — fear undoes progress fast.",
   bird: "Birds are exceptional learners. Begin with 'step-up' onto your hand, then target training, recall and even words through repetition. Reward with a favourite seed the instant {name} responds. Short, daily, positive sessions build both skills and trust.",
-  hamster: "Hamsters learn through gentle hand-taming rather than commands. Start by letting {name} take treats from your palm, then teach 'come' to a sound and simple stand-up or maze tasks. Go slow, work during their awake hours, and never wake them to train.",
-  other: "Whatever the species, the same rules apply: short positive sessions, reward the wanted behaviour the instant it happens, use a consistent cue, and never punish. {name} will learn far faster through encouragement than correction.",
+  hamster: "Small rodents like a {species} learn through gentle hand-taming rather than commands. Let {name} take treats from your palm, then teach 'come' to a sound and simple maze tasks. Go slow, work during their awake hours, and never wake them to train.",
+  other: "Reptiles like a {species} don't train like cats or dogs, but they do learn routines. Use target training with a stick, hand-feed to build tameness, and keep handling short and consistent. A calm, warm environment matters most for {name}.",
 }
 
-function trainingReply(question: string, petName: string, petType?: string): string | null {
+function trainingReply(question: string, petType?: string): string | null {
   const q = question.toLowerCase()
   const hit = TRAINING_KEYWORDS.some(kw => q.includes(kw))
   if (!hit) return null
-  const text = TRAINING_BY_TYPE[petType ?? ''] ?? TRAINING_BY_TYPE.other
-  return text.split('{name}').join(petName)
+  return TRAINING_BY_TYPE[petType ?? ''] ?? TRAINING_BY_TYPE.other
 }
 
-export function getCoachReply(question: string, petName: string, petType?: string): string {
+export function getCoachReply(question: string, petName: string, petType?: string, species?: string): string {
   const q = question.toLowerCase()
 
   // Training is answered with species-specific guidance.
-  const training = trainingReply(question, petName, petType)
-  if (training) return training
+  const training = trainingReply(question, petType)
+  if (training) return fill(training, petName, species)
 
   let best: Topic | null = null
   let bestScore = 0
@@ -153,6 +152,9 @@ export function getCoachReply(question: string, petName: string, petType?: strin
 
   // Vary the fallback by question length so repeats feel less canned.
   const fallback = FALLBACKS[question.trim().length % FALLBACKS.length]
-  const reply = best ? best.answer : fallback
-  return reply.split('{name}').join(petName)
+  return fill(best ? best.answer : fallback, petName, species)
+}
+
+function fill(text: string, petName: string, species?: string): string {
+  return text.split('{name}').join(petName).split('{species}').join(species ?? 'pet')
 }

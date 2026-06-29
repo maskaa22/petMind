@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useOutletContext } from 'react-router-dom'
 import { useAuth } from '@/lib/auth'
 import { getCoachReply } from '@/lib/coach'
+import { setPetSubspecies } from '@/lib/db'
+import { categoryOf, isCategory, speciesLabel } from '@/lib/species'
+import type { DashboardContext } from '@/lib/moods'
 import { ROUTES } from '@/lib/constants'
 import styles from './AIChatPage.module.scss'
 
@@ -21,7 +24,7 @@ const PET_IMAGE: Record<string, string> = {
   rabbit: '/rabbit.png',
   bird: '/chiken.png',
   hamster: '/ho.png',
-  other: '/cub.png',
+  other: '/chameleon.png',
 }
 
 function getQuiz(): { petName?: string; petType?: string } {
@@ -29,47 +32,50 @@ function getQuiz(): { petName?: string; petType?: string } {
   catch { return {} }
 }
 
-// Preset questions the coach can answer instantly. Use {name} for the pet's name.
+// Preset questions the coach answers instantly. {name}/{species} are filled in.
 const QUICK_QA: { q: string; a: string }[] = [
   {
     q: 'Why does {name} ignore me sometimes?',
-    a: "It's rarely personal! {name} often tunes out when focused on a scent, sound or task. Instead of repeating their name, approach calmly with a toy or treat — engagement works better than insistence.",
+    a: "It's rarely personal! {name} often tunes out when focused on a scent, sound or task. Approach calmly rather than repeating their name — engagement works better than insistence.",
   },
   {
     q: 'How can I reduce {name}\'s anxiety?',
-    a: 'Predictability is your best tool. Keep feeding, play and rest times consistent, give {name} a quiet safe space to retreat to, and avoid sudden loud changes. Calm routines lower stress fast.',
+    a: 'Predictability is your best tool. Keep feeding and rest times consistent, give {name} a quiet safe space, and avoid sudden loud changes. Calm routines lower stress fast.',
   },
   {
-    q: 'What toys are best for {name}?',
-    a: 'Match toys to energy: puzzle feeders and snuffle mats for curious minds, wand or chase toys for active bursts, and soft comfort toys for winding down. Rotate 2–3 at a time to keep novelty high.',
+    q: 'What does a {species} need to stay healthy?',
+    a: 'A {species} thrives on the right diet, a clean and correctly set-up habitat, and daily interaction or enrichment. Keep an eye on appetite, energy and toileting — changes there are the earliest signs something is off with {name}.',
   },
   {
-    q: 'Why is {name} more active at night?',
-    a: 'Many pets are naturally crepuscular — most active at dawn and dusk. A good play session and a small meal in the evening helps {name} burn energy and settle for the night.',
+    q: 'What toys or enrichment suit a {species}?',
+    a: 'For a {species}, rotate enrichment that matches their instincts — foraging, exploring, climbing or chewing as appropriate. Introduce one new thing at a time so {name} stays curious, not overwhelmed.',
   },
   {
     q: 'How do I build more trust with {name}?',
-    a: 'Let {name} set the pace. Reward voluntary closeness, use a calm voice, and keep interactions positive and pressure-free. Trust grows from consistency and respect for their boundaries.',
+    a: 'Let {name} set the pace. Reward voluntary closeness, move slowly, and keep interactions calm and pressure-free. Trust grows from consistency and respect for their boundaries.',
   },
 ]
 
 export function AIChatPage() {
   const { premium } = useAuth()
+  const { dataLoading, pets, setPets, activePet } = useOutletContext<DashboardContext>()
   const quiz = getQuiz()
-  const petName = quiz.petName || 'your pet'
-  const petImg = PET_IMAGE[quiz.petType ?? ''] ?? '/cat.png'
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'ai',
-      text: `Hi! I'm ${petName}'s AI coach. Ask me anything about their behavior, mood or daily needs.`,
-      time: now(),
-    },
-  ])
+  const petName = activePet?.name || quiz.petName || 'your pet'
+  // Category/subspecies come strictly from the active pet (never stale localStorage).
+  const petType = activePet?.quiz?.petType
+  const subspecies = activePet?.subspecies ?? null
+  const category = categoryOf(petType)
+  const needsSubspecies = !!activePet && isCategory(petType) && !subspecies
+  const species = speciesLabel(petType, subspecies)
+  const petImg = PET_IMAGE[petType ?? ''] ?? PET_IMAGE[quiz.petType ?? ''] ?? '/cat.png'
+
+  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [askedQuestions, setAskedQuestions] = useState<string[]>([])
   const bottomRef = useRef<HTMLDivElement>(null)
+  const initRef = useRef(false)
 
   // Drag-to-scroll for the quick-question row (mouse swipe).
   const dragRef = useRef<HTMLDivElement>(null)
@@ -87,12 +93,20 @@ export function AIChatPage() {
     if (Math.abs(dx) > 4) drag.current.moved = true
     el.scrollLeft = drag.current.scrollLeft - dx
   }
-  function onDragEnd() {
-    drag.current.down = false
-  }
+  function onDragEnd() { drag.current.down = false }
 
-  const fillName = (s: string) => s.split('{name}').join(petName)
+  const fillText = (s: string) => s.split('{name}').join(petName).split('{species}').join(species.toLowerCase())
   const quickQuestions = QUICK_QA.filter(q => !askedQuestions.includes(q.q))
+
+  // Greet once the pet data has loaded.
+  useEffect(() => {
+    if (initRef.current || dataLoading) return
+    initRef.current = true
+    const greeting = needsSubspecies
+      ? `Hi! 🐾 Before we start — what kind of ${category?.label.toLowerCase()} is ${petName}? Pick one below.`
+      : `Hi! I'm ${petName}'s AI coach. Ask me anything about your ${species.toLowerCase()}'s behaviour, mood or daily needs.`
+    setMessages([{ role: 'ai', text: greeting, time: now() }])
+  }, [dataLoading, needsSubspecies, category, petName, species])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -103,7 +117,7 @@ export function AIChatPage() {
     setMessages(m => [...m, { role: 'user', text, time: now() }])
     setInput('')
     setLoading(true)
-    const reply = answer ?? getCoachReply(text, petName, quiz.petType)
+    const reply = answer ?? getCoachReply(text, petName, petType, species)
     setTimeout(() => {
       setMessages(m => [...m, { role: 'ai', text: reply, time: now() }])
       setLoading(false)
@@ -111,9 +125,25 @@ export function AIChatPage() {
   }
 
   function askPreset(qa: { q: string; a: string }) {
-    if (drag.current.moved) return // ignore click that ended a drag
+    if (drag.current.moved) return
     setAskedQuestions(prev => [...prev, qa.q])
-    send(fillName(qa.q), fillName(qa.a))
+    send(fillText(qa.q), fillText(qa.a))
+  }
+
+  async function pickSubspecies(sub: string) {
+    if (drag.current.moved || !activePet) return
+    setMessages(m => [...m, { role: 'user', text: sub, time: now() }])
+    setLoading(true)
+    await setPetSubspecies(activePet.id, sub)
+    setPets(pets.map(p => (p.id === activePet.id ? { ...p, subspecies: sub } : p)))
+    setTimeout(() => {
+      setMessages(m => [...m, {
+        role: 'ai',
+        text: `A ${sub} — wonderful! 🐾 From now on I'll tailor everything to ${petName} as a ${sub.toLowerCase()}. Ask me anything.`,
+        time: now(),
+      }])
+      setLoading(false)
+    }, 900)
   }
 
   // Free users can't access the AI coach
@@ -169,23 +199,25 @@ export function AIChatPage() {
           <div ref={bottomRef} />
         </div>
 
+        {/* ── Subspecies picker (categories only) ── */}
+        {needsSubspecies && !loading && category && (
+          <div className={styles.suggestions} ref={dragRef}
+            onPointerDown={onDragStart} onPointerMove={onDragMove} onPointerUp={onDragEnd} onPointerLeave={onDragEnd}>
+            {category.subspecies.map(sub => (
+              <button key={sub} className={styles.suggestion} onClick={() => pickSubspecies(sub)}>
+                {sub}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* ── Quick questions ── */}
-        {quickQuestions.length > 0 && !loading && (
-          <div
-            className={styles.suggestions}
-            ref={dragRef}
-            onPointerDown={onDragStart}
-            onPointerMove={onDragMove}
-            onPointerUp={onDragEnd}
-            onPointerLeave={onDragEnd}
-          >
+        {!needsSubspecies && quickQuestions.length > 0 && !loading && (
+          <div className={styles.suggestions} ref={dragRef}
+            onPointerDown={onDragStart} onPointerMove={onDragMove} onPointerUp={onDragEnd} onPointerLeave={onDragEnd}>
             {quickQuestions.map(qa => (
-              <button
-                key={qa.q}
-                className={styles.suggestion}
-                onClick={() => askPreset(qa)}
-              >
-                {fillName(qa.q)}
+              <button key={qa.q} className={styles.suggestion} onClick={() => askPreset(qa)}>
+                {fillText(qa.q)}
               </button>
             ))}
           </div>
@@ -197,13 +229,14 @@ export function AIChatPage() {
             className={styles.input}
             value={input}
             onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && send(input)}
-            placeholder={`Ask about ${petName}'s behavior...`}
+            onKeyDown={e => e.key === 'Enter' && !needsSubspecies && send(input)}
+            placeholder={needsSubspecies ? `First, pick what kind of ${category?.label.toLowerCase()} ${petName} is…` : `Ask about ${petName}...`}
+            disabled={needsSubspecies}
           />
           <button
             className={styles.sendBtn}
             onClick={() => send(input)}
-            disabled={!input.trim() || loading}
+            disabled={!input.trim() || loading || needsSubspecies}
             aria-label="Send"
           >
             →

@@ -37,6 +37,7 @@ export interface Pet {
   age: number | null
   weight: number | null
   next_vaccination: string | null
+  subspecies: string | null
   quiz: QuizAnswers | null
   created_at: string
 }
@@ -53,7 +54,7 @@ export async function getPets(userId: string): Promise<Pet[]> {
 
 export async function createPet(
   userId: string,
-  pet: { name: string; age?: number | null; weight?: number | null; quiz?: QuizAnswers },
+  pet: { name: string; age?: number | null; weight?: number | null; subspecies?: string | null; quiz?: QuizAnswers },
 ): Promise<Pet | null> {
   const { data, error } = await supabase
     .from('pets')
@@ -62,12 +63,18 @@ export async function createPet(
       name: pet.name,
       age: pet.age ?? null,
       weight: pet.weight ?? null,
+      subspecies: pet.subspecies ?? null,
       quiz: pet.quiz ?? null,
     })
     .select()
     .single()
   if (error) { console.error('[db] createPet', error); return null }
   return data as Pet
+}
+
+export async function setPetSubspecies(petId: string, subspecies: string): Promise<void> {
+  const { error } = await supabase.from('pets').update({ subspecies }).eq('id', petId)
+  if (error) console.error('[db] setPetSubspecies', error)
 }
 
 export async function updatePetQuiz(petId: string, quiz: QuizAnswers): Promise<void> {

@@ -8,7 +8,7 @@ import styles from './AnalysisPage.module.scss'
 
 export function AnalysisPage() {
   const navigate = useNavigate()
-  const { premium, user } = useAuth()
+  const { premium, user, session } = useAuth()
   const [progress, setProgress] = useState(0)
   const [messageIdx, setMessageIdx] = useState(0)
 
@@ -35,8 +35,10 @@ export function AnalysisPage() {
     }, 2000)
 
     const navTimer = setTimeout(() => {
-      // Show the paywall only during first-time onboarding (their first pet).
-      // Premium users, or anyone who already has a pet, go straight to the dashboard.
+      // Guest onboarding: no account yet → go register (pet is created after signup).
+      if (!session) { navigate(ROUTES.AUTH); return }
+      // Logged in: premium or a returning user (already has pets) → dashboard,
+      // otherwise the paywall (first-pet onboarding).
       const onboarding = petCount.current <= 1
       navigate(premium || !onboarding ? ROUTES.DASHBOARD : ROUTES.PAYWALL)
     }, duration + 500)
@@ -46,7 +48,7 @@ export function AnalysisPage() {
       clearInterval(messageTimer)
       clearTimeout(navTimer)
     }
-  }, [navigate, premium])
+  }, [navigate, premium, session])
 
   return (
     <div className={styles.page}>

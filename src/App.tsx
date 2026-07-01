@@ -18,17 +18,17 @@ import { ROUTES } from '@/lib/constants'
 export default function App() {
   return (
     <Routes>
-      {/* Public */}
+      {/* Public — onboarding: quiz → analysis, then registration */}
       <Route element={<Layout />}>
         <Route path={ROUTES.HOME} element={<LandingPage />} />
         <Route path={ROUTES.AUTH} element={<AuthPage />} />
+        <Route path={ROUTES.QUIZ} element={<QuizPage />} />
+        <Route path={ROUTES.ANALYSIS} element={<AnalysisPage />} />
       </Route>
 
       {/* Logged-in only */}
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
-          <Route path={ROUTES.QUIZ} element={<QuizPage />} />
-          <Route path={ROUTES.ANALYSIS} element={<AnalysisPage />} />
           <Route path={ROUTES.PAYWALL} element={<PaywallPage />} />
         </Route>
         <Route path="/dashboard" element={<DashboardLayout />}>

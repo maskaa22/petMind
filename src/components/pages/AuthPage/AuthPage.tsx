@@ -3,18 +3,23 @@ import { useNavigate, Link } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { useAuth } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
-import { getPets } from '@/lib/db'
+import { getPets, createPet } from '@/lib/db'
+import { isCategory } from '@/lib/species'
 import { Icon } from '@/components/Icon'
 import { Button } from '@/components/Button'
 import styles from './AuthPage.module.scss'
 
 type Mode = 'signin' | 'signup'
 
+const AGE_YEARS: Record<string, number> = { under1: 0.5, '1-3': 2, '4-7': 5, '8+': 9 }
+
 export function AuthPage() {
   const navigate = useNavigate()
   const { signIn, signUp } = useAuth()
 
-  const [mode, setMode] = useState<Mode>('signin')
+  // Coming straight from the quiz (guest) → default to Sign up; otherwise Sign in.
+  const [mode, setMode] = useState<Mode>(() =>
+    localStorage.getItem('petmind_quiz') && !localStorage.getItem('petmind_active_pet') ? 'signup' : 'signin')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -40,26 +45,49 @@ export function AuthPage() {
 
     if (error) { setError(error); return }
 
-    if (isSignup) {
-      // If email confirmation is on, there's no session yet.
+    const { data } = await supabase.auth.getUser()
+    const uid = data.user?.id
+
+    // Sign-up with email confirmation ON → no session yet.
+    if (!uid) {
       setNotice('Account created! Check your email to confirm, then sign in.')
       setMode('signin')
       return
     }
 
-    // Signed in → if they already have a pet, hydrate it and go to the dashboard.
-    const { data } = await supabase.auth.getUser()
-    const uid = data.user?.id
-    if (uid) {
-      const pets = await getPets(uid)
+    await routeAfterAuth(uid)
+  }
+
+  // Where to go once we have a session.
+  async function routeAfterAuth(uid: string) {
+    const pets = await getPets(uid)
+
+    // Returning user with pets → open their dashboard.
+    if (pets.length) {
       const pet = pets[0]
-      if (pet?.quiz) {
-        localStorage.setItem('petmind_quiz', JSON.stringify(pet.quiz))
-        localStorage.setItem('petmind_active_pet', pet.id)
-        navigate(ROUTES.DASHBOARD)
-        return
-      }
+      if (pet.quiz) localStorage.setItem('petmind_quiz', JSON.stringify(pet.quiz))
+      localStorage.setItem('petmind_active_pet', pet.id)
+      navigate(ROUTES.DASHBOARD)
+      return
     }
+
+    // No pets yet — if they just took the quiz as a guest, create the pet now
+    // and continue onboarding to the paywall.
+    const raw = localStorage.getItem('petmind_quiz')
+    if (raw) {
+      const answers = JSON.parse(raw)
+      const pet = await createPet(uid, {
+        name: answers.petName?.trim() || 'My pet',
+        age: answers.petAge ? AGE_YEARS[answers.petAge] ?? null : null,
+        subspecies: isCategory(answers.petType) ? null : (answers.petType ?? null),
+        quiz: answers,
+      })
+      if (pet) localStorage.setItem('petmind_active_pet', pet.id)
+      navigate(ROUTES.PAYWALL)
+      return
+    }
+
+    // Nothing yet → take the quiz.
     navigate(ROUTES.QUIZ)
   }
 

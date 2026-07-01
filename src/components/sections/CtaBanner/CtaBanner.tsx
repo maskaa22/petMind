@@ -23,14 +23,14 @@ export function CtaBanner() {
   const navigate = useNavigate()
   const { session, premium, setPremium } = useAuth()
 
-  // Free plan: just open the app (no change). Not logged in → sign in first.
+  // Not logged in → start onboarding with the quiz (quiz → register → paywall).
   function handleFree() {
-    navigate(session ? ROUTES.DASHBOARD : ROUTES.AUTH)
+    navigate(session ? ROUTES.DASHBOARD : ROUTES.QUIZ)
   }
 
-  // Premium: upgrade in DB then open the (now premium) dashboard.
+  // Premium: logged-in upgrades in DB; guests start the quiz first.
   async function handlePremium() {
-    if (!session) { navigate(ROUTES.AUTH); return }
+    if (!session) { navigate(ROUTES.QUIZ); return }
     if (!premium) await setPremium(true)
     navigate(ROUTES.DASHBOARD)
   }

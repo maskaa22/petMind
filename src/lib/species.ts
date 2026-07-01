@@ -14,10 +14,14 @@ export const PET_CATEGORIES: Record<string, Category> = {
     label: 'Reptiles',
     subspecies: ['Chameleon', 'Snake', 'Turtle', 'Lizard', 'Gecko', 'Bearded dragon'],
   },
+  bird: {
+    label: 'Birds',
+    subspecies: ['Parrot', 'Canary', 'Budgie', 'Cockatiel', 'Finch', 'Lovebird'],
+  },
 }
 
 const TYPE_LABEL: Record<string, string> = {
-  cat: 'Cat', dog: 'Dog', rabbit: 'Rabbit', bird: 'Bird',
+  cat: 'Cat', dog: 'Dog', rabbit: 'Rabbit',
 }
 
 /** Returns the category for an umbrella type, or null for a concrete type. */

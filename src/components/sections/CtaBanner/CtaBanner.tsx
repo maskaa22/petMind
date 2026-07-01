@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
+import { useAuth } from '@/lib/auth'
 import styles from './CtaBanner.module.scss'
 
 const FREE_FEATURES = [
@@ -20,6 +21,20 @@ const PREMIUM_FEATURES = [
 
 export function CtaBanner() {
   const navigate = useNavigate()
+  const { session, premium, setPremium } = useAuth()
+
+  // Free plan: just open the app (no change). Not logged in → sign in first.
+  function handleFree() {
+    navigate(session ? ROUTES.DASHBOARD : ROUTES.AUTH)
+  }
+
+  // Premium: upgrade in DB then open the (now premium) dashboard.
+  async function handlePremium() {
+    if (!session) { navigate(ROUTES.AUTH); return }
+    if (!premium) await setPremium(true)
+    navigate(ROUTES.DASHBOARD)
+  }
+
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
@@ -40,7 +55,7 @@ export function CtaBanner() {
                 </li>
               ))}
             </ul>
-            <button className={styles.btnFree} onClick={() => navigate(ROUTES.QUIZ)}>
+            <button className={styles.btnFree} onClick={handleFree}>
               Get started for free
             </button>
           </div>
@@ -63,7 +78,7 @@ export function CtaBanner() {
                 </li>
               ))}
             </ul>
-            <button className={styles.btnPremium} onClick={() => navigate(ROUTES.AUTH)}>
+            <button className={styles.btnPremium} onClick={handlePremium}>
               Get Premium — $9/mo
             </button>
           </div>

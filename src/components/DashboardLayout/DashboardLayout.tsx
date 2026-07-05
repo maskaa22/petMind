@@ -42,7 +42,12 @@ function getToday() {
 
 export function DashboardLayout() {
   const navigate = useNavigate()
-  const { premium, user } = useAuth()
+  const { premium, user, signOut } = useAuth()
+
+  async function logout() {
+    await signOut()
+    navigate(ROUTES.HOME)
+  }
   const quiz = getQuiz()
   const petName = quiz.petName || 'Your pet'
   const today = getToday()
@@ -192,6 +197,10 @@ export function DashboardLayout() {
           })}
         </ul>
         <div className={styles.sidebarFooter}>
+          <button className={styles.logoutBtn} onClick={logout}>
+            <Icon name="arrow-right" size={16} />
+            <span>Log out</span>
+          </button>
           {premium ? (
             <div className={styles.plan}>
               <Icon name="sparkles" size={14} />

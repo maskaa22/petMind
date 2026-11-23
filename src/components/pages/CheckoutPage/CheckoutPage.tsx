@@ -55,7 +55,7 @@ export function CheckoutPage() {
       <div className={styles.inner}>
         {/* ── Header ── */}
         <header className={styles.header}>
-          <button className={styles.back} onClick={() => navigate(ROUTES.HOME)}>
+          <button className={styles.back} onClick={() => navigate(ROUTES.PAYWALL)}>
             ← Back
           </button>
           <h1 className={styles.title}>Complete your purchase</h1>

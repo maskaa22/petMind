@@ -7,6 +7,7 @@ import { AuthPage } from '@/components/pages/AuthPage'
 import { QuizPage } from '@/components/pages/QuizPage'
 import { AnalysisPage } from '@/components/pages/AnalysisPage'
 import { PaywallPage } from '@/components/pages/PaywallPage'
+import { CheckoutPage } from '@/components/pages/CheckoutPage'
 import { DashboardPage } from '@/components/pages/DashboardPage'
 import { ReportsPage } from '@/components/pages/ReportsPage'
 import { AIChatPage } from '@/components/pages/AIChatPage'
@@ -30,6 +31,7 @@ export default function App() {
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
           <Route path={ROUTES.PAYWALL} element={<PaywallPage />} />
+          <Route path={ROUTES.CHECKOUT} element={<CheckoutPage />} />
         </Route>
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />

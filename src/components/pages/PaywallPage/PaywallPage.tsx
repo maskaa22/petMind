@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
-import { useAuth } from '@/lib/auth'
 import { generateReport } from '@/lib/quizLogic'
 import { Icon } from '@/components/Icon'
 import type { IconName } from '@/components/Icon'
@@ -45,7 +44,6 @@ const PREMIUM_FEATURES = [
 
 export function PaywallPage() {
   const navigate = useNavigate()
-  const { setPremium } = useAuth()
 
   const raw = localStorage.getItem('petmind_quiz')
   const answers: QuizAnswers = raw ? JSON.parse(raw) : {}
@@ -56,9 +54,9 @@ export function PaywallPage() {
   function chooseFree() {
     navigate(ROUTES.DASHBOARD)
   }
-  async function choosePremium() {
-    await setPremium(true)
-    navigate(ROUTES.DASHBOARD)
+  // Premium is only activated on the checkout page, after payment details are filled in.
+  function choosePremium() {
+    navigate(ROUTES.CHECKOUT)
   }
 
   return (

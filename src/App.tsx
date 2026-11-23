@@ -14,9 +14,16 @@ import { AIChatPage } from '@/components/pages/AIChatPage'
 import { JournalPage } from '@/components/pages/JournalPage'
 import { TrendsPage } from '@/components/pages/TrendsPage'
 import { SettingsPage } from '@/components/pages/SettingsPage'
+import { Loader } from '@/components/Loader'
+import { useAuth } from '@/lib/auth'
 import { ROUTES } from '@/lib/constants'
 
 export default function App() {
+  const { loading } = useAuth()
+
+  // Show the branded loader on every page until the session has been checked.
+  if (loading) return <Loader />
+
   return (
     <Routes>
       {/* Public — onboarding: quiz → analysis, then registration */}

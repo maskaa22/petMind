@@ -51,7 +51,7 @@ export function SneakPeek() {
           <div className={styles.card}>
             {/* Card header */}
             <div className={styles.cardHeader}>
-              <img src="/cat.png" alt="cat" className={styles.catIllu} />
+              <img src="/cat.webp" alt="cat" className={styles.catIllu} />
               <div>
                 <p className={styles.petName}>Luna</p>
                 <span className={styles.typeBadge}>The Explorer</span>

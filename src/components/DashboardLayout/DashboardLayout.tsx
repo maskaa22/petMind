@@ -21,12 +21,12 @@ const NAV_ITEMS: { to: string; label: string; icon: IconName; end?: boolean; pre
 ]
 
 const PET_IMAGE: Record<string, string> = {
-  cat: '/cat.png',
-  dog: '/dog1.png',
-  rabbit: '/rabbit.png',
-  bird: '/chiken.png',
-  hamster: '/ho.png',
-  other: '/chameleon.png',
+  cat: '/cat.webp',
+  dog: '/dog1.webp',
+  rabbit: '/rabbit.webp',
+  bird: '/chiken.webp',
+  hamster: '/ho.webp',
+  other: '/chameleon.webp',
 }
 
 function getQuiz(): { petName?: string; petType?: string; petMood?: string } {

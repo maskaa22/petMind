@@ -112,7 +112,7 @@ export function TrendsPage() {
 
       {n === 0 ? (
         <div className={styles.empty}>
-          <img src="/graf.png" alt="" className={styles.emptyImg} />
+          <img src="/graf.webp" alt="" className={styles.emptyImg} />
           <p>No data yet — add a few journal entries to see {activePet ? `${activePet.name}'s` : 'the'} trends.</p>
           <Button onClick={() => navigate(ROUTES.JOURNAL)}>Go to Journal</Button>
         </div>

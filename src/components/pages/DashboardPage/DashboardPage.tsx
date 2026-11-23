@@ -23,18 +23,20 @@ const MOOD_BARS = [
 ]
 
 const PET_IMAGE: Record<string, string> = {
-  cat: '/cat.png', dog: '/dog1.png', rabbit: '/rabbit.png',
-  bird: '/chiken.png', hamster: '/ho.png', other: '/chameleon.png',
+  cat: '/cat.webp', dog: '/dog1.webp', rabbit: '/rabbit.webp',
+  bird: '/chiken.webp', hamster: '/ho.webp', other: '/chameleon.webp',
 }
 
 // Custom X-axis tick that renders the pet's image instead of its name.
-function PetTick({ x, y, payload, imgByName }: {
-  x?: number; y?: number; payload?: { value: string }; imgByName?: Record<string, string>
+function PetTick({ x: rawX, y: rawY, payload, imgByName }: {
+  x?: number | string; y?: number | string; payload?: { value: string }; imgByName?: Record<string, string>
 }) {
   const name = payload?.value ?? ''
   const img = imgByName?.[name]
   const size = 38
-  if (x == null || y == null) return null
+  if (rawX == null || rawY == null) return null
+  const x = Number(rawX)
+  const y = Number(rawY)
   return img
     ? <image href={img} x={x - size / 2} y={y + 6} width={size} height={size} />
     : <text x={x} y={y + 20} textAnchor="middle" fontSize={12} fill="#525252">{name}</text>

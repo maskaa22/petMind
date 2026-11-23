@@ -1,29 +1,5 @@
-import { useNavigate } from 'react-router-dom'
-import { ROUTES, SECTION_IDS } from '@/lib/constants'
 import { Icon } from '@/components/Icon'
 import styles from './Footer.module.scss'
-
-const FOOTER_LINKS = {
-  Product: [
-    { label: 'How it works', href: `#${SECTION_IDS.HERO}` },
-    { label: 'Benefits', href: `#${SECTION_IDS.BENEFITS}` },
-    { label: 'Personality Types', href: '#' },
-    { label: 'Reviews', href: `#${SECTION_IDS.SOCIAL_PROOF}` },
-    { label: 'FAQ', href: `#${SECTION_IDS.FAQ}` },
-  ],
-  Dashboard: [
-    { label: 'My Reports', href: ROUTES.REPORTS, internal: true },
-    { label: 'AI Chat', href: ROUTES.AI_CHAT, internal: true },
-    { label: 'Journal', href: ROUTES.JOURNAL, internal: true },
-    { label: 'Settings', href: ROUTES.SETTINGS, internal: true },
-  ],
-  Legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-    { label: 'Contact Us', href: '#' },
-  ],
-}
 
 const SOCIALS = [
   { icon: 'heart' as const, label: 'Instagram', href: '#' },
@@ -32,17 +8,6 @@ const SOCIALS = [
 ]
 
 export function Footer() {
-  const navigate = useNavigate()
-
-  const handleLink = (href: string, internal?: boolean) => {
-    if (internal) { navigate(href); return }
-    if (href.startsWith('#')) {
-      const id = href.replace('#', '')
-      const el = document.getElementById(id)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   return (
     <footer className={styles.footer}>
       {/* Wave top decoration */}

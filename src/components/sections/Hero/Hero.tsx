@@ -19,8 +19,8 @@ export function Hero() {
       <div className={styles.inner}>
         <div className={styles.left}>
           <div className={styles.petBubble}>
-            <img src="/dog1.png" alt="" className={styles.petDog} />
-            <img src="/cat.png" alt="" className={styles.petCat} />
+            <img src="/dog1.webp" alt="" className={styles.petDog} />
+            <img src="/cat.webp" alt="" className={styles.petCat} />
           </div>
         </div>
 
@@ -65,8 +65,8 @@ export function Hero() {
 
         <div className={styles.right}>
           <div className={styles.petBubbleRight}>
-            <img src="/ho.png" alt="" className={styles.petCat2} />
-            <img src="/rabbit.png" alt="" className={styles.petRabbit} />
+            <img src="/ho.webp" alt="" className={styles.petCat2} />
+            <img src="/rabbit.webp" alt="" className={styles.petRabbit} />
           </div>
         </div>
       </div>

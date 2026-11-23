@@ -7,8 +7,8 @@ import type { QuizAnswers } from '@/types'
 import styles from './PaywallPage.module.scss'
 
 const PET_IMAGE: Record<string, string> = {
-  cat: '/cat.png', dog: '/dog1.png', rabbit: '/rabbit.png',
-  bird: '/chiken.png', hamster: '/ho.png', other: '/chameleon.png',
+  cat: '/cat.webp', dog: '/dog1.webp', rabbit: '/rabbit.webp',
+  bird: '/chiken.webp', hamster: '/ho.webp', other: '/chameleon.webp',
 }
 
 const STATS = [
@@ -49,7 +49,7 @@ export function PaywallPage() {
   const answers: QuizAnswers = raw ? JSON.parse(raw) : {}
   const report = generateReport(answers)
   const petName = answers.petName || 'your pet'
-  const petImg = PET_IMAGE[answers.petType ?? ''] ?? '/cat.png'
+  const petImg = PET_IMAGE[answers.petType ?? ''] ?? '/cat.webp'
 
   function chooseFree() {
     navigate(ROUTES.DASHBOARD)

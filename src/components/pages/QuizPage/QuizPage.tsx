@@ -98,12 +98,12 @@ export function QuizPage() {
           <Question title="What type of pet do you have?">
             <OptionGrid
               options={[
-                { value: 'cat',     label: 'Cat',     img: '/cat.png' },
-                { value: 'dog',     label: 'Dog',     img: '/dog1.png' },
-                { value: 'rabbit',  label: 'Rabbit',  img: '/rabbit.png' },
-                { value: 'bird',    label: 'Bird',    img: '/chiken.png' },
-                { value: 'hamster', label: 'Rodents',  img: '/ho.png' },
-                { value: 'other',   label: 'Reptiles', img: '/chameleon.png' },
+                { value: 'cat',     label: 'Cat',     img: '/cat.webp' },
+                { value: 'dog',     label: 'Dog',     img: '/dog1.webp' },
+                { value: 'rabbit',  label: 'Rabbit',  img: '/rabbit.webp' },
+                { value: 'bird',    label: 'Bird',    img: '/chiken.webp' },
+                { value: 'hamster', label: 'Rodents',  img: '/ho.webp' },
+                { value: 'other',   label: 'Reptiles', img: '/chameleon.webp' },
               ]}
               selected={answers.petType}
               onSelect={v => patch({ petType: v as PetType })}
@@ -128,10 +128,10 @@ export function QuizPage() {
           <Question title="How old is your pet?">
             <OptionGrid
               options={[
-                { value: 'under1', label: 'Under 1 year', img: '/tree/1.png' },
-                { value: '1-3',    label: '1–3 years',    img: '/tree/2.png' },
-                { value: '4-7',    label: '4–7 years',    img: '/tree/3.png' },
-                { value: '8+',     label: '8+ years',     img: '/tree/4.png' },
+                { value: 'under1', label: 'Under 1 year', img: '/tree/1.webp' },
+                { value: '1-3',    label: '1–3 years',    img: '/tree/2.webp' },
+                { value: '4-7',    label: '4–7 years',    img: '/tree/3.webp' },
+                { value: '8+',     label: '8+ years',     img: '/tree/4.webp' },
               ]}
               selected={answers.petAge}
               onSelect={v => patch({ petAge: v as PetAge })}
@@ -154,12 +154,12 @@ export function QuizPage() {
                     { value: 'anxious',  label: 'Anxious',  icon: '😟' },
                     { value: 'curious',  label: 'Curious',  icon: '🤔' },
                   ] : [
-                    { value: 'playful',  label: 'Playful',  img: `/test/${folder}/Playful.png` },
-                    { value: 'calm',     label: 'Calm',     img: `/test/${folder}/Calm.png` },
-                    { value: 'excited',  label: 'Excited',  img: `/test/${folder}/Excited.png` },
-                    { value: 'sleepy',   label: 'Sleepy',   img: `/test/${folder}/Sleepy.png` },
-                    { value: 'anxious',  label: 'Anxious',  img: `/test/${folder}/Anxious.png` },
-                    { value: 'curious',  label: 'Curious',  img: `/test/${folder}/curious.png` },
+                    { value: 'playful',  label: 'Playful',  img: `/test/${folder}/Playful.webp` },
+                    { value: 'calm',     label: 'Calm',     img: `/test/${folder}/Calm.webp` },
+                    { value: 'excited',  label: 'Excited',  img: `/test/${folder}/Excited.webp` },
+                    { value: 'sleepy',   label: 'Sleepy',   img: `/test/${folder}/Sleepy.webp` },
+                    { value: 'anxious',  label: 'Anxious',  img: `/test/${folder}/Anxious.webp` },
+                    { value: 'curious',  label: 'Curious',  img: `/test/${folder}/curious.webp` },
                   ]}
                   selected={answers.petMood}
                   onSelect={v => patch({ petMood: v as PetMood })}

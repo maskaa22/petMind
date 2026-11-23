@@ -19,12 +19,12 @@ function now() {
 }
 
 const PET_IMAGE: Record<string, string> = {
-  cat: '/cat.png',
-  dog: '/dog1.png',
-  rabbit: '/rabbit.png',
-  bird: '/chiken.png',
-  hamster: '/ho.png',
-  other: '/chameleon.png',
+  cat: '/cat.webp',
+  dog: '/dog1.webp',
+  rabbit: '/rabbit.webp',
+  bird: '/chiken.webp',
+  hamster: '/ho.webp',
+  other: '/chameleon.webp',
 }
 
 function getQuiz(): { petName?: string; petType?: string } {
@@ -68,7 +68,7 @@ export function AIChatPage() {
   const category = categoryOf(petType)
   const needsSubspecies = !!activePet && isCategory(petType) && !subspecies
   const species = speciesLabel(petType, subspecies)
-  const petImg = PET_IMAGE[petType ?? ''] ?? PET_IMAGE[quiz.petType ?? ''] ?? '/cat.png'
+  const petImg = PET_IMAGE[petType ?? ''] ?? PET_IMAGE[quiz.petType ?? ''] ?? '/cat.webp'
 
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')

@@ -32,3 +32,6 @@ coverage/
 
 # TypeScript
 *.tsbuildinfo
+
+# Personal notes (not for GitHub)
+docs/MOBILE_APP_PLAN.md

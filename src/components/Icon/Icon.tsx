@@ -4,8 +4,8 @@ export type IconName =
   | 'home' | 'bar-chart' | 'message-circle' | 'book-open' | 'settings'
   | 'brain' | 'sparkles' | 'shield' | 'zap' | 'heart' | 'check-circle'
   | 'arrow-right' | 'star' | 'users' | 'target' | 'eye' | 'lock'
-  | 'check' | 'paw-print' | 'activity' | 'camera' | 'trending-up'
-  | 'moon' | 'play' | 'compass' | 'bowl' | 'eye-off' | 'calendar'
+  | 'check' | 'activity' | 'camera' | 'trending-up'
+  | 'moon' | 'play' | 'compass' | 'bowl' | 'eye-off' | 'calendar' | 'paw' | 'arrow-up'
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName
@@ -94,6 +94,12 @@ const PATHS: Record<IconName, JSX.Element> = {
       <polyline points="12 5 19 12 12 19" />
     </>
   ),
+  'arrow-up': (
+    <>
+      <line x1="12" y1="19" x2="12" y2="5" />
+      <polyline points="5 12 12 5 19 12" />
+    </>
+  ),
   star: (
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
   ),
@@ -127,12 +133,14 @@ const PATHS: Record<IconName, JSX.Element> = {
   check: (
     <polyline points="20 6 9 17 4 12" />
   ),
-  'paw-print': (
+  // Classic paw print: one big pad + four toes (outline only)
+  paw: (
     <>
-      <circle cx="11" cy="4" r="2" />
-      <circle cx="18" cy="8" r="2" />
-      <circle cx="20" cy="16" r="2" />
-      <path d="M9 10a5 5 0 015 5v3.5a3.5 3.5 0 01-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 018 13.5V13a5 5 0 011-3z" />
+      <ellipse cx="4.4" cy="11" rx="1.9" ry="2.6" transform="rotate(-22 4.4 11)" />
+      <ellipse cx="8.6" cy="5.9" rx="1.9" ry="2.7" transform="rotate(-8 8.6 5.9)" />
+      <ellipse cx="15.4" cy="5.9" rx="1.9" ry="2.7" transform="rotate(8 15.4 5.9)" />
+      <ellipse cx="19.6" cy="11" rx="1.9" ry="2.6" transform="rotate(22 19.6 11)" />
+      <path d="M12 11c-3.3 0-6.2 3.7-6.2 6.5 0 2 1.6 2.9 3.1 2.9 1.2 0 2-.6 3.1-.6s1.9.6 3.1.6c1.5 0 3.1-.9 3.1-2.9C18.2 14.7 15.3 11 12 11z" />
     </>
   ),
   activity: (

@@ -6,6 +6,7 @@ interface DatePickerProps {
   value: string                 // 'YYYY-MM-DD' or ''
   onChange: (value: string) => void
   placeholder?: string
+  min?: string                  // 'YYYY-MM-DD' — earlier days can't be picked
 }
 
 const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
@@ -15,7 +16,7 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
 const pad = (n: number) => String(n).padStart(2, '0')
 const toISO = (y: number, m: number, d: number) => `${y}-${pad(m + 1)}-${pad(d)}`
 
-export function DatePicker({ value, onChange, placeholder = 'Pick a date' }: DatePickerProps) {
+export function DatePicker({ value, onChange, placeholder = 'Pick a date', min }: DatePickerProps) {
   const selected = value ? new Date(`${value}T00:00:00`) : null
   const today = new Date()
   const [open, setOpen] = useState(false)
@@ -40,7 +41,13 @@ export function DatePicker({ value, onChange, placeholder = 'Pick a date' }: Dat
   function isToday(d: number) {
     return today.getFullYear() === year && today.getMonth() === month && today.getDate() === d
   }
+  const isDisabled = (d: number) => !!min && toISO(year, month, d) < min
+  // Previous month is unreachable when all of its days are before `min`.
+  const prevLocked = !!min && new Date(year, month, 0) < new Date(`${min}T00:00:00`)
+  const todayISO = toISO(today.getFullYear(), today.getMonth(), today.getDate())
+
   function pick(d: number) {
+    if (isDisabled(d)) return
     onChange(toISO(year, month, d))
     setOpen(false)
   }
@@ -60,7 +67,7 @@ export function DatePicker({ value, onChange, placeholder = 'Pick a date' }: Dat
           <div className={styles.backdrop} onClick={() => setOpen(false)} />
           <div className={styles.cal}>
             <div className={styles.calHead}>
-              <button type="button" className={styles.navBtn} onClick={() => shiftMonth(-1)} aria-label="Previous month">‹</button>
+              <button type="button" className={styles.navBtn} onClick={() => shiftMonth(-1)} disabled={prevLocked} aria-label="Previous month">‹</button>
               <span className={styles.monthLabel}>{MONTHS[month]} {year}</span>
               <button type="button" className={styles.navBtn} onClick={() => shiftMonth(1)} aria-label="Next month">›</button>
             </div>
@@ -76,8 +83,9 @@ export function DatePicker({ value, onChange, placeholder = 'Pick a date' }: Dat
                   <button
                     type="button"
                     key={d}
-                    className={[styles.day, isSelected(d) ? styles.daySelected : '', isToday(d) && !isSelected(d) ? styles.dayToday : ''].filter(Boolean).join(' ')}
+                    className={[styles.day, isSelected(d) ? styles.daySelected : '', isToday(d) && !isSelected(d) ? styles.dayToday : '', isDisabled(d) ? styles.dayDisabled : ''].filter(Boolean).join(' ')}
                     onClick={() => pick(d)}
+                    disabled={isDisabled(d)}
                   >
                     {d}
                   </button>
@@ -86,7 +94,7 @@ export function DatePicker({ value, onChange, placeholder = 'Pick a date' }: Dat
 
             <div className={styles.calFoot}>
               <button type="button" className={styles.footBtn} onClick={() => { onChange(''); setOpen(false) }}>Clear</button>
-              <button type="button" className={styles.footBtn} onClick={() => { onChange(toISO(today.getFullYear(), today.getMonth(), today.getDate())); setOpen(false) }}>Today</button>
+              <button type="button" className={styles.footBtn} disabled={!!min && todayISO < min} onClick={() => { onChange(todayISO); setOpen(false) }}>Today</button>
             </div>
           </div>
         </>

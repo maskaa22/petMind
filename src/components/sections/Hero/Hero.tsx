@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { Button } from '@/components/Button'
+import { Icon } from '@/components/Icon'
 import styles from './Hero.module.scss'
 
 export function Hero() {
@@ -40,7 +41,11 @@ export function Hero() {
 
           <div className={styles.actions}>
             <Button variant="primary" size="lg" onClick={() => navigate(ROUTES.QUIZ)}>
-              Start Free Analysis 🐾
+              Start Free Analysis
+              <span className={styles.btnPaws}>
+                <Icon name="paw" size={22} />
+                <Icon name="paw" size={15} />
+              </span>
             </Button>
             <span className={styles.hint}>No credit card · Takes 2 minutes</span>
           </div>

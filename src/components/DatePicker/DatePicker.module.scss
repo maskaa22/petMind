@@ -85,7 +85,12 @@
   cursor: pointer;
   transition: background $transition-fast;
 
-  &:hover { background: $orange-pale; }
+  &:hover:not(:disabled) { background: $orange-pale; }
+
+  &:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
 }
 
 .weekRow,
@@ -129,6 +134,14 @@
   border: 2px dashed $orange-light;
 }
 
+// Days before the allowed minimum date
+.dayDisabled {
+  color: $gray-400;
+  cursor: not-allowed;
+
+  &:hover { background: transparent !important; color: $gray-400 !important; }
+}
+
 .calFoot {
   display: flex;
   justify-content: space-between;
@@ -145,5 +158,10 @@
   color: $orange;
   cursor: pointer;
 
-  &:hover { text-decoration: underline; }
+  &:hover:not(:disabled) { text-decoration: underline; }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
 }

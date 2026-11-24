@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { WaveDivider } from '@/components/WaveDivider'
 import { Hero } from '@/components/sections/Hero'
 import { HowItWorks } from '@/components/sections/HowItWorks'
@@ -48,6 +49,7 @@ export function LandingPage() {
         <CtaBanner />
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   )
 }

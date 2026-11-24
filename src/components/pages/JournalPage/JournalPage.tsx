@@ -8,6 +8,12 @@ import { addJournalEntry, deleteJournalEntry, updatePet } from '@/lib/db'
 import type { DashboardContext } from '@/lib/moods'
 import styles from './JournalPage.module.scss'
 
+/** Today's date as local 'YYYY-MM-DD' — the earliest day a vaccination can be planned. */
+function todayISO() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
 const MOODS = ['😊 Happy', '😌 Calm', '😄 Excited', '😴 Tired', '😟 Anxious']
 
 // Map a journal mood to the app-wide mood value (used by the topbar / dashboard).
@@ -196,7 +202,7 @@ export function JournalPage() {
             </div>
             <div className={styles.field}>
               <span className={styles.label}>Next vaccination (planned)</span>
-              <DatePicker value={nextVacc} onChange={setNextVacc} placeholder="Pick a date" />
+              <DatePicker value={nextVacc} onChange={setNextVacc} placeholder="Pick a date" min={todayISO()} />
             </div>
             <div className={styles.modalActions}>
               <Button variant="ghost" onClick={() => setVaccOpen(false)}>Cancel</Button>

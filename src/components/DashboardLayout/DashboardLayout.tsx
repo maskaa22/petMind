@@ -155,7 +155,7 @@ export function DashboardLayout() {
       <nav className={styles.sidebar}>
         <button className={styles.brand} onClick={() => navigate(ROUTES.HOME)} aria-label="Go to home">
           <div className={styles.brandMark}>
-            <Icon name="paw-print" size={18} />
+            <Icon name="paw" size={18} />
           </div>
           <span className={styles.brandName}>PetMind</span>
         </button>

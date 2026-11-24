@@ -256,3 +256,15 @@
   height: 36px;
   background: $gray-200;
 }
+
+// Two paw prints inside a primary button: the second one smaller and lower.
+// White outline, transparent inside (the button colour shows through).
+.btnPaws {
+  display: inline-flex;
+  align-items: center;
+  color: $white;
+
+  svg { stroke-width: 2; }
+  svg:first-child { transform: translateY(-2px) rotate(-12deg); }
+  svg:last-child  { transform: translateY(6px) rotate(14deg); margin-left: 1px; }
+}

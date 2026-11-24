@@ -22,7 +22,7 @@ export function Footer() {
         <div className={styles.brand}>
           <div className={styles.logo}>
             <span className={styles.logoIcon}>
-              <Icon name="paw-print" size={20} />
+              <Icon name="paw" size={20} />
             </span>
             <span className={styles.logoText}>pet<strong>Mind</strong></span>
           </div>

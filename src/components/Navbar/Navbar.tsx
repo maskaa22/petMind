@@ -44,7 +44,7 @@ export function Navbar() {
         {/* Logo */}
         <a className={styles.logo} href="/" onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
           <span className={styles.logoIcon}>
-            <Icon name="paw-print" size={22} />
+            <Icon name="paw" size={22} />
           </span>
           <span className={styles.logoText}>pet<strong>Mind</strong></span>
         </a>
@@ -120,7 +120,11 @@ export function Navbar() {
                 Log in
               </Button>
               <Button variant="primary" size="md" onClick={() => { setOpen(false); navigate(ROUTES.QUIZ) }}>
-                Start Free Analysis 🐾
+                Start Free Analysis
+                <span className={styles.btnPaws}>
+                  <Icon name="paw" size={20} />
+                  <Icon name="paw" size={14} />
+                </span>
               </Button>
             </>
           )}
